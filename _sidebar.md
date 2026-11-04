@@ -27,4 +27,4 @@
   - [后记](book/front/90-epilogue.md)
 
 - **下载**
-  - [整本 PDF](output/remote-access-book.pdf)
+  - [整本 PDF](output/remote-access-book.pdf ':ignore')

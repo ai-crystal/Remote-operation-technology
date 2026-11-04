@@ -74,7 +74,11 @@ def check(path):
         errors.append("%s:%d 代码块没有闭合" % (rel, code_start))
 
     for name, seq in (("图", figs), ("表", tabs)):
-        for a, b in zip(seq, seq[1:]):
+        uniq = []
+        for n in seq:
+            if not uniq or uniq[-1] != n:
+                uniq.append(n)
+        for a, b in zip(uniq, uniq[1:]):
             if b != a + 1:
                 warns.append("%s %s编号不连续：%d 之后是 %d" % (rel, name, a, b))
 

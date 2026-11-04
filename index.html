@@ -28,7 +28,24 @@
     .cover h1 { font-size: 3rem; letter-spacing: 0.14em; }
     .cover p { color: #c9dbe8; }
     .cover .anchor span { color: #eaf2f8; }
-    .cover a.cover-link { color: #ffffff !important; border-color: #ffffff !important; }
+    .cover .cover-main > p:last-child a {
+      color: #e8f1f8 !important;
+      border: 1px solid rgba(232,241,248,0.55) !important;
+      background: rgba(255,255,255,0.05) !important;
+      transition: all .18s ease;
+    }
+    .cover .cover-main > p:last-child a:hover {
+      border-color: #ffffff !important;
+      background: rgba(255,255,255,0.14) !important;
+    }
+    .cover .cover-main > p:last-child a:first-child {
+      background: #1f6ea0 !important;
+      border-color: #1f6ea0 !important;
+      color: #ffffff !important;
+    }
+    .cover .cover-main > p:last-child a:first-child:hover {
+      background: #247cb5 !important;
+    }
   </style>
 </head>
 <body>
@@ -68,22 +85,13 @@
         theme: 'default',
         startOnLoad: false
       },
-      plugins: [
-        function (hook) {
-          var render = function () {
-            if (window.renderMathInElement) {
-              window.renderMathInElement(document.querySelector('.markdown-section'), {
-                delimiters: [
-                  { left: '$$', right: '$$', display: true },
-                  { left: '$', right: '$', display: false }
-                ],
-                throwOnError: false
-              });
-            }
-          };
-          hook.doneEach(render);
-        }
-      ]
+      katex: {
+        delimiters: [
+          { left: '$$', right: '$$', display: true },
+          { left: '$', right: '$', display: false }
+        ],
+        throwOnError: false
+      }
     };
   </script>
 

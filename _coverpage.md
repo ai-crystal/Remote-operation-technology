@@ -5,7 +5,7 @@
 从一次 ssh 登录讲起，把远程访问这件事拆到每一层
 
 [开始阅读](book/front/20-preface.md)
-[下载 PDF](output/remote-access-book.pdf)
-[GitHub](https://github.com/)
+[从第一章看起](book/chapters/ch01.md)
+[下载 PDF](output/remote-access-book.pdf ':ignore')
 
 ![color](#0a1622)

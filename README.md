@@ -55,7 +55,7 @@ https://<你的用户名>.github.io/<仓库名>/#/book/chapters/ch05
 
 ## 下载 PDF
 
-- [整本 PDF（含封面、目录、书签）](output/remote-access-book.pdf)
+- [整本 PDF（含封面、目录、书签）](output/remote-access-book.pdf ':ignore')
 - [前言](book/front/20-preface.md)
 
 PDF 用 `build.bat` 生成，带两级目录与书签，插图已压缩，体积控制在 20 MB 以内。

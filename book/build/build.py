@@ -366,7 +366,10 @@ def main():
 
 def assemble(final, body_pdf, body_pages):
     """用页面级拼装把封面、正文、封底合成一本 PDF。"""
-    import fitz
+    try:
+        import pymupdf as fitz
+    except ImportError:                                   # 兼容旧版本
+        import fitz
 
     cover = os.path.join(BOOK, "images", "cover.jpg")
     back = os.path.join(BOOK, "images", "backcover.jpg")
