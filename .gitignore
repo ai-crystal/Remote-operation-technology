@@ -1,0 +1,20 @@
+# 本地资料与构建中间产物，不进入仓库
+_private/
+book/build/_tmp/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# 编辑器与系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# 临时文件
+*.aux
+*.log
+*.tmp
+*.bak
+~$*

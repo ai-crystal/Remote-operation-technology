@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>远程之门 · SSH、堡垒机与对象存储的技术细节</title>
+  <meta name="description" content="一本讲清 SSH 协议、堡垒机、VS Code 远程开发与对象存储的中文技术书，作者 Dr. Dezeming。">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <style>
+    :root {
+      --theme-color: #1f5e8c;
+      --base-font-size: 16px;
+    }
+    body { font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", system-ui, sans-serif; }
+    .sidebar { font-size: 14px; }
+    .sidebar ul li a { line-height: 1.7; }
+    .markdown-section { max-width: 860px; padding: 2rem 2rem 6rem; line-height: 1.9; }
+    .markdown-section h1 { font-size: 1.9rem; }
+    .markdown-section h2 { font-size: 1.4rem; margin-top: 2.2rem; }
+    .markdown-section p { text-align: justify; }
+    .markdown-section img { display: block; margin: 1.2rem auto; max-width: 100%; }
+    .markdown-section code { border-radius: 3px; }
+    .markdown-section pre > code { line-height: 1.6; }
+    .markdown-section table { display: table; width: 100%; }
+    .markdown-section blockquote { border-left: 4px solid var(--theme-color); }
+    .cover { background: linear-gradient(160deg, #0a1622 0%, #14324a 55%, #1f5e8c 100%); }
+    .cover .cover-main { color: #eaf2f8; }
+    .cover h1 { font-size: 3rem; letter-spacing: 0.14em; }
+    .cover p { color: #c9dbe8; }
+    .cover .anchor span { color: #eaf2f8; }
+    .cover a.cover-link { color: #ffffff !important; border-color: #ffffff !important; }
+  </style>
+</head>
+<body>
+  <div id="app">正在加载……</div>
+
+  <script>
+    window.$docsify = {
+      name: '远程之门',
+      nameLink: '#/',
+      loadSidebar: true,
+      coverpage: true,
+      subMaxLevel: 2,
+      maxLevel: 3,
+      auto2top: true,
+      autoHeader: false,
+      homepage: 'README.md',
+      notFoundPage: true,
+      relativePath: false,
+      search: {
+        placeholder: '搜索全书',
+        noData: '没有找到相关内容',
+        depth: 3,
+        paths: 'auto'
+      },
+      pagination: {
+        previousText: '上一章',
+        nextText: '下一章',
+        crossChapter: true,
+        crossChapterText: true
+      },
+      copyCode: {
+        buttonText: '复制',
+        errorText: '复制失败',
+        successText: '已复制'
+      },
+      mermaid: {
+        theme: 'default',
+        startOnLoad: false
+      },
+      plugins: [
+        function (hook) {
+          var render = function () {
+            if (window.renderMathInElement) {
+              window.renderMathInElement(document.querySelector('.markdown-section'), {
+                delimiters: [
+                  { left: '$$', right: '$$', display: true },
+                  { left: '$', right: '$', display: false }
+                ],
+                throwOnError: false
+              });
+            }
+          };
+          hook.doneEach(render);
+        }
+      ]
+    };
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-pagination@2/dist/docsify-pagination.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-mermaid@2/dist/docsify-mermaid.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-katex@1/dist/docsify-katex.js"></script>
+</body>
+</html>
