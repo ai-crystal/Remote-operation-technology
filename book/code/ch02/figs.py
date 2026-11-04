@@ -82,7 +82,7 @@ label(ax, 50, 45.8, "回包时再换回去", fs=7.6, color=WARM)
 
 box(ax, 74, 42, 25, 24, fc=GREEN_L, ec=GREEN, lw=1.1, radius=1.4)
 label(ax, 86.5, 60.0, "JumpServer", fs=9.0, bold=True)
-label(ax, 86.5, 54.4, "124.221.133.165", fs=7.0)
+label(ax, 86.5, 54.4, "203.0.113.24", fs=7.0)
 label(ax, 86.5, 49.6, "端口 58222", fs=7.0)
 label(ax, 86.5, 45.2, "公网地址", fs=6.8, color=GRAY)
 
@@ -112,7 +112,7 @@ label(ax, 51.4, 37.0, "每条连接一条记录", fs=7.2, color=WARM, ha="left")
 cols = [(2, 32), (34, 28), (62, 37)]
 heads = ["内网侧看到的", "公网侧看到的", "对端 JumpServer"]
 bodies = ["192.168.1.23\n端口 51544", "203.0.113.7\n端口 40001",
-          "124.221.133.165\n端口 58222"]
+          "203.0.113.24\n端口 58222"]
 fcs = [ACCENT_L, WARM_L, GREEN_L]
 ecs = [ACCENT, WARM, GREEN]
 

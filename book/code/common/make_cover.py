@@ -17,7 +17,7 @@ FONT_BOLD = r"C:\Windows\Fonts\msyhbd.ttc"
 FONT_REG = r"C:\Windows\Fonts\msyh.ttc"
 
 TITLE = "远程之门"
-SUBTITLE = "SSH、堡垒机与对象存储的技术细节"
+SUBTITLE = "远程操作的技术细节"
 EN_TITLE = "THE REMOTE GATEWAY"
 AUTHOR = "Dr. Dezeming"
 YEAR = "2026"
@@ -117,7 +117,7 @@ def make_cover():
     d.line([(90, H - 226), (W - 90, H - 226)], fill=(120, 150, 175), width=2)
     d.text((90, H - 196), AUTHOR, font=f_author, fill=(240, 245, 250))
     d.text((90, H - 140), YEAR, font=f_small, fill=(190, 205, 220))
-    tail = "从一次 ssh 登录，到云端的数据存取"
+    tail = "从终端登录到对象存储"
     tw = d.textlength(tail, font=f_small)
     d.text((W - 90 - tw, H - 142), tail, font=f_small, fill=(190, 205, 220))
 

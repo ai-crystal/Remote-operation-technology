@@ -97,9 +97,9 @@ box(ax, 1.0, 5.0, 32, 30.0, fc="#fbfcfd", ec=GRAY, lw=0.9)
 label(ax, 3.0, 32.4, "C:/Users/alice/.ssh/config", fs=7.4, ha="left", color=GRAY)
 cfg = [
     "Host l40-server",
-    "    HostName 124.221.133.165",
+    "    HostName 203.0.113.24",
     "    Port 58222",
-    "    User alice@ubuntu@119.45.34.99",
+    "    User alice@ubuntu@10.0.0.5",
     "    IdentityFile ~/.ssh/ssh.jumpserver.pem",
 ]
 for i, t in enumerate(cfg):
@@ -109,15 +109,15 @@ for i, t in enumerate(cfg):
 arrow(ax, (33.2, 24.7), (35.9, 24.7), color=GRAY)
 arrow(ax, (72.4, 24.7), (75.7, 24.7), color=GRAY)
 
-for y, t in [(29.0, "地址 124.221.133.165"),
+for y, t in [(29.0, "地址 203.0.113.24"),
              (21.5, "端口 58222"),
-             (14.0, "用户 alice@ubuntu@119.45.34.99"),
+             (14.0, "用户 alice@ubuntu@10.0.0.5"),
              (6.5, "私钥 ~/.ssh/ssh.jumpserver.pem")]:
     vbox(ax, 36.5, y, 35, 6.4, t, fc=ACCENT_L, ec=ACCENT, fs=8.2)
 
 vbox(ax, 76, 31.5, 22, 6.4, "本机", fc=WHITE, ec=GRAY, fs=8.6)
-vbox(ax, 76, 20.0, 22, 8.6, "堡垒机", "124.221.133.165:58222", fc=WARM_L, ec=WARM, fs=8.8)
-vbox(ax, 76, 7.5, 22, 8.6, "目标机", "119.45.34.99:22", fc=GREEN_L, ec=GREEN, fs=8.8)
+vbox(ax, 76, 20.0, 22, 8.6, "堡垒机", "203.0.113.24:58222", fc=WARM_L, ec=WARM, fs=8.8)
+vbox(ax, 76, 7.5, 22, 8.6, "目标机", "10.0.0.5:22", fc=GREEN_L, ec=GREEN, fs=8.8)
 
 arrow(ax, (87, 31.5), (87, 28.7))
 label(ax, 88.2, 30.1, "第一跳", fs=7.6, color=GRAY, ha="left")

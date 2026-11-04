@@ -34,7 +34,7 @@ from theme import (ACCENT, ACCENT_SOFT, BODY, BODY_B, BODY_I, CONTENT_W, GRAY,
                    PAGE_H, PAGE_W, RULE)  # noqa: E402
 
 BOOK_TITLE = "远程之门"
-BOOK_SUBTITLE = "SSH、堡垒机与对象存储的技术细节"
+BOOK_SUBTITLE = "远程操作的技术细节"
 BOOK_AUTHOR = "Dr. Dezeming"
 BOOK_YEAR = "2026"
 OFFSET = 1          # 封面占 1 页，正文页码与阅读器页码对齐
@@ -87,7 +87,7 @@ class BookDoc(BaseDocTemplate):
             topMargin=MARGIN_T, bottomMargin=MARGIN_B,
             title=BOOK_TITLE + "：" + BOOK_SUBTITLE,
             author=BOOK_AUTHOR,
-            subject="SSH 协议、堡垒机、VS Code 远程开发与对象存储",
+            subject="远程操作、SSH 协议、堡垒机、远程开发与对象存储",
             creator="book/build/build.py",
             **kw
         )
