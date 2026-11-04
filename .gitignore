@@ -1,6 +1,8 @@
 # 本地资料与构建中间产物，不进入仓库
 _private/
 book/build/_tmp/
+output/*-new.pdf
+output/*.old
 
 # Python
 __pycache__/

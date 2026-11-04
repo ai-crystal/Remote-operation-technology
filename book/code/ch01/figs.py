@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""第 1 章插图。"""
+"""第 1 章插图：网络的基本构成。"""
 
 import os
 import sys
@@ -7,76 +7,89 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "common"))
 
 from figstyle import (ACCENT, ACCENT_L, GRAY, GRAY_L, GREEN, GREEN_L, INK, RED,
-                      RED_L, WARM, WARM_L, WHITE, arrow, box, brace, canvas,
-                      elb_arrow, label, lifeline, line, msg, note, save)
+                      RED_L, WARM, WARM_L, WHITE, arrow, box, canvas, label,
+                      line, note, save)
 
 # ---------------------------------------------------------------- 图 1-1
-# 直连形态：客户端 —— 网络 —— 服务器，中间没有别的角色
-fig, ax = canvas(7.2, 2.5, 100)
-ax.set_ylim(0, 34.5)
+fig, ax = canvas(7.4, 3.4, 100)
 
-ys, hh = 8.0, 13.0
-boxes = [
-    (2.0, 25.0, "你的电脑", "终端与 ssh 客户端", ACCENT_L),
-    (37.5, 25.0, "网络", "路由、NAT、防火墙", GRAY_L),
-    (73.0, 25.0, "服务器", "sshd 与你登录的账号", GREEN_L),
-]
-for x, w, title, sub, fc in boxes:
-    box(ax, x, ys, w, hh, fc=fc)
-    label(ax, x + w / 2, ys + hh - 4.2, title, fs=10.5, bold=True)
-    label(ax, x + w / 2, ys + 4.0, sub, fs=8.0, color=GRAY)
+box(ax, 1.5, 2.0, 55.0, 36.0, fc="#f7f9fb", ec="#c9d4dc", lw=1.0, radius=1.6)
+label(ax, 29.0, 35.4, "局域网，地址都在 192.168.1.x 这一段", fs=8.4, color=GRAY)
 
-arrow(ax, (27.4, 14.5), (37.1, 14.5))
-arrow(ax, (62.9, 14.5), (72.6, 14.5))
+pcs = [(26.0, "电脑 A", "192.168.1.23"), (15.0, "电脑 B", "192.168.1.24"),
+       (5.0, "电脑 C", "192.168.1.25")]
+for y, name, ip in pcs:
+    box(ax, 5.0, y, 15.0, 8.0, fc=ACCENT_L, ec=ACCENT)
+    label(ax, 12.5, y + 5.2, name, fs=8.4, bold=True)
+    label(ax, 12.5, y + 2.4, ip, fs=7.2, color=GRAY)
+    line(ax, (20.4, y + 4.0), (28.6, 20.0), color=INK, lw=0.9)
+    arrow(ax, (28.6, 20.0), (30.4, 20.0), lw=0.9)
 
-label(ax, 50, 27.6, "一条加密的 SSH 会话", fs=8.6, color=ACCENT)
-label(ax, 50, 3.4, "认证由两端完成，中间设备只负责转发字节",
-      fs=8.0, color=GRAY)
+box(ax, 31.0, 15.8, 14.0, 8.4, fc=WHITE, ec=INK)
+label(ax, 38.0, 21.4, "交换机", fs=9.2, bold=True)
+label(ax, 38.0, 18.0, "按地址转发", fs=7.2, color=GRAY)
 
+box(ax, 62.0, 15.8, 15.0, 8.4, fc=WARM_L, ec=WARM)
+label(ax, 69.5, 21.4, "路由器", fs=9.2, bold=True)
+label(ax, 69.5, 18.0, "网关 192.168.1.1", fs=7.2, color=GRAY)
+
+arrow(ax, (45.4, 20.0), (61.6, 20.0), lw=0.9)
+label(ax, 53.4, 21.8, "出网段", fs=7.4, color=GRAY)
+
+box(ax, 82.0, 15.2, 16.0, 9.6, fc=GRAY_L, ec=GRAY)
+label(ax, 90.0, 21.2, "互联网", fs=9.2, bold=True)
+label(ax, 90.0, 17.6, "别的网络", fs=7.2, color=GRAY)
+
+arrow(ax, (77.4, 20.0), (81.6, 20.0), lw=0.9)
+
+label(ax, 50.0, 1.2, "同一网段内由交换机直接转发，出了网段交给网关",
+      fs=8.2, color=GRAY)
 save(fig, "01/fig01_1.png")
 
 # ---------------------------------------------------------------- 图 1-2
-fig, ax = canvas(7.0, 4.6, 100)
-ax.set_ylim(0, 65.7)
+fig, ax = canvas(7.4, 2.2, 100)
 
-lifeline(ax, 18, 60, 6, "客户端", sub="ssh")
-lifeline(ax, 82, 60, 6, "服务器", color=GREEN, sub="sshd")
+ys, h = 8.0, 11.0
+box(ax, 1.5, ys, 17.0, h, "程序的数据", fc=GRAY_L, ec=GRAY, fs=8.6)
+box(ax, 23.0, ys, 22.0, h, "切块，写上收发地址", fc=ACCENT_L, ec=ACCENT, fs=8.6)
+box(ax, 49.5, ys, 13.0, h, "网卡", fc=WHITE, ec=INK, fs=8.6)
+box(ax, 67.0, ys, 15.0, h, "线路上的信号", fc=WARM_L, ec=WARM, fs=8.6)
+box(ax, 86.5, ys, 12.0, h, "对端网卡", fc=WHITE, ec=INK, fs=8.6)
 
-steps = [
-    (52.0, "TCP 三次握手，建立一条字节流", False),
-    (45.5, "交换版本号：SSH-2.0-OpenSSH_9.6", False),
-    (39.0, "各自列出支持的算法，商定一套", True),
-    (32.5, "密钥交换：生成只有双方知道的会话密钥", True),
-    (26.0, "NEWKEYS：此后所有内容都加密", False),
-    (19.5, "身份认证：证明“我是那个用户”", True),
-    (13.0, "打开会话通道，分配伪终端，启动 shell", False),
-]
-for y, text, dashed in steps:
-    msg(ax, 18, 82, y, text, dash=dashed, fs=8.4)
+for x1, x2 in ((18.9, 22.6), (45.4, 49.1), (62.9, 66.6), (82.4, 86.1)):
+    arrow(ax, (x1, ys + h / 2), (x2, ys + h / 2), lw=0.9)
 
-label(ax, 50, 57.2, "这一段建立起一条可信的管道", fs=8.6, color=GRAY)
-label(ax, 50, 3.2, "管道建好之后，才是你熟悉的命令行", fs=8.6, color=GRAY)
+label(ax, 32.0, 22.4, "发送方", fs=8.4, color=GRAY)
+label(ax, 92.5, 22.4, "接收方", fs=8.4, color=GRAY)
+line(ax, (63.8, 4.6), (63.8, 24.6), color=GRAY, lw=0.6, ls=(0, (3, 3)))
+line(ax, (84.0, 4.6), (84.0, 24.6), color=GRAY, lw=0.6, ls=(0, (3, 3)))
+
+label(ax, 72.0, 2.2, "线路这一段只搬信号", fs=7.6, color=WARM)
+label(ax, 50, 26.6, "线路上的设备只看地址，不看内容；到了对端再拼回原来的数据",
+      fs=7.8, color=GRAY)
 save(fig, "01/fig01_2.png")
 
 # ---------------------------------------------------------------- 图 1-3
-fig, ax = canvas(6.6, 3.4, 100)
-ax.set_ylim(0, 51.5)
+fig, ax = canvas(7.4, 2.6, 100)
 
-layers = [
-    ("你的操作：在终端里敲下 ssh 命令", GRAY_L),
-    ("应用层：终端程序、SSH 客户端", ACCENT_L),
-    ("加密层：经过加密与完整性保护的字节流", ACCENT_L),
-    ("传输层：TCP 连接，带端口号与序号", GRAY_L),
-    ("网络层：IP 包，带源地址与目的地址", GRAY_L),
-    ("链路层：以太网帧或无线帧，一跳一跳地转发", GRAY_L),
+ys, h = 9.0, 10.0
+nodes = [
+    (1.5, 15.0, "你的电脑", "192.168.1.23", ACCENT_L, ACCENT),
+    (21.0, 17.0, "家用路由器", "网关，做地址转换", WARM_L, WARM),
+    (43.0, 16.0, "运营商", "骨干网与光缆", GRAY_L, GRAY),
+    (64.0, 16.0, "数据中心", "机房的路由器", GRAY_L, GRAY),
+    (84.5, 14.0, "服务器", "198.51.100.17", GREEN_L, GREEN),
 ]
-top, h = 44.5, 6.6
-for i, (text, fc) in enumerate(layers):
-    y = top - i * (h + 1.4)
-    box(ax, 6, y, 88, h, fc=fc, radius=0.8)
-    label(ax, 50, y + h / 2.0, text, fs=9.2)
+for x, w, title, sub, fc, ec in nodes:
+    box(ax, x, ys, w, h, fc=fc, ec=ec)
+    label(ax, x + w / 2, ys + h - 3.4, title, fs=8.4, bold=True)
+    label(ax, x + w / 2, ys + 3.0, sub, fs=6.9, color=GRAY)
 
-label(ax, 50, 1.2, "越往下越靠近物理线路，越往上越接近人的意图", fs=8.6, color=GRAY)
-arrow(ax, (95.5, 5.0), (95.5, 47.0), color=ACCENT, lw=0.9)
-label(ax, 97.6, 26.0, "抽象", fs=8.2, color=ACCENT)
+for x1, x2 in ((16.9, 20.6), (38.4, 42.6), (59.4, 63.6), (80.4, 84.1)):
+    arrow(ax, (x1, ys + h / 2), (x2, ys + h / 2), lw=0.9)
+
+label(ax, 50, 23.4, "包一站一站往目的地送，每一站只决定下一步交给谁",
+      fs=7.9, color=GRAY)
+label(ax, 50, 3.4, "内网地址在网关处换成公网地址，外部看不到你局域网里的设备",
+      fs=7.9, color=GRAY)
 save(fig, "01/fig01_3.png")

@@ -8,22 +8,23 @@
   { "kind": "chapter", "file": "chapters/ch01.md", "kicker": "第 1 章", "toc_prefix": "第 1 章" },
   { "kind": "chapter", "file": "chapters/ch02.md", "kicker": "第 2 章", "toc_prefix": "第 2 章" },
   { "kind": "chapter", "file": "chapters/ch03.md", "kicker": "第 3 章", "toc_prefix": "第 3 章" },
+  { "kind": "chapter", "file": "chapters/ch04.md", "kicker": "第 4 章", "toc_prefix": "第 4 章" },
 
   { "kind": "part", "file": "front/40-part2.md", "kicker": "第 二 篇" },
-  { "kind": "chapter", "file": "chapters/ch04.md", "kicker": "第 4 章", "toc_prefix": "第 4 章" },
   { "kind": "chapter", "file": "chapters/ch05.md", "kicker": "第 5 章", "toc_prefix": "第 5 章" },
   { "kind": "chapter", "file": "chapters/ch06.md", "kicker": "第 6 章", "toc_prefix": "第 6 章" },
   { "kind": "chapter", "file": "chapters/ch07.md", "kicker": "第 7 章", "toc_prefix": "第 7 章" },
+  { "kind": "chapter", "file": "chapters/ch08.md", "kicker": "第 8 章", "toc_prefix": "第 8 章" },
 
   { "kind": "part", "file": "front/50-part3.md", "kicker": "第 三 篇" },
-  { "kind": "chapter", "file": "chapters/ch08.md", "kicker": "第 8 章", "toc_prefix": "第 8 章" },
   { "kind": "chapter", "file": "chapters/ch09.md", "kicker": "第 9 章", "toc_prefix": "第 9 章" },
   { "kind": "chapter", "file": "chapters/ch10.md", "kicker": "第 10 章", "toc_prefix": "第 10 章" },
+  { "kind": "chapter", "file": "chapters/ch11.md", "kicker": "第 11 章", "toc_prefix": "第 11 章" },
 
   { "kind": "part", "file": "front/60-part4.md", "kicker": "第 四 篇" },
-  { "kind": "chapter", "file": "chapters/ch11.md", "kicker": "第 11 章", "toc_prefix": "第 11 章" },
   { "kind": "chapter", "file": "chapters/ch12.md", "kicker": "第 12 章", "toc_prefix": "第 12 章" },
   { "kind": "chapter", "file": "chapters/ch13.md", "kicker": "第 13 章", "toc_prefix": "第 13 章" },
+  { "kind": "chapter", "file": "chapters/ch14.md", "kicker": "第 14 章", "toc_prefix": "第 14 章" },
 
   { "kind": "appendix", "file": "appendix/a-cheatsheet.md", "kicker": "", "toc_prefix": "" },
   { "kind": "appendix", "file": "appendix/b-glossary.md", "kicker": "", "toc_prefix": "" },

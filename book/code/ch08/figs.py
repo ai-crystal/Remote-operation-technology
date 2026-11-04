@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""第 8 章插图：为什么需要堡垒机。"""
+"""第 7 章插图：端口转发。"""
 
 import os
 import sys
@@ -8,113 +8,158 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."
 
 from figstyle import (ACCENT, ACCENT_L, GRAY, GRAY_L, GREEN, GREEN_L, INK, RED,
                       RED_L, WARM, WARM_L, WHITE, arrow, box, canvas, elb_arrow,
-                      label, lifeline, line, msg, note, save)
+                      label, line, note, save)
 
 
-def tbox(ax, x, y, w, h, title, sub=None, fc=ACCENT_L, tfs=9.4, sfs=7.8,
+def tbox(ax, x, y, w, h, title, sub=None, fc=ACCENT_L, tfs=9.2, sfs=7.6,
          ec=INK, color=None):
     box(ax, x, y, w, h, fc=fc, ec=ec)
     if sub:
-        label(ax, x + w / 2.0, y + h * 0.68, title, fs=tfs, bold=True, color=color)
-        label(ax, x + w / 2.0, y + h * 0.28, sub, fs=sfs, color=GRAY)
+        label(ax, x + w / 2.0, y + h * 0.66, title, fs=tfs, bold=True, color=color)
+        label(ax, x + w / 2.0, y + h * 0.27, sub, fs=sfs, color=GRAY)
     else:
         label(ax, x + w / 2.0, y + h / 2.0, title, fs=tfs, bold=True, color=color)
 
 
-# ---------------------------------------------------------------- 图 8-1
-fig, ax = canvas(7.4, 4.2, 100)
+def over_arrow(ax, x, y, text, fs=7.4, color=None, mono=False):
+    """写在箭头上方的标签，宽度控制在框之间。"""
+    ax.text(x, y + 2.2, text, ha="center", va="bottom", fontsize=fs,
+            color=color or INK, zorder=7,
+            family="monospace" if mono else None)
 
-label(ax, 24, 54.6, "没有堡垒机", fs=10.4, bold=True)
-label(ax, 76, 54.6, "有堡垒机", fs=10.4, bold=True)
-label(ax, 6.5, 51.6, "6 台终端", fs=7.6, color=GRAY)
-label(ax, 41.0, 51.6, "8 台服务器", fs=7.6, color=GRAY)
-label(ax, 58.0, 51.6, "6 台终端", fs=7.6, color=GRAY)
-label(ax, 93.0, 51.6, "8 台服务器", fs=7.6, color=GRAY)
 
-line(ax, (50, 6), (50, 50), color=GRAY_L, lw=1.6)
+def cmdb(ax, x, y, w, text):
+    box(ax, x, y, w, 7.2, fc=GRAY_L, ec=GRAY, lw=0.8)
+    ax.text(x + w / 2.0, y + 3.6, text, ha="center", va="center", fontsize=8.6,
+            family="monospace", color=INK, zorder=6)
 
-# 左：终端与服务器两两相连
-term_y = [43.0 - i * 7.4 for i in range(6)]
-srv_y = [46.0 - i * 6.0 for i in range(8)]
 
-for ty in term_y:
-    for sy in srv_y:
-        line(ax, (11, ty + 2.1), (36, sy + 2.1), color="#b7bcc2", lw=0.45)
+def bracket(ax, x1, x2, y, text, color=GRAY):
+    ax.plot([x1, x1, x2, x2], [y - 1.0, y, y, y - 1.0], color=color, lw=0.8, zorder=1)
+    label(ax, (x1 + x2) / 2.0, y + 1.7, text, fs=7.9, color=color)
 
-for i, y in enumerate(term_y):
-    box(ax, 2, y, 9, 4.2, fc=GRAY_L, ec=GRAY, lw=0.8)
-    label(ax, 6.5, y + 2.1, "终端%d" % (i + 1), fs=6.8, color=INK)
 
-for i, y in enumerate(srv_y):
-    box(ax, 36, y, 10, 4.2, fc=GREEN_L, ec=GREEN, lw=0.8)
-    label(ax, 41, y + 2.1, "服务器%d" % (i + 1), fs=6.8, color=INK)
+# ---------------------------------------------------------------- 图 7-1
+fig, ax = canvas(7.4, 4.0, 100)
 
-# 右：终端先到堡垒机，堡垒机再到服务器
-term_y2 = [43.0 - i * 7.4 for i in range(6)]
-srv_y2 = [46.0 - i * 6.0 for i in range(8)]
+cmdb(ax, 10, 44, 80, "ssh -L 8080:10.0.0.5:80 user@server")
+bracket(ax, 1, 43, 39.5, "你的电脑")
+bracket(ax, 86.5, 99.5, 39.5, "服务器所在内网")
 
-for i, ty in enumerate(term_y2):
-    line(ax, (63, ty + 2.1), (67.5, 31.0 - i * 2.1), color="#b7bcc2", lw=0.7)
-for i, sy in enumerate(srv_y2):
-    line(ax, (81.5, 31.5 - i * 1.55), (88, sy + 2.1), color="#b7bcc2", lw=0.7)
+tbox(ax, 1, 24, 13, 11, "本地程序", "浏览器等", fc=GRAY_L, tfs=9.0)
+tbox(ax, 30, 24, 13, 11, "SSH 客户端", "监听 :8080", fc=ACCENT_L, ec=ACCENT)
+tbox(ax, 59, 24, 13, 11, "SSH 服务器", "sshd", fc=GREEN_L, ec=GREEN)
+tbox(ax, 86.5, 24, 13, 11, "内网服务", "Web 服务", fc=WARM_L, ec=WARM, tfs=9.0)
 
-for i, y in enumerate(term_y2):
-    box(ax, 54, y, 9, 4.2, fc=GRAY_L, ec=GRAY, lw=0.8)
-    label(ax, 58.5, y + 2.1, "终端%d" % (i + 1), fs=6.8, color=INK)
+arrow(ax, (14, 29.5), (30, 29.5), lw=1.0)
+over_arrow(ax, 22, 29.5, "本地:8080")
+arrow(ax, (43, 29.5), (59, 29.5), lw=1.7, color=ACCENT)
+over_arrow(ax, 51, 29.5, "加密隧道", color=ACCENT)
+arrow(ax, (72, 29.5), (86.5, 29.5), lw=1.0)
+over_arrow(ax, 79.2, 29.5, "10.0.0.5:80", fs=6.9, mono=True)
 
-for i, y in enumerate(srv_y2):
-    box(ax, 88, y, 10, 4.2, fc=GREEN_L, ec=GREEN, lw=0.8)
-    label(ax, 93, y + 2.1, "服务器%d" % (i + 1), fs=6.8, color=INK)
+label(ax, 8.4, 18.0, "以为在连本机", fs=7.6, color=GRAY)
+label(ax, 36.5, 18.0, "在本机 8080 上监听", fs=7.6, color=GRAY)
+label(ax, 65.5, 18.0, "由它真正连出去", fs=7.6, color=GRAY)
+label(ax, 93.0, 18.0, "只有内网能访问", fs=7.6, color=GRAY)
 
-box(ax, 67.5, 18, 14, 18, fc=WARM_L, ec=WARM, lw=1.2)
-label(ax, 74.5, 30.6, "堡垒机", fs=9.2, bold=True)
-label(ax, 74.5, 26.4, "唯一入口", fs=7.4, color=GRAY)
-label(ax, 74.5, 22.6, "账号统一", fs=7.4, color=GRAY)
-
-label(ax, 50, 1.4, "左边每条线都要单独发密钥、单独查日志；右边所有流量经过同一个入口。",
-      fs=8.2, color=GRAY)
+label(ax, 50, 7.6, "监听的那一端在本地，真正去连服务的那一端在远端。",
+      fs=8.4, color=GRAY)
 
 save(fig, "08/fig08_1.png")
 
-# ---------------------------------------------------------------- 图 8-2
-fig, ax = canvas(7.0, 4.0, 100)
+# ---------------------------------------------------------------- 图 7-2
+fig, ax = canvas(7.4, 4.0, 100)
 
-box(ax, 31, 21, 38, 14, fc=WHITE, ec=ACCENT, lw=1.2)
-label(ax, 50, 28.0, "一次受控的\n运维会话", fs=9.6, bold=True, color=ACCENT)
+cmdb(ax, 10, 44, 80, "ssh -R 9000:127.0.0.1:3000 user@public-host")
+bracket(ax, 1, 43, 39.5, "你的电脑")
+bracket(ax, 86.5, 99.5, 39.5, "公网上的那台机器")
 
-tbox(ax, 3, 42, 38, 11, "认证 Authentication", "你是谁", fc=ACCENT_L, ec=ACCENT, tfs=9.0, sfs=7.8)
-tbox(ax, 59, 42, 38, 11, "授权 Authorization", "你能做什么", fc=ACCENT_L, ec=ACCENT, tfs=9.0, sfs=7.8)
-tbox(ax, 3, 4, 38, 11, "账号 Account", "用哪个身份去连", fc=GREEN_L, ec=GREEN, tfs=9.0, sfs=7.8)
-tbox(ax, 59, 4, 38, 11, "审计 Audit", "事后可查可回放", fc=WARM_L, ec=WARM, tfs=9.0, sfs=7.8)
+tbox(ax, 1, 24, 13, 11, "本地服务", "127.0.0.1:3000", fc=WARM_L, ec=WARM, tfs=9.0, sfs=6.8)
+tbox(ax, 30, 24, 13, 11, "SSH 客户端", "ssh 进程", fc=ACCENT_L, ec=ACCENT)
+tbox(ax, 59, 24, 13, 11, "SSH 服务器", "sshd", fc=GREEN_L, ec=GREEN)
+tbox(ax, 86.5, 24, 13, 11, "外部访问者", "任何人", fc=GRAY_L, tfs=9.0)
 
-arrow(ax, (30, 42), (40, 35.5), color=ACCENT, lw=0.9)
-arrow(ax, (70, 42), (60, 35.5), color=ACCENT, lw=0.9)
-arrow(ax, (30, 15), (40, 21.0), color=GREEN, lw=0.9)
-arrow(ax, (60, 21.0), (70, 15), color=WARM, lw=0.9)   # 会话产生审计记录
+arrow(ax, (86.5, 29.5), (72, 29.5), lw=1.0)
+over_arrow(ax, 79.2, 29.5, "连 :9000")
+arrow(ax, (59, 29.5), (43, 29.5), lw=1.7, color=ACCENT)
+over_arrow(ax, 51, 29.5, "加密隧道", color=ACCENT)
+arrow(ax, (30, 29.5), (14, 29.5), lw=1.0)
+over_arrow(ax, 22, 29.5, ":3000", mono=True)
+
+label(ax, 7.5, 18.0, "服务留在本地\n不开放到公网", fs=7.6, color=GRAY)
+label(ax, 36.5, 18.0, "把收到的连接\n送回本机", fs=7.6, color=GRAY)
+label(ax, 65.5, 18.0, "监听\n0.0.0.0:9000", fs=7.2, color=GRAY)
+label(ax, 93.0, 18.0, "以为在连\n一台公网机器", fs=7.6, color=GRAY)
+
+label(ax, 50, 7.6, "同样的隧道，反了个方向：监听放在远端，服务留在本地。",
+      fs=8.4, color=GRAY)
 
 save(fig, "08/fig08_2.png")
 
-# ---------------------------------------------------------------- 图 8-3
-fig, ax = canvas(7.2, 4.8, 100)
+# ---------------------------------------------------------------- 图 7-3
+fig, ax = canvas(7.4, 4.6, 100)
 
-lifeline(ax, 15, 60, 10, "运维人员", sub="浏览器或终端")
-lifeline(ax, 50, 60, 10, "堡垒机", color=WARM, sub="认证、鉴权、录像")
-lifeline(ax, 85, 60, 10, "目标机", color=GREEN, sub="sshd")
+cmdb(ax, 16, 47, 68, "ssh -D 1080 user@server")
 
-msg(ax, 15, 50, 48, "① 登录：密码 + MFA", color=ACCENT, fs=8.4)
-msg(ax, 15, 50, 41, "② 选择资产与系统用户", color=ACCENT, fs=8.4)
+tbox(ax, 2, 26, 16, 11, "浏览器", "或其他程序", fc=GRAY_L, tfs=9.0)
+tbox(ax, 27, 26, 20, 11, "SSH 客户端", "本机 SOCKS5 代理 :1080",
+     fc=ACCENT_L, ec=ACCENT, sfs=7.2)
+tbox(ax, 55, 26, 17, 11, "SSH 服务器", "按请求分别连出去",
+     fc=GREEN_L, ec=GREEN, sfs=7.4)
 
-box(ax, 41, 30, 18, 8, fc=WHITE, ec=WARM, lw=0.9)
-label(ax, 50, 35.5, "③ 查授权", fs=8.4, bold=True, color=WARM)
-label(ax, 50, 32.2, "有没有权限", fs=7.8, color=GRAY)
+targets = [
+    (37, "example.com:443", "外部网站"),
+    (27, "10.0.0.7:3306", "内网数据库"),
+    (17, "wiki.intra:80", "内网知识库"),
+]
+for y, mono_txt, cn in targets:
+    box(ax, 78, y, 21, 9, fc=WARM_L, ec=WARM)
+    ax.text(88.5, y + 5.5, mono_txt, ha="center", va="center", fontsize=7.4,
+            family="monospace", color=INK, zorder=6)
+    label(ax, 88.5, y + 2.6, cn, fs=7.4, color=GRAY)
 
-msg(ax, 50, 85, 24, "④ 用资产上的账号与密钥登录", color=GREEN, fs=8.4)
-msg(ax, 15, 50, 17, "⑤ 键入命令", color=ACCENT, fs=8.4)
-msg(ax, 50, 85, 17, "", color=GREEN, fs=8.0)
-label(ax, 67.5, 18.0, "转发并记录", fs=7.8, color=GRAY)
-msg(ax, 85, 50, 11, "输出回显", color=GREEN, fs=8.0, dash=True)
+arrow(ax, (18, 31.5), (27, 31.5), lw=1.0)
+over_arrow(ax, 22.5, 31.5, "请求", fs=7.2, color=GRAY)
+arrow(ax, (47, 31.5), (55, 31.5), lw=1.5, color=ACCENT)
+over_arrow(ax, 51, 31.5, "隧道", fs=7.0, color=ACCENT)
 
-label(ax, 50, 2.6, "会话结束后，录像文件与命令记录一起入库，可按时间检索、回放。",
+for y in (41.5, 31.5, 21.5):
+    arrow(ax, (72, 31.5), (78, y), lw=1.0, color=WARM)
+
+label(ax, 10, 20.0, "只把请求\n交给代理", fs=7.6, color=GRAY)
+label(ax, 37, 20.0, "目标地址由它\n转告服务器", fs=7.5, color=GRAY)
+label(ax, 74, 10.5, "同一条隧道\n通向多个目标", fs=7.5, color=GRAY)
+
+label(ax, 50, 4.6, "连哪台机器、哪个端口，都写在运行时的请求里：隧道本身没有固定的目标。",
       fs=8.2, color=GRAY)
 
 save(fig, "08/fig08_3.png")
+
+# ---------------------------------------------------------------- 图 7-4
+fig, ax = canvas(7.4, 3.8, 100)
+
+cmdb(ax, 12, 41, 76, "ssh -J jump@bastion  alice@10.0.0.9")
+
+tbox(ax, 2, 22, 20, 11, "你的电脑", "ssh 客户端", fc=ACCENT_L, ec=ACCENT, tfs=9.2)
+tbox(ax, 37, 22, 22, 11, "跳板机", "bastion:22", fc=WARM_L, ec=WARM, tfs=9.2)
+tbox(ax, 74, 22, 22, 11, "目标机", "10.0.0.9:22", fc=GREEN_L, ec=GREEN, tfs=9.2)
+
+arrow(ax, (22, 27.5), (37, 27.5), lw=1.0)
+over_arrow(ax, 29.5, 27.5, "SSH ①", fs=7.2)
+arrow(ax, (59, 27.5), (74, 27.5), lw=1.0)
+over_arrow(ax, 66.5, 27.5, "SSH ②", fs=7.2)
+
+line(ax, (12, 33), (12, 37.2), color=ACCENT, lw=0.9, ls=(0, (4, 3)))
+line(ax, (12, 37.2), (85, 37.2), color=ACCENT, lw=0.9, ls=(0, (4, 3)))
+arrow(ax, (85, 37.2), (85, 33), color=ACCENT, lw=0.9, ls=(0, (4, 3)))
+label(ax, 48.5, 38.4, "SSH 握手端到端：目标机看到的是你的凭据", fs=7.9, color=ACCENT)
+
+label(ax, 12, 15.0, "对跳板机认证一次\n再穿过它连 ②", fs=7.6, color=GRAY)
+label(ax, 48, 15.0, "只转发字节流\n不保存目标机凭据", fs=7.6, color=GRAY)
+label(ax, 85, 15.0, "只认你的账号\n不认跳板机", fs=7.6, color=GRAY)
+
+label(ax, 50, 4.8, "第二段 TCP 由跳板机代开，两段都是 22 端口；对目标机来说，来源是跳板机的地址。",
+      fs=8.2, color=GRAY)
+
+save(fig, "08/fig08_4.png")

@@ -1,146 +1,130 @@
 # -*- coding: utf-8 -*-
-"""第 6 章插图：密钥、指纹与信任。"""
+"""第 5 章插图：SSH 协议的三层结构。"""
 
 import os
 import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "common"))
 
+from matplotlib.patches import Rectangle
+
 from figstyle import (ACCENT, ACCENT_L, GRAY, GRAY_L, GREEN, GREEN_L, INK, RED,
-                      RED_L, WARM, WARM_L, WHITE, arrow, box, canvas, elb_arrow,
-                      label, lifeline, line, msg, note, save)
+                      RED_L, WARM, WARM_L, WHITE, arrow, box, brace, canvas,
+                      elb_arrow, label, lifeline, line, msg, note, save)
 
 
-def tbox(ax, x, y, w, h, title, sub=None, fc=ACCENT_L, tfs=9.6, sfs=8.0,
-         ec=INK, color=None):
-    """带标题（可选副标题）的方框。"""
-    box(ax, x, y, w, h, fc=fc, ec=ec)
-    if sub:
-        label(ax, x + w / 2.0, y + h * 0.66, title, fs=tfs, bold=True, color=color)
-        label(ax, x + w / 2.0, y + h * 0.28, sub, fs=sfs, color=GRAY)
-    else:
-        label(ax, x + w / 2.0, y + h / 2.0, title, fs=tfs, bold=True, color=color)
+# ---------------------------------------------------------------- 图 5-1
+fig, ax = canvas(7.0, 4.0, 100)
+ax.set_ylim(0, 57)
 
+layers = [
+    ("连接协议", "RFC 4254", "通道：shell、exec、sftp、端口转发", ACCENT_L, ACCENT),
+    ("用户认证协议", "RFC 4252", "password、publickey、keyboard-interactive",
+     WARM_L, WARM),
+    ("传输层协议", "RFC 4253", "版本交换、算法协商、密钥交换、加密与完整性",
+     GREEN_L, GREEN),
+    ("TCP 连接", "端口 22", "一条有序的字节流", GRAY_L, GRAY),
+]
+ys = [44.0, 32.0, 20.0, 7.0]
+hs = [9.0, 9.0, 9.0, 8.6]
+for (name, rfc, detail, fc, ec), y, h in zip(layers, ys, hs):
+    box(ax, 3, y, 74, h, fc=fc, ec=ec, lw=1.1, radius=1.2)
+    label(ax, 6, y + h / 2, name, fs=9.0, bold=True, ha="left")
+    label(ax, 28, y + h / 2 + 1.7, rfc, fs=7.0, color=GRAY, ha="left")
+    label(ax, 28, y + h / 2 - 1.9, detail, fs=7.4, ha="left")
 
-# ---------------------------------------------------------------- 图 6-1
-fig, ax = canvas(7.2, 4.2, 100)
-
-lifeline(ax, 19, 54, 14, "客户端", sub="手里有私钥")
-lifeline(ax, 81, 54, 14, "服务器", color=GREEN, sub="读 authorized_keys")
-
-msg(ax, 19, 81, 45, "① 我想用这把公钥登录（算法 + 指纹）", color=ACCENT, fs=8.6)
-msg(ax, 81, 19, 37, "② PK_OK：这把公钥可用，请签名", color=GREEN, fs=8.6)
-msg(ax, 19, 81, 28, "③ 用私钥签名：会话标识 + 本次认证请求", color=ACCENT, fs=8.6)
-msg(ax, 81, 19, 19, "④ 验签通过，认证成功", color=GREEN, fs=8.6)
-
-label(ax, 50, 32.0, "服务器到 authorized_keys 里核对这把公钥",
-      fs=8.0, color=GRAY)
-label(ax, 50, 4.6, "私钥始终留在客户端：发出的只有签名，私钥本身从不传输",
-      fs=8.4, color=GRAY)
+# 上两层都在加密通道内
+ax.plot([77.5, 79.5, 79.5, 77.5], [53, 53, 29, 29], color=GRAY, lw=0.9)
+label(ax, 81.4, 41, "这两层\n都在加密\n通道内部", fs=7.2, color=GRAY, ha="left")
+label(ax, 80.4, 24.5, "通道由它\n建起来", fs=7.2, color=GRAY, ha="left")
+label(ax, 80.4, 11.3, "通道跑在\n字节流上", fs=7.2, color=GRAY, ha="left")
 
 save(fig, "06/fig06_1.png")
 
-# ---------------------------------------------------------------- 图 6-2
-fig, ax = canvas(7.4, 4.8, 100)
+# ---------------------------------------------------------------- 图 5-2
+fig, ax = canvas(7.4, 2.96, 100)
+ax.set_ylim(0, 40)
 
-# 两个虚框代表两种情形
-box(ax, 2, 11, 44, 45, fc="none", ec=GRAY, lw=0.9, radius=1.6)
-box(ax, 54, 11, 44, 45, fc="none", ec=GRAY, lw=0.9, radius=1.6)
-label(ax, 24, 58.6, "第一次连接", fs=10.2, bold=True)
-label(ax, 76, 58.6, "再次连接", fs=10.2, bold=True)
+PY, PH = 25.0, 14.0
+cells = [(2, 9, "包长度\n4 字节", ACCENT_L, ACCENT),
+         (11, 6.5, "填充\n长度\n1 字节", ACCENT_L, ACCENT),
+         (17.5, 43.5, "载荷\n消息类型 + 字段", WHITE, ACCENT),
+         (61, 14, "随机填充\n至少 4 字节", GRAY_L, GRAY),
+         (78, 20, "MAC\n32 字节", WARM_L, WARM)]
+for x, w, t, fc, ec in cells:
+    box(ax, x, PY, w, PH, t, fc=fc, ec=ec, fs=7.6, radius=0.6, lw=0.9)
 
-# 左侧：首次连接
-tbox(ax, 6, 47, 36, 7.5, "① 发起连接", fc=GRAY_L)
-tbox(ax, 6, 36.5, 36, 7.5, "② 服务器出示主机公钥", "SHA256:9f2c…（指纹）", fc=ACCENT_L)
-tbox(ax, 6, 26, 36, 7.5, "③ 与可信来源核对指纹", "运维给的、官网、控制台", fc=ACCENT_L)
-tbox(ax, 6, 15.5, 36, 7.5, "④ 写入 known_hosts", fc=GREEN_L, ec=GREEN)
+brace(ax, 2, 75, PY - 2.2, "整个包先加密（ETM 下前 4 字节不加密）", height=1.6,
+      upward=False, color=ACCENT, fs=7.2)
+label(ax, 88, PY - 4.4, "MAC 覆盖\n加密后的内容", fs=7.0, color=WARM)
 
-for y0, y1 in [(47, 44), (36.5, 33.5), (26, 23)]:
-    arrow(ax, (24, y0), (24, y1), lw=0.9)
-
-# 右侧：再次连接
-tbox(ax, 58, 47, 36, 7.5, "① 发起连接", fc=GRAY_L)
-tbox(ax, 58, 36.5, 36, 7.5, "② 取出 known_hosts 里的记录", fc=ACCENT_L)
-tbox(ax, 58, 26, 36, 7.5, "③ 与出示的指纹比对", fc=ACCENT_L)
-tbox(ax, 58, 15.5, 17, 8, "一致", "直接通过", fc=GREEN_L, ec=GREEN)
-tbox(ax, 77, 15.5, 17, 8, "不一致", "拒绝连接", fc=RED_L, ec=RED)
-
-for y0, y1 in [(47, 44), (36.5, 33.5)]:
-    arrow(ax, (76, y0), (76, y1), lw=0.9)
-arrow(ax, (66.5, 26), (66.5, 23.5), lw=0.9)
-arrow(ax, (85.5, 26), (85.5, 23.5), lw=0.9)
-
-label(ax, 50, 5.2, "指纹对不上：可能是中间人，也可能是服务器重装了系统。先核实，再决定是否删掉旧记录。",
-      fs=8.2, color=GRAY)
-
-save(fig, "06/fig06_3.png")
-
-# ---------------------------------------------------------------- 图 6-3
-fig, ax = canvas(7.4, 4.0, 100)
-
-# 可选选项位
-box(ax, 6, 46, 52, 6.6, fc=WARM_L, ec=WARM)
-ax.text(32, 49.3, 'no-pty,command="/usr/bin/uptime"', ha="center", va="center",
-        fontsize=8.0, family="monospace", color=INK, zorder=6)
-label(ax, 60.5, 49.3, "选项位：可以整段省略", fs=8.2, color=WARM, ha="left")
-arrow(ax, (11, 46), (11, 41.2), color=WARM, lw=0.8)
-label(ax, 13.5, 43.6, "写在最前面", fs=7.9, color=WARM, ha="left")
-
-# 主行三段
-segs = [
-    (6, 24, "ssh-ed25519"),
-    (28, 62, "AAAAC3NzaC1lZDI1NTE5…"),
-    (66, 92, "alice@laptop"),
-]
-fcs = [ACCENT_L, WARM_L, GREEN_L]
-ecs = [ACCENT, WARM, GREEN]
-for (x, w, txt), fc, ec in zip(segs, fcs, ecs):
-    box(ax, x, 33, w - x, 7.6, fc=fc, ec=ec)
-    ax.text((x + w) / 2.0, 36.8, txt, ha="center", va="center", fontsize=8.4,
-            family="monospace", color=INK, zorder=6)
-
-# 说明框
-exp = [
-    (6, 24, "算法名", "ed25519、rsa、ecdsa", ACCENT),
-    (28, 62, "公钥本体（base64）", "这一段才是公开的那把钥匙", WARM),
-    (66, 92, "注释", "只给人看，不影响登录", GREEN),
-]
-for x, w, title, sub, col in exp:
-    box(ax, x, 18, w - x, 9.5, fc=WHITE, ec=col, lw=0.9)
-    label(ax, (x + w) / 2.0, 24.4, title, fs=8.8, bold=True, color=col)
-    label(ax, (x + w) / 2.0, 20.4, sub, fs=7.9, color=GRAY)
-
-for x, w, _, _, col in exp:
-    line(ax, ((x + w) / 2.0, 33), ((x + w) / 2.0, 27.5), color=col, lw=0.7,
-         ls=(0, (3, 2)))
-
-label(ax, 50, 10.6, "三段只用空格隔开，一行就是一条公钥；匹配到哪一行，那一行的选项跟着生效。",
-      fs=8.2, color=GRAY)
+label(ax, 50, 11.2, "载荷首字节是消息类型编号（20 = SSH_MSG_KEXINIT）；接收方先验 MAC 再解密",
+      fs=7.4)
+label(ax, 50, 4.8, "整包（不含长度字段与 MAC）至少 16 字节；填充至少 4 字节，用来凑满整块",
+      fs=7.4, color=GRAY)
 
 save(fig, "06/fig06_2.png")
 
-# ---------------------------------------------------------------- 图 6-4
-fig, ax = canvas(7.2, 4.0, 100)
+# ---------------------------------------------------------------- 图 5-3
+fig, ax = canvas(7.0, 4.3, 100)
+ax.set_ylim(0, 61.4)
 
-tbox(ax, 30, 41, 40, 10, "CA（签名密钥）", "用它签发的证书里写明：身份 + 公钥 + 有效期",
-     fc=WARM_L, tfs=10.0, sfs=8.0)
+label(ax, 3, 56.0, "客户端的列表（有先后）", fs=8.0, bold=True, color=ACCENT,
+      ha="left")
+label(ax, 55, 56.0, "服务端的列表（只是集合）", fs=8.0, bold=True, color=WARM,
+      ha="left")
 
-tbox(ax, 4, 18, 30, 11, "服务器", "主机证书", fc=GREEN_L, ec=GREEN)
-tbox(ax, 66, 18, 30, 11, "客户端", "用户证书", fc=ACCENT_L, ec=ACCENT)
+client = [("curve25519-sha256", True), ("ecdh-sha2-nistp256", False),
+          ("diffie-hellman-group14-sha256", False),
+          ("diffie-hellman-group1-sha1", None)]
+server = [("curve25519-sha256", True), ("ecdh-sha2-nistp256", False),
+          ("diffie-hellman-group14-sha256", False)]
 
-arrow(ax, (44, 41), (22, 29.4), color=WARM, lw=1.0)
-label(ax, 26.5, 34.0, "签发主机证书", fs=8.2, color=WARM, ha="right")
-arrow(ax, (56, 41), (78, 29.4), color=WARM, lw=1.0)
-label(ax, 73.5, 34.0, "签发用户证书", fs=8.2, color=WARM, ha="left")
+for i, (name, hit) in enumerate(client):
+    y = 44.0 - i * 9.4
+    fc = GREEN_L if hit else (WHITE if hit is False else GRAY_L)
+    ec = GREEN if hit else (ACCENT if hit is False else GRAY)
+    box(ax, 4, y, 40, 7.4, name, fc=fc, ec=ec, fs=7.4, radius=0.6, lw=0.9,
+        color=INK if hit is not None else GRAY)
+    label(ax, 2.2, y + 3.7, "%d" % (i + 1), fs=7.0, color=GRAY, ha="right")
 
-arrow(ax, (34, 26.0), (66, 26.0), color=ACCENT, lw=0.9)
-label(ax, 50, 27.8, "① 主机证书，客户端验签", fs=8.2, color=ACCENT)
-arrow(ax, (66, 21.0), (34, 21.0), color=GREEN, lw=0.9)
-label(ax, 50, 18.0, "② 用户证书，服务器验签", fs=8.2, color=GREEN)
+for i, (name, hit) in enumerate(server):
+    y = 44.0 - i * 9.4
+    fc = GREEN_L if hit else WHITE
+    ec = GREEN if hit else WARM
+    box(ax, 55, y, 40, 7.4, name, fc=fc, ec=ec, fs=7.4, radius=0.6, lw=0.9)
 
-label(ax, 50, 11.0, "双方只在本地预置同一个 CA 公钥：不再逐个核对主机指纹，也不再逐台分发 authorized_keys。",
-      fs=8.2, color=GRAY)
-label(ax, 50, 6.2, "证书里还写着有效期与用途，过期即失效，可以按时换发。",
-      fs=8.2, color=GRAY)
+# 命中标记
+label(ax, 49.6, 47.7, "匹配", fs=7.2, color=GREEN, bold=True)
+label(ax, 49.6, 17.8, "服务端\n没有它", fs=6.6, color=GRAY)
+
+label(ax, 50, 12.2, "从客户端列表的头开始，取第一个服务端也支持的算法",
+      fs=7.6, color=INK)
+label(ax, 50, 7.2, "两边没有交集时协商直接失败（no matching key exchange method）",
+      fs=7.4, color=GRAY)
+
+save(fig, "06/fig06_3.png")
+
+# ---------------------------------------------------------------- 图 5-4
+fig, ax = canvas(7.2, 4.9, 100)
+ax.set_ylim(0, 68)
+
+lifeline(ax, 24, 63, 22, "客户端", fs=9.2)
+lifeline(ax, 76, 63, 22, "服务器", color=GREEN, fs=9.2)
+
+msg(ax, 24, 76, 54, "KEXINIT（20）：我支持这些算法", color=ACCENT, fs=8.0)
+msg(ax, 76, 24, 48, "KEXINIT（20）：这是我的列表", color=GREEN, fs=8.0)
+msg(ax, 24, 76, 40, "KEX_ECDH_INIT（30）：临时公钥 Q_C", color=ACCENT, fs=8.0)
+msg(ax, 76, 24, 32, "KEX_ECDH_REPLY（31）：K_S、Q_S、签名", color=GREEN, fs=8.0)
+msg(ax, 24, 76, 24.5, "NEWKEYS（21）：下一条起换新密钥", color=ACCENT, fs=8.0)
+
+# 交换哈希与派生
+box(ax, 3, 2, 94, 14.5, fc=GRAY_L, ec=GRAY, lw=0.9, radius=1.2)
+label(ax, 50, 12.8, "交换哈希 H = SHA256(V_C || V_S || I_C || I_S || K_S || Q_C || Q_S || K)",
+      fs=7.4)
+label(ax, 50, 8.5, "双方各自用临时私钥和对方的临时公钥算出 K；会话密钥全部由 K 与 H 派生",
+      fs=7.4, color=GRAY)
+label(ax, 50, 4.9, "IV、加密密钥、MAC 密钥各两个方向，客户端与服务器互不共用",
+      fs=7.4, color=GRAY)
 
 save(fig, "06/fig06_4.png")

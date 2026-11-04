@@ -8,7 +8,7 @@
 
 远程操作看起来只是敲几条命令，底下其实叠着四层东西。这本书按这四层展开，每一层都从“它要解决什么问题”讲起。
 
-第一层是链路。地址、端口、域名、TCP、NAT，以及数据包怎么被一层层装进帧里。这一层回答“为什么连不上”。
+第一层是链路。网卡、交换机、路由器、网关、地址、端口、域名、TCP，以及数据包怎么被一层层装进帧里。这一层回答“为什么连不上”。
 
 第二层是信任。对称加密、非对称加密、哈希、密钥交换、证书，然后是 SSH 协议本身的三个子协议、密钥与指纹、端口转发。这一层回答“凭什么相信对面”。
 
@@ -20,28 +20,29 @@
 
 ### 第一篇　从一台机器到一条链路
 
-1. [SSH 是什么](book/chapters/ch01.md)
-2. [地址、端口与那条看不见的路](book/chapters/ch02.md)
-3. [服务器上发生了什么](book/chapters/ch03.md)
+1. [计算机之间怎么通信](book/chapters/ch01.md)
+2. [SSH 是什么](book/chapters/ch02.md)
+3. [地址、端口与那条看不见的路](book/chapters/ch03.md)
+4. [服务器上发生了什么](book/chapters/ch04.md)
 
 ### 第二篇　信任是怎么建立的
 
-4. [加密、哈希与密钥交换](book/chapters/ch04.md)
-5. [SSH 协议的三层结构](book/chapters/ch05.md)
-6. [密钥、指纹与信任](book/chapters/ch06.md)
-7. [端口转发，把远方的服务搬到本地](book/chapters/ch07.md)
+5. [加密、哈希与密钥交换](book/chapters/ch05.md)
+6. [SSH 协议的三层结构](book/chapters/ch06.md)
+7. [密钥、指纹与信任](book/chapters/ch07.md)
+8. [端口转发，把远方的服务搬到本地](book/chapters/ch08.md)
 
 ### 第三篇　从一个人到一群人
 
-8. [为什么需要堡垒机](book/chapters/ch08.md)
-9. [JumpServer 的内部构造](book/chapters/ch09.md)
-10. [VS Code 远程开发的工作原理](book/chapters/ch10.md)
+9. [为什么需要堡垒机](book/chapters/ch09.md)
+10. [JumpServer 的内部构造](book/chapters/ch10.md)
+11. [VS Code 远程开发的工作原理](book/chapters/ch11.md)
 
 ### 第四篇　数据的另一端
 
-11. [对象存储的模型](book/chapters/ch11.md)
-12. [签名、密钥与 403](book/chapters/ch12.md)
-13. [从登录到数据存取](book/chapters/ch13.md)
+12. [对象存储的模型](book/chapters/ch12.md)
+13. [签名、密钥与 403](book/chapters/ch13.md)
+14. [从登录到数据存取](book/chapters/ch14.md)
 
 ### 附录
 
@@ -54,7 +55,7 @@
 本站用 docsify 搭建，每一章都有独立链接，可以直接分享：
 
 ```text
-https://<你的用户名>.github.io/<仓库名>/#/book/chapters/ch05
+https://<你的用户名>.github.io/<仓库名>/#/book/chapters/ch06
 ```
 
 左侧目录按篇分组，顶部可以搜索全书内容。
