@@ -42,7 +42,7 @@ vbox(ax, 4.5, 9.0, 30, 8.0, "ssh 子进程", "系统 ssh 客户端", fc=WHITE)
 arrow(ax, (12, 31), (12, 28.2), style="<|-|>")
 label(ax, 14.0, 29.6, "本地 IPC", fs=7.8, color=GRAY, ha="left")
 arrow(ax, (25, 20), (25, 17.2), style="<|-|>")
-label(ax, 26.6, 18.6, "管道", fs=7.8, color=GRAY, ha="left")
+label(ax, 27.8, 18.6, "管道", fs=7.8, color=GRAY, ha="left")
 
 # 右侧：vscode-server 是一个常驻进程，内部带几个服务
 box(ax, 65, 6.0, 31, 34.5, fc="#fbfcfd", ec=ACCENT, lw=1.0)

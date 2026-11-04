@@ -40,7 +40,7 @@ arrow(ax, (53.6, 44.5), (46.4, 44.5), color=WARM, lw=0.9)
 
 # slave → bash
 arrow(ax, (74, 40.6), (74, 36.9), color=WARM)
-label(ax, 75.6, 38.7, "把 slave 设成 fd 0/1/2", fs=7.2, color=WARM, ha="left")
+label(ax, 77.2, 38.9, "把 slave 设成 fd 0/1/2", fs=7.2, color=WARM, ha="left")
 
 # bash
 box(ax, 44, 26, 44, 10.4, "bash（登录 shell）\n提示符、历史、行编辑",

@@ -53,12 +53,12 @@ label(ax, 75.6, 40.4, "你不再直接持有目标机的私钥", fs=7.4, color=G
 arrow(ax, (74.0, 22.0), (74.0, 15.4), lw=1.2)
 label(ax, 75.6, 17.4, "HTTPS + AK/SK", fs=7.6, color=GRAY, ha="left")
 
-line(ax, (8.0, 44.0), (8.0, 9.5), color=GRAY, lw=1.0)
-arrow(ax, (8.0, 9.5), (25.6, 9.5), color=GRAY, lw=1.0)
-label(ax, 9.6, 36.4, "cosbrowser 直连对象存储", fs=7.6, color=GRAY, ha="left")
-label(ax, 9.6, 33.2, "HTTPS + AK/SK 签名", fs=7.4, color=GRAY, ha="left")
+line(ax, (4.5, 44.0), (4.5, 9.5), color=GRAY, lw=1.0)
+arrow(ax, (4.5, 9.5), (25.6, 9.5), color=GRAY, lw=1.0)
+label(ax, 6.5, 36.4, "cosbrowser 直连对象存储", fs=7.6, color=GRAY, ha="left")
+label(ax, 6.5, 33.2, "HTTPS + AK/SK 签名", fs=7.4, color=GRAY, ha="left")
 for k, t in enumerate(["两条路互不依赖：", "堡垒机不可用时，", "cosbrowser 仍能读写对象存储。"]):
-    label(ax, 12.0, 29.6 - k * 3.2, t, fs=7.4, color=GRAY, ha="left")
+    label(ax, 9.0, 29.6 - k * 3.2, t, fs=7.4, color=GRAY, ha="left")
 
 label(ax, 50, 1.4, "两条路都要过认证：堡垒机认你，对象存储认那把 AK/SK", fs=7.8, color=GRAY)
 

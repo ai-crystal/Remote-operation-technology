@@ -11,39 +11,39 @@ from figstyle import (ACCENT, ACCENT_L, GRAY, GRAY_L, GREEN, GREEN_L, INK, RED,
                       line, note, save)
 
 # ---------------------------------------------------------------- 图 1-1
-fig, ax = canvas(7.4, 3.4, 100)
+fig, ax = canvas(7.4, 3.2, 100)
 
-box(ax, 1.5, 2.0, 55.0, 36.0, fc="#f7f9fb", ec="#c9d4dc", lw=1.0, radius=1.6)
-label(ax, 29.0, 35.4, "局域网，地址都在 192.168.1.x 这一段", fs=8.4, color=GRAY)
+box(ax, 1.5, 6.0, 55.0, 32.0, fc="#f7f9fb", ec="#c9d4dc", lw=1.0, radius=1.6)
+label(ax, 29.0, 40.0, "局域网，地址都在 192.168.1.x 这一段", fs=8.4, color=GRAY)
 
-pcs = [(26.0, "电脑 A", "192.168.1.23"), (15.0, "电脑 B", "192.168.1.24"),
-       (5.0, "电脑 C", "192.168.1.25")]
+pcs = [(27.5, "电脑 A", "192.168.1.23"), (16.5, "电脑 B", "192.168.1.24"),
+       (8.0, "电脑 C", "192.168.1.25")]
 for y, name, ip in pcs:
-    box(ax, 5.0, y, 15.0, 8.0, fc=ACCENT_L, ec=ACCENT)
-    label(ax, 12.5, y + 5.2, name, fs=8.4, bold=True)
-    label(ax, 12.5, y + 2.4, ip, fs=7.2, color=GRAY)
-    line(ax, (20.4, y + 4.0), (28.6, 20.0), color=INK, lw=0.9)
-    arrow(ax, (28.6, 20.0), (30.4, 20.0), lw=0.9)
+    box(ax, 5.0, y, 15.0, 7.6, fc=ACCENT_L, ec=ACCENT)
+    label(ax, 12.5, y + 4.9, name, fs=8.2, bold=True)
+    label(ax, 12.5, y + 2.2, ip, fs=6.9, color=GRAY)
+    line(ax, (20.4, y + 3.8), (28.6, 21.0), color=INK, lw=0.9)
+    arrow(ax, (28.6, 21.0), (30.4, 21.0), lw=0.9)
 
-box(ax, 31.0, 15.8, 14.0, 8.4, fc=WHITE, ec=INK)
-label(ax, 38.0, 21.4, "交换机", fs=9.2, bold=True)
-label(ax, 38.0, 18.0, "按地址转发", fs=7.2, color=GRAY)
+box(ax, 31.0, 16.8, 14.0, 8.4, fc=WHITE, ec=INK)
+label(ax, 38.0, 22.4, "交换机", fs=9.2, bold=True)
+label(ax, 38.0, 19.0, "按地址转发", fs=7.2, color=GRAY)
 
-box(ax, 62.0, 15.8, 15.0, 8.4, fc=WARM_L, ec=WARM)
-label(ax, 69.5, 21.4, "路由器", fs=9.2, bold=True)
-label(ax, 69.5, 18.0, "网关 192.168.1.1", fs=7.2, color=GRAY)
+box(ax, 62.0, 16.8, 15.0, 8.4, fc=WARM_L, ec=WARM)
+label(ax, 69.5, 22.4, "路由器", fs=9.2, bold=True)
+label(ax, 69.5, 19.0, "网关 192.168.1.1", fs=7.0, color=GRAY)
 
-arrow(ax, (45.4, 20.0), (61.6, 20.0), lw=0.9)
-label(ax, 53.4, 21.8, "出网段", fs=7.4, color=GRAY)
+arrow(ax, (45.4, 21.0), (61.6, 21.0), lw=0.9)
+label(ax, 53.4, 22.8, "出网段", fs=7.4, color=GRAY)
 
-box(ax, 82.0, 15.2, 16.0, 9.6, fc=GRAY_L, ec=GRAY)
-label(ax, 90.0, 21.2, "互联网", fs=9.2, bold=True)
-label(ax, 90.0, 17.6, "别的网络", fs=7.2, color=GRAY)
+box(ax, 82.0, 16.2, 16.0, 9.6, fc=GRAY_L, ec=GRAY)
+label(ax, 90.0, 22.2, "互联网", fs=9.2, bold=True)
+label(ax, 90.0, 18.6, "别的网络", fs=7.2, color=GRAY)
 
-arrow(ax, (77.4, 20.0), (81.6, 20.0), lw=0.9)
+arrow(ax, (77.4, 21.0), (81.6, 21.0), lw=0.9)
 
-label(ax, 50.0, 1.2, "同一网段内由交换机直接转发，出了网段交给网关",
-      fs=8.2, color=GRAY)
+label(ax, 50.0, 1.6, "同一网段内由交换机直接转发，出了网段交给网关",
+      fs=8.0, color=GRAY)
 save(fig, "01/fig01_1.png")
 
 # ---------------------------------------------------------------- 图 1-2

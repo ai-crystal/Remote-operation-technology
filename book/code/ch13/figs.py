@@ -116,11 +116,11 @@ url_rows = [
     ("https://bucket.oss.example.com", GRAY,
      "协议 + 域名（桶名在域名里）"),
     ("/datasets/train.bin", GRAY,
-     "对象键：路径风格时桶名写在这里"),
+     "对象键，桶名可能写在路径里"),
     ("?X-Amz-Algorithm=AWS4-HMAC-SHA256", ACCENT,
      "签名算法，取值固定"),
-    ("&X-Amz-Credential=AKID****/20261104/us-east-1/s3/aws4_request", WARM,
-     "用哪把钥匙、哪天的、哪个区域与服务"),
+    ("&X-Amz-Credential=AKID****/…/aws4_request", WARM,
+     "用哪把密钥、哪一天、哪个地域"),
     ("&X-Amz-Date=20261104T040000Z", INK,
      "签发时刻（UTC）"),
     ("&X-Amz-Expires=3600", INK,
@@ -128,14 +128,14 @@ url_rows = [
     ("&X-Amz-SignedHeaders=host", INK,
      "哪些请求头参与了签名"),
     ("&X-Amz-Signature=9f2c1b7e…", ACCENT,
-     "最终签名：改动任何一段都会失效"),
+     "最终签名，改动即失效"),
 ]
 for i, (t, c, lab) in enumerate(url_rows):
     y = 36.0 - i * 4.2
     mono(ax, 2.0, y, t, fs=6.8, color=c)
     endx = 2.0 + len(t) * 0.79 + 1.2
     line(ax, (endx, y), (54.0, y), color="#c8ccd0", lw=0.7, ls=(0, (1, 2)))
-    label(ax, 55.5, y, lab, fs=7.6, color=INK, ha="left")
+    label(ax, 54.0, y, lab, fs=7.2, color=INK, ha="left")
 
 save(fig, "13/fig13_3.png")
 

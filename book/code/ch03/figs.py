@@ -155,7 +155,7 @@ msg(ax, 20, 80, 13.5, "ACK，ack = v + 1", color=WARM)
 
 # TIME_WAIT 标注：贴在客户端 lifeline 下方右侧
 line(ax, (17.4, 12.6), (17.4, 5.2), color=WARM, lw=0.9)
-label(ax, 18.6, 9.6, "TIME_WAIT：等 2×MSL 才真正关闭", fs=7.0, color=WARM, ha="left")
+label(ax, 19.4, 9.6, "TIME_WAIT：等 2×MSL 才真正关闭", fs=7.0, color=WARM, ha="left")
 label(ax, 50, 1.4, "握手三步确认双方的收发都正常；挥手四步是各自关掉自己这个方向",
       fs=7.4, color=GRAY)
 
