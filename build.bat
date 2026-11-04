@@ -33,6 +33,7 @@ if exist "book\code\common\make_cover.py" (
 echo [2/4] checking manuscript
 "%PY%" book\build\lint.py
 if errorlevel 1 goto :fail
+"%PY%" book\build\terms.py
 
 echo [3/4] typesetting PDF
 "%PY%" book\build\build.py
