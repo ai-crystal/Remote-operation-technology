@@ -297,10 +297,26 @@ def patch_reportlab():
     _rp.Paragraph.breakLinesCJK = breakLinesCJK
 
 
+def patch_kinsoku():
+    """补上中文标点的避头尾规则。
+
+    reportlab 自带的 CANNOT_START_LINE 只覆盖日文标点，全角逗号、冒号、问号这些
+    中文常用符号不在其中，断行时会被推到行首，排出来很难看。
+    """
+    from reportlab.lib import textsplit
+    from reportlab.platypus import paragraph as _rp
+
+    cannot_start = "，、。；：？！）】》」』”’｝］〉·…—～％"
+    for mod in (textsplit, _rp):
+        mod.ALL_CANNOT_START = mod.ALL_CANNOT_START + cannot_start
+    textsplit.ALL_CANNOT_END = textsplit.ALL_CANNOT_END + "“‘（【《「『〈［｛"
+
+
 def main():
     opt = "--no-opt" not in sys.argv
     t0 = time.time()
     patch_reportlab()
+    patch_kinsoku()
     theme.register_fonts()
     st = theme.styles()
 
@@ -354,7 +370,9 @@ def main():
     body_pages = doc.page
 
     final = os.path.join(OUTPUT, "remote-access-book.pdf")
-    assemble(final, body_pdf, body_pages)
+    staged = os.path.join(BUILD_TMP, "final.pdf")
+    assemble(staged, body_pdf, body_pages)
+    final = install_pdf(staged, final)
     size = os.path.getsize(final) / 1024.0 / 1024.0
     print("PDF: %s" % final)
     print("页数: %d 页（含封面封底），体积 %.2f MB，用时 %.1f s"
@@ -362,6 +380,24 @@ def main():
     if size > 19.5:
         print("警告：超过 19.5 MB，请检查插图体积。")
     return final
+
+
+def install_pdf(staged, final):
+    """把合成好的 PDF 放到 output/。文件被阅读器占用时退让一步，不覆盖失败。"""
+    import time as _t
+
+    os.makedirs(os.path.dirname(final), exist_ok=True)
+    for i in range(8):
+        try:
+            os.replace(staged, final)
+            return final
+        except PermissionError:
+            _t.sleep(0.4)
+    alt = final.replace(".pdf", "-new.pdf")
+    os.replace(staged, alt)
+    print("提示：%s 正被其他程序占用（可能在阅读器中打开），本次输出到 %s"
+          % (os.path.basename(final), os.path.basename(alt)))
+    return alt
 
 
 def assemble(final, body_pdf, body_pages):

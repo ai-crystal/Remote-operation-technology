@@ -20,7 +20,7 @@ from reportlab.platypus import (Image, KeepTogether, PageBreak, Paragraph,
                                 Preformatted, Spacer, Table, TableStyle)
 
 from theme import (ACCENT, BODY, BODY_B, BODY_I, CODE_BG, CODE_LINE, CONTENT_W,
-                   GRAY, HEAD, INK, MONO, TABLE_HEAD_BG, TABLE_LINE)
+                   GRAY, HEAD, INK, MONO, MONO_CJK, TABLE_HEAD_BG, TABLE_LINE)
 
 MAX_IMG_W = CONTENT_W
 MAX_IMG_H = 520
@@ -40,6 +40,8 @@ def dlen(text):
 def esc(text):
     return (text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
 
+
+CJK_RE = re.compile(r"[　-〿㐀-鿿＀-￯]")
 
 CAPTION_RE = re.compile(r"^(图|表)\s*\d+(\.\d+)*")
 
@@ -65,7 +67,9 @@ def inline(node, styles, extra=""):
         elif tag in ("em", "i"):
             inner_extra = "<i>"
         elif tag == "code":
-            inner_extra = '<font face="%s" size="9" color="#31556b">' % MONO
+            raw = "".join(ch.itertext())
+            face = MONO_CJK if CJK_RE.search(raw) else MONO
+            inner_extra = '<font face="%s" size="9" color="#31556b">' % face
         elif tag == "a":
             href = ch.get("href", "")
             inner_extra = '<a href="%s" color="#1f5e8c">' % href.replace("&", "&amp;")
@@ -135,8 +139,11 @@ def wrap_code(text, limit=88, cont_indent=4):
 
 
 def code_block(text, styles, width=CONTENT_W):
-    text = wrap_code(text.rstrip("\n"))
-    pre = Preformatted(text, styles["code"])
+    text = text.rstrip()
+    has_cjk = bool(CJK_RE.search(text))
+    style = styles["code_cjk"] if has_cjk else styles["code"]
+    text = wrap_code(text, limit=84 if has_cjk else 88)
+    pre = Preformatted(text, style)
     t = Table([[pre]], colWidths=[width])
     t.setStyle(TableStyle([
         ("BACKGROUND", (0, 0), (-1, -1), CODE_BG),
