@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""第 14 章插图：签名与权限。"""
+"""第 14 章插图：签名、密钥与 403。"""
 
 import os
 import sys
@@ -26,7 +26,7 @@ def mono(ax, x, y, text, fs=7.2, color=INK, ha="left"):
             family="monospace", zorder=4)
 
 
-# ---------------------------------------------------------------- 图 12-1
+# ---------------------------------------------------------------- 图 14-1
 fig, ax = canvas(7.4, 3.9, 100)
 
 parts = [
@@ -52,7 +52,7 @@ rows = [
     ("GET", "方法"),
     ("/train/model.bin", "URI"),
     ("", "查询"),
-    ("host:s3.example.com", "头部"),
+    ("host:bucket.s3.example.com", "头部"),
     ("x-amz-date:20261104T040000Z", ""),
     ("x-amz-content-sha256:UNSIGNED-PAYLOAD", ""),
     ("host;x-amz-content-sha256;x-amz-date", "签名头"),
@@ -77,7 +77,7 @@ label(ax, 91.5, 21.4, "64 个\n十六进制字符", fs=7.2, color=GRAY)
 
 save(fig, "14/fig14_1.png")
 
-# ---------------------------------------------------------------- 图 12-2
+# ---------------------------------------------------------------- 图 14-2
 fig, ax = canvas(7.2, 4.2, 100)
 
 steps = [
@@ -107,19 +107,19 @@ note(ax, 2.0, 1.8, "每一级都多掺一样东西，所以签名与「日期 + 
 
 save(fig, "14/fig14_2.png")
 
-# ---------------------------------------------------------------- 图 12-3
+# ---------------------------------------------------------------- 图 14-3
 fig, ax = canvas(7.2, 3.1, 100)
 
 label(ax, 30.0, 39.8, "一整串 URL 拆开看：谁拿到都能用，所以每一段都得能解释", fs=8.2, color=GRAY)
 
 url_rows = [
-    ("https://bucket.oss.example.com", GRAY,
+    ("https://bucket-1250000000.cos.ap-guangzhou.myqcloud.com", GRAY,
      "协议 + 域名（桶名在域名里）"),
-    ("/datasets/train.bin", GRAY,
-     "对象键，桶名可能写在路径里"),
+    ("/report.pdf", GRAY,
+     "对象键，决定访问哪一个对象"),
     ("?X-Amz-Algorithm=AWS4-HMAC-SHA256", ACCENT,
      "签名算法，取值固定"),
-    ("&X-Amz-Credential=AKID****/…/aws4_request", WARM,
+    ("&X-Amz-Credential=AKID****%2F20261104%2F…", WARM,
      "用哪把密钥、哪一天、哪个地域"),
     ("&X-Amz-Date=20261104T040000Z", INK,
      "签发时刻（UTC）"),
@@ -139,7 +139,7 @@ for i, (t, c, lab) in enumerate(url_rows):
 
 save(fig, "14/fig14_3.png")
 
-# ---------------------------------------------------------------- 图 12-4
+# ---------------------------------------------------------------- 图 14-4
 fig, ax = canvas(7.2, 4.2, 100)
 
 box(ax, 28.0, 50.0, 34, 6.4, "一次请求：谁、想做什么、对哪个资源", fc=GRAY_L, ec=GRAY)

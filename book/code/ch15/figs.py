@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""第 15 章插图：端到端与排错。"""
+"""第 15 章插图：从登录到数据存取。"""
 
 import os
 import sys
@@ -29,11 +29,11 @@ def node(ax, x, y, w, h, title, lines, fc, ec):
         label(ax, x + w / 2.0, y + h - 7.6 - i * 3.0, t, fs=7.6, color=GRAY)
 
 
-# ---------------------------------------------------------------- 图 13-1
+# ---------------------------------------------------------------- 图 15-1
 fig, ax = canvas(7.2, 4.6, 100)
 
 node(ax, 2.0, 44.0, 34, 17.0, "Windows 本机", ["VS Code Remote-SSH",
-                                             "OpenSSH 客户端", "cosbrowser"],
+                                             "OpenSSH 客户端", "coscli"],
      ACCENT_L, ACCENT)
 node(ax, 56.0, 44.0, 42, 17.0, "JumpServer（堡垒机）",
      ["SSH 网关：认证、授权、审计", "记录每一条命令与文件传输"], WARM_L, WARM)
@@ -55,16 +55,16 @@ label(ax, 75.6, 17.4, "HTTPS + AK/SK", fs=7.6, color=GRAY, ha="left")
 
 line(ax, (4.5, 44.0), (4.5, 9.5), color=GRAY, lw=1.0)
 arrow(ax, (4.5, 9.5), (25.6, 9.5), color=GRAY, lw=1.0)
-label(ax, 6.5, 36.4, "cosbrowser 直连对象存储", fs=7.6, color=GRAY, ha="left")
+label(ax, 6.5, 36.4, "coscli 直连对象存储", fs=7.6, color=GRAY, ha="left")
 label(ax, 6.5, 33.2, "HTTPS + AK/SK 签名", fs=7.4, color=GRAY, ha="left")
-for k, t in enumerate(["两条路互不依赖：", "堡垒机不可用时，", "cosbrowser 仍能读写对象存储。"]):
+for k, t in enumerate(["SSH 与对象存储互不依赖：", "堡垒机不可用时，", "coscli 仍能读写对象存储。"]):
     label(ax, 9.0, 29.6 - k * 3.2, t, fs=7.4, color=GRAY, ha="left")
 
 label(ax, 50, 1.4, "两条路都要过认证：堡垒机认你，对象存储认那把 AK/SK", fs=7.8, color=GRAY)
 
 save(fig, "15/fig15_1.png")
 
-# ---------------------------------------------------------------- 图 13-2
+# ---------------------------------------------------------------- 图 15-2
 fig, ax = canvas(7.2, 5.4, 100)
 
 checks = [

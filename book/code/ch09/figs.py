@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""第 9 章插图：VPN。"""
+"""第 9 章插图：VPN：把一整张内网搬到身边。"""
 
 import os
 import sys
@@ -33,7 +33,7 @@ fig, ax = canvas(7.4, 4.4, 100)
 tbox(ax, 1, 30, 14, 12, "浏览器", "连 10.0.0.9", fc=GRAY_L, tfs=9.0, sfs=7.2)
 tbox(ax, 22, 30, 17, 12, "虚拟网卡", "wg0  10.8.0.2", fc=ACCENT_L, ec=ACCENT, sfs=7.0)
 tbox(ax, 46, 30, 15, 12, "物理网卡", "eth0", fc=WARM_L, ec=WARM, sfs=7.2)
-tbox(ax, 68, 30, 15, 12, "VPN 网关", "203.0.113.24", fc=GREEN_L, ec=GREEN, sfs=6.6)
+tbox(ax, 68, 30, 15, 12, "VPN 网关", "203.0.113.61", fc=GREEN_L, ec=GREEN, sfs=6.6)
 tbox(ax, 88, 30, 11, 12, "内网服务", "10.0.0.9", fc=WHITE, tfs=8.4, sfs=7.0)
 
 arrow(ax, (15, 36), (22, 36), lw=1.0)
