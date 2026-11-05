@@ -34,6 +34,7 @@ def check(path):
     text = open(path, encoding="utf-8").read()
     lines = text.split("\n")
     rel = os.path.relpath(path, BOOK)
+    mch = re.match(r"ch(\d+)\.md$", os.path.basename(path))
 
     in_code = False
     code_start = 0
@@ -62,13 +63,23 @@ def check(path):
             target = os.path.normpath(os.path.join(os.path.dirname(path), src))
             if not os.path.exists(target):
                 errors.append("%s:%d 图片不存在：%s" % (rel, i, src))
+            # 章号与图片目录必须一致，否则会渲染成别章的图而不报错
+            mim = re.search(r"images/(\d{2})/fig(\d{2})_", src)
+            if mch and mim:
+                n = int(mch.group(1))
+                if int(mim.group(1)) != n or int(mim.group(2)) != n:
+                    errors.append("%s:%d 图片目录与章号不符：%s" % (rel, i, src))
 
         cap = re.match(r"^!\[(图\s*(\d+)-(\d+))", line)
         if cap:
             figs.append(int(cap.group(3)))
+            if mch and int(cap.group(2)) != int(mch.group(1)):
+                errors.append("%s:%d 图号章号与实际章不符：%s" % (rel, i, cap.group(1)))
         cap = re.match(r"^表\s*(\d+)-(\d+)", line)
         if cap:
             tabs.append(int(cap.group(2)))
+            if mch and int(cap.group(1)) != int(mch.group(1)):
+                errors.append("%s:%d 表号章号与实际章不符：表 %s" % (rel, i, cap.group(1) + "-" + cap.group(2)))
 
     if in_code:
         errors.append("%s:%d 代码块没有闭合" % (rel, code_start))
