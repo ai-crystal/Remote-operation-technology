@@ -18,11 +18,127 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.utils import ImageReader
 from reportlab.platypus import (Image, KeepTogether, PageBreak, Paragraph,
                                 Preformatted, Spacer, Table, TableStyle)
+from reportlab.platypus.paragraph import Paragraph as _RLParagraph
 
 from theme import (ACCENT, BODY, BODY_B, BODY_I, CODE_BG, CODE_LINE, CONTENT_W,
                    GRAY, HEAD, INK, MONO, MONO_CJK, TABLE_HEAD_BG, TABLE_LINE)
 
 MAX_IMG_W = CONTENT_W
+
+# ---------------------------------------------------------------- 避头尾
+# reportlab 自带的 kinsokuShoriSplit 标着 "NOT USED OR FINISHED YET"，实际生效的是
+# dumbSplit：纯按宽度切字，于是会出现以“。”“，”开头的行。这里在切分之后补两件事：
+#   行首禁则：句号、逗号、右括号等不能出现在行首 —— 挂到上一行末尾（悬挂标点）
+#   行尾禁则：左括号、左引号不能留在行尾 —— 挪到下一行开头
+from reportlab.lib import textsplit as _ts
+from reportlab.pdfbase.pdfmetrics import stringWidth as _sw
+from reportlab.platypus import paragraph as _rlpara
+
+NO_START = "。，、；：！？）】》」』”’"
+NO_END = "（【《「『“‘"
+
+
+def _kinsoku_split(word, maxWidths, fontName, fontSize, encoding="utf8"):
+    if not isinstance(maxWidths, (list, tuple)):
+        maxWidths = [maxWidths]
+    if isinstance(word, bytes):
+        word = word.decode(encoding)
+    widths = _ts.getCharWidths(word, fontName, fontSize)
+    lines = [[float(extra), text] for extra, text in _ts.dumbSplit(word, widths, maxWidths)]
+
+    for i in range(1, len(lines)):
+        text = lines[i][1]
+        k = 0
+        while k < len(text) - 1 and text[k] in NO_START:
+            k += 1
+        if k:
+            hang = text[:k]
+            lines[i - 1][1] += hang
+            lines[i - 1][0] -= _sw(hang, fontName, fontSize)
+            lines[i][1] = text[k:]
+
+    for i in range(len(lines) - 1):
+        text = lines[i][1]
+        k = 0
+        while k < len(text) - 1 and text[-1 - k] in NO_END:
+            k += 1
+        if k:
+            moved = text[-k:]
+            lines[i][1] = text[:-k]
+            lines[i][0] += _sw(moved, fontName, fontSize)
+            lines[i + 1][1] = moved + lines[i + 1][1]
+            lines[i + 1][0] -= _sw(moved, fontName, fontSize)
+
+    return lines
+
+
+_rlpara.wordSplit = _kinsoku_split
+
+
+def _repair_cjk_lines(para):
+    """多 frag（含行内代码）的段落走 cjkFragSplit，需要在排好之后补救。"""
+    lines = getattr(para, "lines", None)
+    if not lines or getattr(para, "kind", 0) != 1:
+        return
+    for i in range(1, len(lines)):
+        words = getattr(lines[i], "words", None)
+        if not words:
+            continue
+        text = words[0].text or ""
+        if len(text) > 1 and text[0] in NO_START:
+            words[0].text = text[1:]
+            prev = getattr(lines[i - 1], "words", None)
+            if prev:
+                prev[-1].text = (prev[-1].text or "") + text[0]
+    for i in range(len(lines) - 1):
+        words = getattr(lines[i], "words", None)
+        if not words:
+            continue
+        text = words[-1].text or ""
+        if len(text) > 1 and text[-1] in NO_END:
+            words[-1].text = text[:-1]
+            nxt = getattr(lines[i + 1], "words", None)
+            if nxt:
+                nxt[0].text = text[-1] + (nxt[0].text or "")
+
+
+def _repair_cjk_para(para):
+    """kind=1（多 frag）走 lines[i].words；kind=0（单 frag）走 lines[i][1][0]。"""
+    lines = getattr(para, "lines", None)
+    if not lines:
+        return
+    if getattr(para, "kind", 0) == 0:
+        rows = [[extra, [text]] for extra, (text,) in
+                ((ln[0], (ln[1][0],)) for ln in lines)]
+        for i in range(1, len(rows)):
+            text = rows[i][1][0]
+            if len(text) > 1 and text[0] in NO_START:
+                rows[i][1][0] = text[1:]
+                rows[i - 1][1][0] += text[0]
+        for i in range(len(rows) - 1):
+            text = rows[i][1][0]
+            if len(text) > 1 and text[-1] in NO_END:
+                rows[i][1][0] = text[:-1]
+                rows[i + 1][1][0] = text[-1] + rows[i + 1][1][0]
+        para.lines = rows
+        return
+    _repair_cjk_lines(para)
+
+
+class KinsokuParagraph(_rlpara.Paragraph):
+    """在 reportlab 排完一段之后补上避头尾处理。"""
+
+    def breakLinesCJK(self, maxWidths):
+        para = _rlpara.Paragraph.breakLinesCJK(self, maxWidths)
+        try:
+            _repair_cjk_para(para)
+        except Exception:
+            pass
+        return para
+
+
+# 全书统一用这个子类，正文、图注、表格单元格都享受避头尾
+Paragraph = KinsokuParagraph
 MAX_IMG_H = 520
 IMAGE_RESOLVER = None      # 由构建脚本注入，用于替换压缩后的图片
 
