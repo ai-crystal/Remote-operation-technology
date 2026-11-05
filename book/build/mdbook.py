@@ -178,53 +178,43 @@ def inline(node, styles, extra=""):
     if node.text:
         out.append(esc(node.text))
     for ch in node:
-        tag = ch.tag
-        inner_extra = ""
-        if tag in ("strong", "b"):
-            inner_extra = "<b>"
-        elif tag in ("em", "i"):
-            inner_extra = "<i>"
-        elif tag == "code":
-            raw = "".join(ch.itertext())
-            face = MONO_CJK if CJK_RE.search(raw) else MONO
-            inner_extra = '<font face="%s" size="9" color="#31556b">' % face
-        elif tag == "a":
-            href = ch.get("href", "")
-            inner_extra = '<a href="%s" color="#1f5e8c">' % href.replace("&", "&amp;")
-        elif tag in ("sup",):
-            inner_extra = "<super>"
-        elif tag in ("sub",):
-            inner_extra = "<sub>"
-        elif tag == "br":
+        if ch.tag == "br":
             out.append("<br/>")
             if ch.tail:
                 out.append(esc(ch.tail))
             continue
-        elif tag in ("span", "font"):
-            inner_extra = ""
-        elif tag == "img":
-            # 段落内混排的小图，退化为引用其 alt
+        if ch.tag == "img":
             out.append(esc(ch.get("alt", "")))
             if ch.tail:
                 out.append(esc(ch.tail))
             continue
-        close = ""
-        if inner_extra in ("<b>",):
-            close = "</b>"
-        elif inner_extra == "<i>":
-            close = "</i>"
-        elif inner_extra.startswith("<font"):
-            close = "</font>"
-        elif inner_extra.startswith("<a"):
-            close = "</a>"
-        elif inner_extra == "<super>":
-            close = "</super>"
-        elif inner_extra == "<sub>":
-            close = "</sub>"
-        out.append(inner_extra + inline(ch, styles) + close)
+        out.append(inline_chunk(ch, styles))
         if ch.tail:
             out.append(esc(ch.tail))
     return "".join(out)
+
+
+def inline_chunk(ch, styles):
+    """把单个子元素（code、b、a 等）连同它的标记一起转出来。"""
+    tag = ch.tag
+    opener = ""
+    closer = ""
+    if tag in ("strong", "b"):
+        opener, closer = "<b>", "</b>"
+    elif tag in ("em", "i"):
+        opener, closer = "<i>", "</i>"
+    elif tag == "code":
+        raw = "".join(ch.itertext())
+        face = MONO_CJK if CJK_RE.search(raw) else MONO
+        opener, closer = '<font face="%s" size="9" color="#31556b">' % face, "</font>"
+    elif tag == "a":
+        href = ch.get("href", "")
+        opener, closer = '<a href="%s" color="#1f5e8c">' % href.replace("&", "&amp;"), "</a>"
+    elif tag == "sup":
+        opener, closer = "<super>", "</super>"
+    elif tag == "sub":
+        opener, closer = "<sub>", "</sub>"
+    return opener + inline(ch, styles) + closer
 
 
 def plain(node):
@@ -399,11 +389,11 @@ def list_block(elem, styles, level=0, ordered=False, start=1):
                     cur = []
                 nested.append(ch)
                 continue
-            frag = inline(ch, styles)
+            frag = inline_chunk(ch, styles)
             if frag.strip():
                 cur.append(frag)
             if ch.tail and ch.tail.strip():
-                cur.append(esc(ch.tail.strip()))
+                cur.append(esc(ch.tail))
         if cur:
             paras.append("".join(cur))
 
