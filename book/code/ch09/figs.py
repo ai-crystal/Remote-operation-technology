@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""第 8 章插图：为什么需要堡垒机。"""
+"""第 9 章插图：VPN。"""
 
 import os
 import sys
@@ -7,114 +7,163 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "common"))
 
 from figstyle import (ACCENT, ACCENT_L, GRAY, GRAY_L, GREEN, GREEN_L, INK, RED,
-                      RED_L, WARM, WARM_L, WHITE, arrow, box, canvas, elb_arrow,
-                      label, lifeline, line, msg, note, save)
+                      RED_L, WARM, WARM_L, WHITE, arrow, box, canvas, label,
+                      lifeline, line, msg, note, save)
+from matplotlib.patches import Rectangle
 
 
-def tbox(ax, x, y, w, h, title, sub=None, fc=ACCENT_L, tfs=9.4, sfs=7.8,
-         ec=INK, color=None):
+def tbox(ax, x, y, w, h, title, sub=None, fc=ACCENT_L, ec=INK, tfs=9.2, sfs=7.4):
     box(ax, x, y, w, h, fc=fc, ec=ec)
     if sub:
-        label(ax, x + w / 2.0, y + h * 0.68, title, fs=tfs, bold=True, color=color)
-        label(ax, x + w / 2.0, y + h * 0.28, sub, fs=sfs, color=GRAY)
+        label(ax, x + w / 2.0, y + h * 0.66, title, fs=tfs, bold=True)
+        label(ax, x + w / 2.0, y + h * 0.27, sub, fs=sfs, color=GRAY)
     else:
-        label(ax, x + w / 2.0, y + h / 2.0, title, fs=tfs, bold=True, color=color)
+        label(ax, x + w / 2.0, y + h / 2.0, title, fs=tfs, bold=True)
 
 
-# ---------------------------------------------------------------- 图 8-1
-fig, ax = canvas(7.4, 4.2, 100)
+def over(ax, x, y, text, fs=7.4, color=None, mono=False):
+    ax.text(x, y + 2.0, text, ha="center", va="bottom", fontsize=fs,
+            color=color or INK, zorder=7,
+            family="monospace" if mono else None)
 
-label(ax, 24, 54.6, "没有堡垒机", fs=10.4, bold=True)
-label(ax, 76, 54.6, "有堡垒机", fs=10.4, bold=True)
-label(ax, 6.5, 51.6, "6 台终端", fs=7.6, color=GRAY)
-label(ax, 41.0, 51.6, "8 台服务器", fs=7.6, color=GRAY)
-label(ax, 58.0, 51.6, "6 台终端", fs=7.6, color=GRAY)
-label(ax, 93.0, 51.6, "8 台服务器", fs=7.6, color=GRAY)
 
-line(ax, (50, 6), (50, 50), color=GRAY_L, lw=1.6)
+# ---------------------------------------------------------------- 图 9-1
+fig, ax = canvas(7.4, 4.4, 100)
 
-# 左：终端与服务器两两相连
-term_y = [43.0 - i * 7.4 for i in range(6)]
-srv_y = [46.0 - i * 6.0 for i in range(8)]
+tbox(ax, 1, 30, 14, 12, "浏览器", "连 10.0.0.9", fc=GRAY_L, tfs=9.0, sfs=7.2)
+tbox(ax, 22, 30, 17, 12, "虚拟网卡", "wg0  10.8.0.2", fc=ACCENT_L, ec=ACCENT, sfs=7.0)
+tbox(ax, 46, 30, 15, 12, "物理网卡", "eth0", fc=WARM_L, ec=WARM, sfs=7.2)
+tbox(ax, 68, 30, 15, 12, "VPN 网关", "203.0.113.24", fc=GREEN_L, ec=GREEN, sfs=6.6)
+tbox(ax, 88, 30, 11, 12, "内网服务", "10.0.0.9", fc=WHITE, tfs=8.4, sfs=7.0)
 
-for ty in term_y:
-    for sy in srv_y:
-        line(ax, (11, ty + 2.1), (36, sy + 2.1), color="#b7bcc2", lw=0.45)
+arrow(ax, (15, 36), (22, 36), lw=1.0)
+over(ax, 18.5, 36, "原包", fs=7.0, color=GRAY)
+arrow(ax, (39, 36), (46, 36), lw=1.5, color=ACCENT)
+over(ax, 42.5, 36, "加密", fs=7.0, color=ACCENT)
+arrow(ax, (61, 36), (68, 36), lw=1.2, color=ACCENT)
+over(ax, 64.5, 36, "隧道", fs=7.0, color=ACCENT)
+arrow(ax, (83, 36), (88, 36), lw=1.0)
+over(ax, 85.5, 36, "原包", fs=6.8, color=GRAY)
 
-for i, y in enumerate(term_y):
-    box(ax, 2, y, 9, 4.2, fc=GRAY_L, ec=GRAY, lw=0.8)
-    label(ax, 6.5, y + 2.1, "终端%d" % (i + 1), fs=6.8, color=INK)
+box(ax, 1, 14, 19, 9, fc=GRAY_L, ec=GRAY, lw=0.8)
+label(ax, 10.5, 20.4, "路由表", fs=8.6, bold=True)
+label(ax, 10.5, 16.6, "10.0.0.0/8 → wg0", fs=7.2)
+ax.plot([10.5, 10.5], [23.0, 26.0], color=ACCENT, lw=0.9, ls=(0, (3, 2)))
+ax.plot([10.5, 20.6], [26.0, 26.0], color=ACCENT, lw=0.9, ls=(0, (3, 2)))
+arrow(ax, (19.2, 26.0), (22.0, 29.6), color=ACCENT, lw=0.9, ls=(0, (3, 2)))
 
-for i, y in enumerate(srv_y):
-    box(ax, 36, y, 10, 4.2, fc=GREEN_L, ec=GREEN, lw=0.8)
-    label(ax, 41, y + 2.1, "服务器%d" % (i + 1), fs=6.8, color=INK)
+label(ax, 30.5, 26.6, "② 加一块虚拟网卡", fs=8.0, color=ACCENT)
+label(ax, 10.5, 10.6, "③ 改路由", fs=8.0, color=ACCENT)
+label(ax, 64.5, 26.6, "① 建隧道", fs=8.0, color=ACCENT)
 
-# 右：终端先到堡垒机，堡垒机再到服务器
-term_y2 = [43.0 - i * 7.4 for i in range(6)]
-srv_y2 = [46.0 - i * 6.0 for i in range(8)]
-
-for i, ty in enumerate(term_y2):
-    line(ax, (63, ty + 2.1), (67.5, 31.0 - i * 2.1), color="#b7bcc2", lw=0.7)
-for i, sy in enumerate(srv_y2):
-    line(ax, (81.5, 31.5 - i * 1.55), (88, sy + 2.1), color="#b7bcc2", lw=0.7)
-
-for i, y in enumerate(term_y2):
-    box(ax, 54, y, 9, 4.2, fc=GRAY_L, ec=GRAY, lw=0.8)
-    label(ax, 58.5, y + 2.1, "终端%d" % (i + 1), fs=6.8, color=INK)
-
-for i, y in enumerate(srv_y2):
-    box(ax, 88, y, 10, 4.2, fc=GREEN_L, ec=GREEN, lw=0.8)
-    label(ax, 93, y + 2.1, "服务器%d" % (i + 1), fs=6.8, color=INK)
-
-box(ax, 67.5, 18, 14, 18, fc=WARM_L, ec=WARM, lw=1.2)
-label(ax, 74.5, 30.6, "堡垒机", fs=9.2, bold=True)
-label(ax, 74.5, 26.4, "唯一入口", fs=7.4, color=GRAY)
-label(ax, 74.5, 22.6, "账号统一", fs=7.4, color=GRAY)
-
-label(ax, 50, 1.4, "左边每条线都要单独发密钥、单独查日志；右边所有流量经过同一个入口。",
-      fs=8.2, color=GRAY)
+label(ax, 1, 5.2, "程序什么都没改：它仍然在连 10.0.0.9，包是操作系统和客户端替它改道的。",
+      fs=8.4, color=GRAY, ha="left")
 
 save(fig, "09/fig09_1.png")
 
-# ---------------------------------------------------------------- 图 8-2
-fig, ax = canvas(7.0, 4.0, 100)
+# ---------------------------------------------------------------- 图 9-2
+fig, ax = canvas(7.4, 3.9, 100)
 
-box(ax, 31, 21, 38, 14, fc=WHITE, ec=ACCENT, lw=1.2)
-label(ax, 50, 28.0, "一次受控的\n运维会话", fs=9.6, bold=True, color=ACCENT)
+def bar(ax, x, y, w, texts, fcs, h=9.0, fs=7.6):
+    """一排相邻的字段块。texts 为空串的块不写字。"""
+    cx = x
+    for (t, wi, fc) in zip(texts, w, fcs):
+        box(ax, cx, y, wi, h, fc=fc, radius=0.6, lw=0.8)
+        if t:
+            label(ax, cx + wi / 2.0, y + h / 2.0, t, fs=fs)
+        cx += wi
+    return cx
 
-tbox(ax, 3, 42, 38, 11, "认证 Authentication", "你是谁", fc=ACCENT_L, ec=ACCENT, tfs=9.0, sfs=7.8)
-tbox(ax, 59, 42, 38, 11, "授权 Authorization", "你能做什么", fc=ACCENT_L, ec=ACCENT, tfs=9.0, sfs=7.8)
-tbox(ax, 3, 4, 38, 11, "账号 Account", "用哪个身份去连", fc=GREEN_L, ec=GREEN, tfs=9.0, sfs=7.8)
-tbox(ax, 59, 4, 38, 11, "审计 Audit", "事后可查可回放", fc=WARM_L, ec=WARM, tfs=9.0, sfs=7.8)
 
-arrow(ax, (30, 42), (40, 35.5), color=ACCENT, lw=0.9)
-arrow(ax, (70, 42), (60, 35.5), color=ACCENT, lw=0.9)
-arrow(ax, (30, 15), (40, 21.0), color=GREEN, lw=0.9)
-arrow(ax, (60, 21.0), (70, 15), color=WARM, lw=0.9)   # 会话产生审计记录
+label(ax, 2, 45.2, "① 要发的包", fs=8.6, bold=True, ha="left")
+bar(ax, 2, 34, [19, 11, 30],
+    ["IP 头\n10.8.0.2 → 10.0.0.9", "TCP 头", "数据"],
+    [GRAY_L, GRAY_L, WHITE], fs=7.4)
+
+label(ax, 2, 30.2, "② 客户端把它整体加密", fs=8.6, bold=True, ha="left")
+bar(ax, 2, 19, [60], ["密文：原包一个字节没少，只是看不见了"], [ACCENT_L], fs=7.6)
+
+label(ax, 2, 15.2, "③ 再套上能上公网的头", fs=8.6, bold=True, ha="left")
+bar(ax, 2, 4, [21, 10, 13, 16],
+    ["新 IP 头\n你的地址 → 网关", "UDP", "隧道头", "密文"],
+    [WARM_L, WARM_L, WARM_L, ACCENT_L], fs=7.0)
+
+box(ax, 66, 28, 32, 13, fc=WHITE, ec=GRAY, lw=0.8)
+label(ax, 82, 36.6, "每个包多出一段", fs=8.4, bold=True)
+label(ax, 82, 31.8, "60～80 字节", fs=8.0, color=WARM)
+
+box(ax, 66, 12, 32, 13, fc=WHITE, ec=GRAY, lw=0.8)
+label(ax, 82, 20.6, "隧道 MTU 要调小", fs=8.4, bold=True)
+label(ax, 82, 15.8, "1500 → 1400 左右", fs=8.0, color=WARM)
+
+label(ax, 50, 1.2, "同一份数据，越往外走头越多；中间设备只看得见最外面那一层。",
+      fs=8.0, color=GRAY)
 
 save(fig, "09/fig09_2.png")
 
-# ---------------------------------------------------------------- 图 8-3
-fig, ax = canvas(7.2, 4.8, 100)
+# ---------------------------------------------------------------- 图 9-3
+fig, ax = canvas(7.4, 3.8, 100)
 
-lifeline(ax, 15, 60, 10, "运维人员", sub="浏览器或终端")
-lifeline(ax, 50, 60, 10, "堡垒机", color=WARM, sub="认证、鉴权、录像")
-lifeline(ax, 85, 60, 10, "目标机", color=GREEN, sub="sshd")
+def routing(ax, x, w, title, rows, note_text, hi):
+    label(ax, x + w / 2.0, 42.2, title, fs=9.2, bold=True)
+    box(ax, x, 18.0, w, 21.5, fc=WHITE, ec=GRAY, lw=0.9, radius=0.8)
+    ax.text(x + 3.0, 35.6, "目的网段", ha="left", va="center",
+            fontsize=7.4, color=GRAY, zorder=6)
+    ax.text(x + w - 3.0, 35.6, "出口", ha="right", va="center",
+            fontsize=7.4, color=GRAY, zorder=6)
+    ax.plot([x + 2.4, x + w - 2.4], [33.4, 33.4], color=GRAY_L, lw=0.8)
+    y = 30.4
+    for dest, dev, mark in rows:
+        if mark and dest.startswith("0.0.0.0"):
+            ax.add_patch(Rectangle((x + 1.2, y - 2.4), w - 2.4, 4.8,
+                                   facecolor=ACCENT_L, edgecolor="none", zorder=5))
+        ax.text(x + 3.0, y, dest, ha="left", va="center", fontsize=7.8,
+                family="monospace", color=INK, zorder=6)
+        ax.text(x + w - 3.0, y, dev, ha="right", va="center", fontsize=7.8,
+                family="monospace", color=hi if mark else GRAY, zorder=6)
+        y -= 5.3
+    label(ax, x + w / 2.0, 13.4, note_text, fs=7.8, color=GRAY)
 
-msg(ax, 15, 50, 48, "① 登录：密码 + MFA", color=ACCENT, fs=8.4)
-msg(ax, 15, 50, 41, "② 选择资产与系统用户", color=ACCENT, fs=8.4)
+routing(ax, 3, 44, "全隧道", [
+    ("10.0.0.0/8", "wg0", True),
+    ("0.0.0.0/0", "wg0", True),
+    ("192.168.1.0/24", "eth0", False),
+], "所有流量绕公司出口\n审计完整，速度受限", ACCENT)
 
-box(ax, 41, 30, 18, 8, fc=WHITE, ec=WARM, lw=0.9)
-label(ax, 50, 35.5, "③ 查授权", fs=8.4, bold=True, color=WARM)
-label(ax, 50, 32.2, "有没有权限", fs=7.8, color=GRAY)
+routing(ax, 53, 44, "拆分隧道", [
+    ("10.0.0.0/8", "wg0", True),
+    ("0.0.0.0/0", "eth0", False),
+    ("192.168.1.0/24", "eth0", False),
+], "只有内网走隧道\n速度快，审计有缺口", ACCENT)
 
-msg(ax, 50, 85, 24, "④ 用资产上的账号与密钥登录", color=GREEN, fs=8.4)
-msg(ax, 15, 50, 17, "⑤ 键入命令", color=ACCENT, fs=8.4)
-msg(ax, 50, 85, 17, "", color=GREEN, fs=8.0)
-label(ax, 67.5, 18.0, "转发并记录", fs=7.8, color=GRAY)
-msg(ax, 85, 50, 11, "输出回显", color=GREEN, fs=8.0, dash=True)
-
-label(ax, 50, 2.6, "会话结束后，录像文件与命令记录一起入库，可按时间检索、回放。",
+label(ax, 50, 6.4, "决定流量走不走隧道的，不是客户端界面，而是这两张表里最长前缀匹配的结果。",
       fs=8.2, color=GRAY)
 
 save(fig, "09/fig09_3.png")
+
+# ---------------------------------------------------------------- 图 9-4
+fig, ax = canvas(7.4, 4.8, 100)
+ax.set_ylim(0, 65)
+
+lifeline(ax, 18, 60, 8.0, "客户端 iNode", color=ACCENT, fs=9.0)
+lifeline(ax, 52, 60, 8.0, "交换机", color=WARM, fs=9.0, sub="认证者")
+lifeline(ax, 85, 60, 8.0, "RADIUS", color=GREEN, fs=9.0, sub="认证服务器")
+
+label(ax, 50, 50.4, "端口未授权：只放行认证报文，其他一律丢弃", fs=8.2, color=RED)
+
+steps = [
+    (45.6, 18, 52, "EAPOL-Start", False),
+    (41.0, 52, 18, "EAP-Request / Identity", True),
+    (36.4, 18, 52, "EAP-Response / Identity（学号）", False),
+    (31.8, 52, 85, "Access-Request", False),
+    (27.2, 85, 18, "EAP 方法交互（口令、证书）", True),
+    (22.6, 52, 85, "Access-Request（结果）", False),
+    (18.0, 85, 52, "Access-Accept", True),
+]
+for y, x1, x2, text, dash in steps:
+    msg(ax, x1, x2, y, text, fs=8.2, dash=dash)
+
+label(ax, 55.5, 13.6, "端口改为授权，必要时下发 VLAN", fs=8.0, color=ACCENT, ha="left")
+label(ax, 30, 10.4, "此时 DHCP 才拿到地址", fs=8.0, color=GRAY)
+
+save(fig, "09/fig09_4.png")

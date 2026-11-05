@@ -66,7 +66,22 @@
 | `chmod 600 ~/.ssh/authorized_keys` | 修正公钥文件权限 |
 | `chmod 600 ~/.ssh/id_ed25519` | 修正私钥权限 |
 
-## A.6 对象存储
+## A.6 VPN 与接入
+
+| 命令 | 作用 |
+| --- | --- |
+| `wg show` | 查看 WireGuard 隧道状态、最近握手与流量 |
+| `wg-quick up wg0` | 启用一份 WireGuard 配置 |
+| `ip addr` | 看虚拟网卡有没有拿到地址 |
+| `ip route` | 查看路由表，Linux |
+| `route print` | 查看路由表，Windows |
+| `ip route get 10.0.0.9` | 查这个目标实际从哪块网卡出去 |
+| `ping -M do -s 1400 10.0.0.9` | 探测隧道 MTU，Linux |
+| `ping -f -l 1400 10.0.0.9` | 探测隧道 MTU，Windows |
+| `tracepath 10.0.0.9` | 逐跳路径，顺带发现路径 MTU |
+| `nmcli connection show` | 列出本机的网络与 VPN 连接 |
+
+## A.7 对象存储
 
 | 命令 | 作用 |
 | --- | --- |
@@ -79,7 +94,7 @@
 | `coscli sign cos://bucket/key --expire 3600` | 生成预签名 URL |
 | `curl -I "https://bucket.cos.region.myqcloud.com/key"` | 查看对象头部信息 |
 
-## A.7 常用配置项
+## A.8 常用配置项
 
 | 配置项 | 客户端或服务端 | 说明 |
 | --- | --- | --- |

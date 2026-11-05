@@ -10,7 +10,7 @@
 
 第一层是链路。网卡、交换机、路由器、网关、地址、端口、域名、TCP，以及数据包怎么被一层层装进帧里。这一层回答“为什么连不上”。
 
-第二层是信任。对称加密、非对称加密、哈希、密钥交换、证书，然后是 SSH 协议本身的三个子协议、密钥与指纹、端口转发。这一层回答“凭什么相信对面”。
+第二层是信任。对称加密、非对称加密、哈希、密钥交换、证书，然后是 SSH 协议本身的三个子协议、密钥与指纹、端口转发，最后是 VPN——把一整张内网搬到身边的那套办法。这一层回答“凭什么相信对面”，也回答“不在那张网里的时候怎么进去”。
 
 第三层是控制。当连接从一个人扩展到一群人，凭据怎么收拢、操作怎么审计、开发环境怎么搬到远端。这一层讲堡垒机、JumpServer 与 VS Code 的远程开发。
 
@@ -31,18 +31,19 @@
 6. [SSH 协议的三层结构](book/chapters/ch06.md)
 7. [密钥、指纹与信任](book/chapters/ch07.md)
 8. [端口转发，把远方的服务搬到本地](book/chapters/ch08.md)
+9. [VPN：把一整张内网搬到身边](book/chapters/ch09.md)
 
 ### 第三篇　从一个人到一群人
 
-9. [为什么需要堡垒机](book/chapters/ch09.md)
-10. [JumpServer 的内部构造](book/chapters/ch10.md)
-11. [VS Code 远程开发的工作原理](book/chapters/ch11.md)
+10. [为什么需要堡垒机](book/chapters/ch10.md)
+11. [JumpServer 的内部构造](book/chapters/ch11.md)
+12. [VS Code 远程开发的工作原理](book/chapters/ch12.md)
 
 ### 第四篇　数据的另一端
 
-12. [对象存储的模型](book/chapters/ch12.md)
-13. [签名、密钥与 403](book/chapters/ch13.md)
-14. [从登录到数据存取](book/chapters/ch14.md)
+13. [对象存储的模型](book/chapters/ch13.md)
+14. [签名、密钥与 403](book/chapters/ch14.md)
+15. [从登录到数据存取](book/chapters/ch15.md)
 
 ### 附录
 

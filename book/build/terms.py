@@ -21,6 +21,8 @@ UID GID 权限位 sudo PATH 环境变量 systemd 文件描述符 fork exec inode
 载荷 padding ETM KEXINIT 交换哈希 会话标识 重密钥 通道 流控 keepalive
 签名 指纹 TOFU ssh-agent PEM
 端口转发 本地转发 远程转发 动态转发 SOCKS ProxyJump ProxyCommand GatewayPorts
+VPN 隧道 封装 虚拟网卡 路由表 全隧道 拆分隧道 IPsec SSL VPN OpenVPN WireGuard
+802.1X EAP EAPoL RADIUS Portal 准入控制 iNode
 堡垒机 4A 审计 会话录像 命令过滤 网关模式 等保
 系统用户 账号 资产 授权 三合一
 Electron 扩展宿主 vscode-server

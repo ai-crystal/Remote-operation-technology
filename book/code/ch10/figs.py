@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-"""第 9 章插图：JumpServer。"""
+"""第 10 章插图：为什么需要堡垒机。"""
 
-import math
 import os
 import sys
 
@@ -9,163 +8,113 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."
 
 from figstyle import (ACCENT, ACCENT_L, GRAY, GRAY_L, GREEN, GREEN_L, INK, RED,
                       RED_L, WARM, WARM_L, WHITE, arrow, box, canvas, elb_arrow,
-                      label, line, note, save)
+                      label, lifeline, line, msg, note, save)
 
 
 def tbox(ax, x, y, w, h, title, sub=None, fc=ACCENT_L, tfs=9.4, sfs=7.8,
-         ec=INK, color=None, sub_color=None):
+         ec=INK, color=None):
     box(ax, x, y, w, h, fc=fc, ec=ec)
     if sub:
         label(ax, x + w / 2.0, y + h * 0.68, title, fs=tfs, bold=True, color=color)
-        label(ax, x + w / 2.0, y + h * 0.29, sub, fs=sfs, color=sub_color or GRAY)
+        label(ax, x + w / 2.0, y + h * 0.28, sub, fs=sfs, color=GRAY)
     else:
         label(ax, x + w / 2.0, y + h / 2.0, title, fs=tfs, bold=True, color=color)
 
 
-# ---------------------------------------------------------------- 图 9-1
-fig, ax = canvas(7.4, 4.3, 100)
+# ---------------------------------------------------------------- 图 8-1
+fig, ax = canvas(7.4, 4.2, 100)
 
-CORE = (50.0, 31.0)
-nodes = [
-    ("Luna", "Web 前端", 19, 47),
-    ("Chen", "编排与任务", 81, 47),
-    ("Koko", "SSH / SFTP 网关", 13, 30),
-    ("Razor", "远程应用发布", 87, 30),
-    ("Lion", "RDP / VNC 网关", 19, 12),
-    ("Magnus", "数据库代理", 81, 12),
-]
-for name, role, cx, cy in nodes:
-    line(ax, (cx, cy), CORE, color="#c3c8ce", lw=0.9, zorder=1)
+label(ax, 24, 54.6, "没有堡垒机", fs=10.4, bold=True)
+label(ax, 76, 54.6, "有堡垒机", fs=10.4, bold=True)
+label(ax, 6.5, 51.6, "6 台终端", fs=7.6, color=GRAY)
+label(ax, 41.0, 51.6, "8 台服务器", fs=7.6, color=GRAY)
+label(ax, 58.0, 51.6, "6 台终端", fs=7.6, color=GRAY)
+label(ax, 93.0, 51.6, "8 台服务器", fs=7.6, color=GRAY)
 
-for name, role, cx, cy in nodes:
-    fc, ec = (ACCENT_L, ACCENT) if name in ("Luna",) else (WARM_L, WARM)
-    box(ax, cx - 12, cy - 4.2, 24, 8.4, fc=fc, ec=ec, zorder=3)
-    label(ax, cx, cy + 1.7, name, fs=8.8, bold=True)
-    label(ax, cx, cy - 1.9, role, fs=7.2, color=GRAY)
+line(ax, (50, 6), (50, 50), color=GRAY_L, lw=1.6)
 
-line(ax, CORE, (50, 18.5), color="#c3c8ce", lw=0.9, zorder=1)
-box(ax, 37, 26.0, 26, 10.5, fc=ACCENT_L, ec=ACCENT, lw=1.2, zorder=3)
-label(ax, 50, 33.4, "Core", fs=9.6, bold=True, color=ACCENT)
-label(ax, 50, 29.0, "API 与业务逻辑", fs=7.4, color=GRAY)
+# 左：终端与服务器两两相连
+term_y = [43.0 - i * 7.4 for i in range(6)]
+srv_y = [46.0 - i * 6.0 for i in range(8)]
 
-box(ax, 37, 8.5, 26, 9.0, fc=WHITE, ec=ACCENT, lw=1.2, zorder=3)
-label(ax, 50, 14.2, "数据库与缓存", fs=8.4, bold=True)
-label(ax, 50, 10.4, "MySQL / Redis", fs=7.2, color=GRAY)
+for ty in term_y:
+    for sy in srv_y:
+        line(ax, (11, ty + 2.1), (36, sy + 2.1), color="#b7bcc2", lw=0.45)
 
-label(ax, 50, 2.6, "各组件都通过 Core 读写元数据，资产、账号、授权、会话记录集中在一处",
-      fs=7.8, color=GRAY)
+for i, y in enumerate(term_y):
+    box(ax, 2, y, 9, 4.2, fc=GRAY_L, ec=GRAY, lw=0.8)
+    label(ax, 6.5, y + 2.1, "终端%d" % (i + 1), fs=6.8, color=INK)
+
+for i, y in enumerate(srv_y):
+    box(ax, 36, y, 10, 4.2, fc=GREEN_L, ec=GREEN, lw=0.8)
+    label(ax, 41, y + 2.1, "服务器%d" % (i + 1), fs=6.8, color=INK)
+
+# 右：终端先到堡垒机，堡垒机再到服务器
+term_y2 = [43.0 - i * 7.4 for i in range(6)]
+srv_y2 = [46.0 - i * 6.0 for i in range(8)]
+
+for i, ty in enumerate(term_y2):
+    line(ax, (63, ty + 2.1), (67.5, 31.0 - i * 2.1), color="#b7bcc2", lw=0.7)
+for i, sy in enumerate(srv_y2):
+    line(ax, (81.5, 31.5 - i * 1.55), (88, sy + 2.1), color="#b7bcc2", lw=0.7)
+
+for i, y in enumerate(term_y2):
+    box(ax, 54, y, 9, 4.2, fc=GRAY_L, ec=GRAY, lw=0.8)
+    label(ax, 58.5, y + 2.1, "终端%d" % (i + 1), fs=6.8, color=INK)
+
+for i, y in enumerate(srv_y2):
+    box(ax, 88, y, 10, 4.2, fc=GREEN_L, ec=GREEN, lw=0.8)
+    label(ax, 93, y + 2.1, "服务器%d" % (i + 1), fs=6.8, color=INK)
+
+box(ax, 67.5, 18, 14, 18, fc=WARM_L, ec=WARM, lw=1.2)
+label(ax, 74.5, 30.6, "堡垒机", fs=9.2, bold=True)
+label(ax, 74.5, 26.4, "唯一入口", fs=7.4, color=GRAY)
+label(ax, 74.5, 22.6, "账号统一", fs=7.4, color=GRAY)
+
+label(ax, 50, 1.4, "左边每条线都要单独发密钥、单独查日志；右边所有流量经过同一个入口。",
+      fs=8.2, color=GRAY)
 
 save(fig, "10/fig10_1.png")
 
-# ---------------------------------------------------------------- 图 9-2
-fig, ax = canvas(7.2, 3.9, 100)
+# ---------------------------------------------------------------- 图 8-2
+fig, ax = canvas(7.0, 4.0, 100)
 
-tbox(ax, 4, 42, 24, 9, "资产 Asset", "一台机器：地址 + 端口", fc=GREEN_L, ec=GREEN)
-tbox(ax, 36, 42, 24, 9, "账号 Account", "机器上真实的用户名/密钥", fc=WARM_L, ec=WARM)
-tbox(ax, 68, 42, 24, 9, "系统用户 SystemUser", "登录时用哪组账号", fc=ACCENT_L, ec=ACCENT,
-     tfs=8.4)
-tbox(ax, 14, 19, 34, 9, "授权 AssetPermission", "资产 + 系统用户 → 授给谁",
-     fc=WHITE, ec=ACCENT, tfs=8.6)
-tbox(ax, 58, 19, 34, 9, "用户 / 用户组", "谁来登录", fc=GRAY_L, ec=GRAY)
+box(ax, 31, 21, 38, 14, fc=WHITE, ec=ACCENT, lw=1.2)
+label(ax, 50, 28.0, "一次受控的\n运维会话", fs=9.6, bold=True, color=ACCENT)
 
-arrow(ax, (28, 46.5), (36, 46.5), lw=0.9)
-label(ax, 32, 48.6, "多对多", fs=7.6, color=ACCENT)
-arrow(ax, (60, 46.5), (68, 46.5), lw=0.9)
-label(ax, 64, 48.6, "多对多", fs=7.6, color=ACCENT)
+tbox(ax, 3, 42, 38, 11, "认证 Authentication", "你是谁", fc=ACCENT_L, ec=ACCENT, tfs=9.0, sfs=7.8)
+tbox(ax, 59, 42, 38, 11, "授权 Authorization", "你能做什么", fc=ACCENT_L, ec=ACCENT, tfs=9.0, sfs=7.8)
+tbox(ax, 3, 4, 38, 11, "账号 Account", "用哪个身份去连", fc=GREEN_L, ec=GREEN, tfs=9.0, sfs=7.8)
+tbox(ax, 59, 4, 38, 11, "审计 Audit", "事后可查可回放", fc=WARM_L, ec=WARM, tfs=9.0, sfs=7.8)
 
-arrow(ax, (20, 28), (20, 42), lw=0.9)
-label(ax, 21.2, 34.1, "描述的对象", fs=7.4, color=GRAY, ha="left")
-line(ax, (44, 28), (44, 34.4), color=INK, lw=0.9)
-line(ax, (44, 34.4), (80, 34.4), color=INK, lw=0.9)
-arrow(ax, (80, 34.4), (80, 42), lw=0.9)
-
-arrow(ax, (48, 23.5), (58, 23.5), lw=0.9)
-label(ax, 53, 25.2, "授给", fs=7.4, color=GRAY)
-
-label(ax, 50, 11.6, "多对多：一个账号可以被多个系统用户引用，一个系统用户也可以包多个账号。",
-      fs=8.0, color=GRAY)
-label(ax, 50, 5.2, "系统用户不是某台机器上的账号，而是一组账号的组合；授权把这组账号指定给谁，才决定谁能登进去。",
-      fs=8.0, color=GRAY)
+arrow(ax, (30, 42), (40, 35.5), color=ACCENT, lw=0.9)
+arrow(ax, (70, 42), (60, 35.5), color=ACCENT, lw=0.9)
+arrow(ax, (30, 15), (40, 21.0), color=GREEN, lw=0.9)
+arrow(ax, (60, 21.0), (70, 15), color=WARM, lw=0.9)   # 会话产生审计记录
 
 save(fig, "10/fig10_2.png")
 
-# ---------------------------------------------------------------- 图 9-3
-fig, ax = canvas(7.2, 4.0, 100)
+# ---------------------------------------------------------------- 图 8-3
+fig, ax = canvas(7.2, 4.8, 100)
 
-segs = [
-    (11, 33, "alice", ACCENT_L, ACCENT),
-    (36, 58, "ubuntu", WARM_L, WARM),
-    (61, 89, "10.0.0.5", GREEN_L, GREEN),
-]
-for x1, x2, txt, fc, ec in segs:
-    box(ax, x1, 44, x2 - x1, 8, fc=fc, ec=ec)
-    ax.text((x1 + x2) / 2.0, 48, txt, ha="center", va="center", fontsize=10.0,
-            family="monospace", color=INK, zorder=6)
+lifeline(ax, 15, 60, 10, "运维人员", sub="浏览器或终端")
+lifeline(ax, 50, 60, 10, "堡垒机", color=WARM, sub="认证、鉴权、录像")
+lifeline(ax, 85, 60, 10, "目标机", color=GREEN, sub="sshd")
 
-label(ax, 34.5, 48, "@", fs=11, bold=True, color=GRAY)
-label(ax, 59.5, 48, "@", fs=11, bold=True, color=GRAY)
+msg(ax, 15, 50, 48, "① 登录：密码 + MFA", color=ACCENT, fs=8.4)
+msg(ax, 15, 50, 41, "② 选择资产与系统用户", color=ACCENT, fs=8.4)
 
-exp = [
-    (2, 34, "JumpServer 用户名", "你在堡垒机上的登录名", ACCENT),
-    (36, 64, "系统用户名", "堡垒机里的凭据模板", WARM),
-    (66, 96, "目标资产地址", "唯一确定一台机器", GREEN),
-]
-for x1, x2, title, sub, col in exp:
-    box(ax, x1, 20, x2 - x1, 10, fc=WHITE, ec=col, lw=0.9)
-    label(ax, (x1 + x2) / 2.0, 26.6, title, fs=8.6, bold=True, color=col)
-    label(ax, (x1 + x2) / 2.0, 22.8, sub, fs=7.6, color=GRAY)
+box(ax, 41, 30, 18, 8, fc=WHITE, ec=WARM, lw=0.9)
+label(ax, 50, 35.5, "③ 查授权", fs=8.4, bold=True, color=WARM)
+label(ax, 50, 32.2, "有没有权限", fs=7.8, color=GRAY)
 
-for (s1, s2, _t, _f, _e), (x1, x2, _, _, col) in zip(segs, exp):
-    line(ax, ((s1 + s2) / 2.0, 44), ((x1 + x2) / 2.0, 30),
-         color=col, lw=0.7, ls=(0, (3, 2)))
+msg(ax, 50, 85, 24, "④ 用资产上的账号与密钥登录", color=GREEN, fs=8.4)
+msg(ax, 15, 50, 17, "⑤ 键入命令", color=ACCENT, fs=8.4)
+msg(ax, 50, 85, 17, "", color=GREEN, fs=8.0)
+label(ax, 67.5, 18.0, "转发并记录", fs=7.8, color=GRAY)
+msg(ax, 85, 50, 11, "输出回显", color=GREEN, fs=8.0, dash=True)
 
-for x1, x2, _, _, col in exp:
-    arrow(ax, ((x1 + x2) / 2.0, 20), ((x1 + x2) / 2.0, 14), color=col, lw=0.8)
-
-box(ax, 2, 5, 94, 9, fc=GRAY_L, ec=GRAY)
-label(ax, 49, 9.5, "Koko 据此查授权、取凭据，建立到目标机的 SSH 连接", fs=8.4)
+label(ax, 50, 2.6, "会话结束后，录像文件与命令记录一起入库，可按时间检索、回放。",
+      fs=8.2, color=GRAY)
 
 save(fig, "10/fig10_3.png")
-
-# ---------------------------------------------------------------- 图 9-4
-fig, ax = canvas(6.2, 2.4, 100)
-
-AX = 33.0
-line(ax, (4, AX), (97, AX), color=INK, lw=1.0)
-arrow(ax, (95, AX), (99, AX), lw=1.0)
-label(ax, 96.0, AX + 2.6, "时间", fs=7.4, color=GRAY)
-
-events = [
-    (26, "登录成功"),
-    (44, "执行 ls"),
-    (64, "执行 rm -rf"),
-    (88, "退出"),
-]
-for x, txt in events:
-    ax.add_patch(__import__("matplotlib").patches.Circle((x, AX), 0.7, color=INK, zorder=4))
-    label(ax, x, AX + 2.6, txt, fs=8.2)
-    line(ax, (x, AX - 0.8), (x, 18.2), color="#c9ced4", lw=0.7, ls=(0, (2, 3)), zorder=1)
-
-# 命令记录
-box(ax, 4, 22.5, 92, 5.6, fc=GRAY_L, ec=GRAY, lw=0.8)
-label(ax, 6, 25.3, "命令记录", fs=7.8, bold=True, color=INK, ha="left")
-recs = [
-    (26, 12, "登录", GRAY_L, GRAY),
-    (44, 9, "ls", GRAY_L, GRAY),
-    (64, 27, "rm -rf 被规则拦截", RED_L, RED),
-    (88, 11, "退出", GRAY_L, GRAY),
-]
-for x, w, txt, fc, ec in recs:
-    box(ax, x - w / 2.0, 23.1, w, 4.4, fc=fc, ec=ec, lw=0.7, radius=0.8)
-    label(ax, x, 25.3, txt, fs=7.6, color=INK)
-
-# 录像
-box(ax, 4, 13, 92, 5.6, fc=GREEN_L, ec=GREEN, lw=0.8)
-label(ax, 6, 15.8, "录像", fs=7.8, bold=True, color=INK, ha="left")
-box(ax, 13, 13.6, 76, 4.4, fc=WHITE, ec=GREEN, lw=0.7, radius=0.8)
-label(ax, 51, 15.8, "从登录到退出持续写入，会话结束才封存", fs=7.4, color=GREEN)
-
-label(ax, 4, 7.0, "命令记录实时落库，方便检索；录像只在会话结束后封存，用于还原当时到底看到了什么。",
-      fs=8.0, color=GRAY, ha="left")
-
-save(fig, "10/fig10_4.png")

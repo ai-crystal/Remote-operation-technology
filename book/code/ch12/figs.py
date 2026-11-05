@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""第 11 章插图：对象存储。"""
+"""第 12 章插图：VS Code Remote-SSH。"""
 
 import os
 import sys
@@ -11,124 +11,153 @@ from figstyle import (ACCENT, ACCENT_L, GRAY, GRAY_L, GREEN, GREEN_L, INK, RED,
                       dot, elb_arrow, label, lifeline, line, msg, note, save)
 
 
-def card(ax, x, y, w, h, key, meta, hl=False):
-    """一个对象卡片：键在上，元数据在下。"""
-    box(ax, x, y, w, h, fc=ACCENT_L if hl else WHITE,
-        ec=ACCENT if hl else GRAY, lw=1.0 if hl else 0.9)
-    label(ax, x + 2.4, y + h * 0.68, key, fs=8.3, ha="left",
-          color=ACCENT if hl else INK, bold=hl)
-    label(ax, x + 2.4, y + h * 0.26, meta, fs=7.4, ha="left", color=GRAY)
+def region(ax, x, y, w, h, title, sub=None):
+    """用虚线大框圈出一台机器。"""
+    p = box(ax, x, y, w, h, fc="white", ec=GRAY, lw=0.9, radius=1.8, zorder=1)
+    p.set_linestyle((0, (6, 4)))
+    label(ax, x + w / 2.0, y + h - 3.2, title, fs=10.2, bold=True)
+    if sub:
+        label(ax, x + w / 2.0, y + h - 6.0, sub, fs=8.0, color=GRAY)
 
 
-# ---------------------------------------------------------------- 图 11-1
-fig, ax = canvas(7.4, 4.25, 100)
+def vbox(ax, x, y, w, h, title, sub=None, fc=WHITE, ec=INK, fs=9.0, bold=False):
+    box(ax, x, y, w, h, fc=fc, ec=ec)
+    if sub:
+        label(ax, x + w / 2.0, y + h * 0.63, title, fs=fs, bold=bold)
+        label(ax, x + w / 2.0, y + h * 0.28, sub, fs=7.7, color=GRAY)
+    else:
+        label(ax, x + w / 2.0, y + h / 2.0, title, fs=fs, bold=bold)
 
-# 左：账号里的桶清单
-box(ax, 1.0, 6.0, 34, 44.0, fc="#fbfcfd", ec=GRAY, lw=0.9)
-label(ax, 18.0, 46.3, "账号（Account）", fs=9.8, bold=True)
-label(ax, 18.0, 43.0, "谁在调用：一对 AK/SK", fs=7.8, color=GRAY)
-for y, t, hl in [(32.0, "bucket-training", True),
-                 (21.5, "bucket-data", False),
-                 (11.0, "bucket-backup", False)]:
-    box(ax, 4.0, y, 28, 8.0, fc=ACCENT_L if hl else WHITE,
-        ec=ACCENT if hl else GRAY, lw=1.0 if hl else 0.9)
-    label(ax, 18.0, y + 4.0, t, fs=8.4, bold=hl, color=ACCENT if hl else INK)
 
-arrow(ax, (35.4, 26.0), (43.8, 26.0), color=GRAY)
-label(ax, 39.6, 27.4, "展开", fs=7.8, color=GRAY)
+# ---------------------------------------------------------------- 图 10-1
+fig, ax = canvas(7.4, 4.2, 100)
 
-# 右：桶里的对象
-box(ax, 44.0, 6.0, 55, 44.0, fc=WHITE, ec=ACCENT, lw=1.1)
-label(ax, 46.5, 46.3, "桶（Bucket）bucket-training", fs=9.6, bold=True,
-      color=ACCENT, ha="left")
-label(ax, 46.5, 42.9, "每个对象 = 键 + 元数据 + 数据", fs=7.8, color=GRAY, ha="left")
+region(ax, 1.5, 4.5, 36, 45.5, "本机", "你面前的这台电脑")
+region(ax, 62.5, 4.5, 36, 45.5, "远程主机", "Linux 服务器")
 
-card(ax, 47.0, 29.0, 49, 9.4, "datasets/2026/train-0001.parquet",
-     "size 128 MB · etag 5d41c9… · 标准存储", hl=True)
-card(ax, 47.0, 18.2, 49, 9.4, "datasets/2026/train-0002.parquet",
-     "size 131 MB · etag 7a2e40… · 标准存储")
-card(ax, 47.0, 7.4, 49, 9.4, "models/ckpt-epoch-10.pt",
-     "size 2.4 GB · etag c19b83… · 低频访问")
+vbox(ax, 4.5, 31.0, 30, 8.0, "界面进程", "窗口、编辑器、终端标签", fc=ACCENT_L, ec=ACCENT)
+vbox(ax, 4.5, 20.0, 30, 8.0, "扩展宿主进程", "跑本地扩展", fc=WHITE)
+vbox(ax, 4.5, 9.0, 30, 8.0, "ssh 子进程", "系统 ssh 客户端", fc=WHITE)
 
-note(ax, 50, 2.2, "键里的斜杠只是名字的一部分：没有目录，也没有 mkdir；列对象时可以用前缀筛选",
-     fs=8.0, color=GRAY, ha="center")
+arrow(ax, (12, 31), (12, 28.2), style="<|-|>")
+label(ax, 14.0, 29.6, "本地 IPC", fs=7.8, color=GRAY, ha="left")
+arrow(ax, (25, 20), (25, 17.2), style="<|-|>")
+label(ax, 27.8, 18.6, "管道", fs=7.8, color=GRAY, ha="left")
+
+# 右侧：vscode-server 是一个常驻进程，内部带几个服务
+box(ax, 65, 6.0, 31, 34.5, fc="#fbfcfd", ec=ACCENT, lw=1.0)
+label(ax, 80.5, 37.2, "vscode-server", fs=9.4, bold=True, color=ACCENT)
+label(ax, 80.5, 34.4, "远程常驻进程", fs=7.7, color=GRAY)
+for y, t in [(26.8, "扩展宿主进程"), (18.3, "文件服务"), (9.8, "终端服务")]:
+    vbox(ax, 67.5, y, 26, 6.4, t, fc=WHITE, ec=GRAY, fs=8.6)
+
+# 中间的隧道
+arrow(ax, (34.5, 13.0), (65, 13.0), style="<|-|>", color=ACCENT, lw=1.3)
+label(ax, 50, 14.8, "SSH 隧道（加密）", fs=8.8, color=ACCENT, bold=True)
+note(ax, 50, 11.2, "补全、终端输出、文件读写\n都走这条隧道", fs=8.2, color=GRAY,
+     ha="center", va="top")
+
+label(ax, 50, 1.6, "虚线圈出的每个矩形，都是一个独立的操作系统进程", fs=8.2, color=GRAY)
 
 save(fig, "12/fig12_1.png")
 
-# ---------------------------------------------------------------- 图 11-2
-fig, ax = canvas(7.4, 3.6, 100)
+# ---------------------------------------------------------------- 图 10-2
+fig, ax = canvas(7.0, 4.3, 100)
 
-cols = [(1.0, "块存储", "Block Storage"), (34.5, "文件存储", "File Storage"),
-        (68.0, "对象存储", "Object Storage")]
-for c, t, sub in cols:
-    label(ax, c + 15.5, 45.2, t, fs=10.2, bold=True)
-    label(ax, c + 15.5, 42.0, sub, fs=7.8, color=GRAY)
+lifeline(ax, 12, 59, 12.5, "本地 VS Code", sub="界面进程")
+lifeline(ax, 37, 59, 12.5, "ssh 客户端", color=GRAY, sub="读 ~/.ssh/config")
+lifeline(ax, 63, 59, 12.5, "目标机 sshd", color=GREEN, sub="认证与会话")
+lifeline(ax, 88, 59, 12.5, "vscode-server", color=WARM, sub="远程扩展宿主")
 
-# 块存储
-c = 1.0
-box(ax, c + 2, 31.0, 27, 7.0, "一台服务器", fc=WHITE, ec=INK, fs=8.8)
-arrow(ax, (c + 15.5, 31.0), (c + 15.5, 27.0))
-label(ax, c + 17.0, 28.4, "挂载", fs=7.8, color=GRAY, ha="left")
-
-box(ax, c + 2.4, 20.6, 26.0, 6.3, fc=ACCENT_L, ec=ACCENT, lw=1.1, radius=0.9)
-for k in range(1, 5):
-    line(ax, (c + 2.4 + k * 5.2, 20.6), (c + 2.4 + k * 5.2, 26.9), color=ACCENT, lw=0.8, zorder=4)
-label(ax, c + 15.5, 18.4, "固定大小的块（/dev/vdb）", fs=7.6, color=GRAY)
-
-# 文件存储：用线条画一棵目录树
-c = 34.5
-label(ax, c + 7.6, 34.0, "/", fs=9.4, bold=True, ha="right")
-line(ax, (c + 8.2, 33.6), (c + 8.2, 20.6), color=GRAY, lw=0.9)
-for yb, name in [(30.4, "data/"), (21.6, "code/")]:
-    line(ax, (c + 8.2, yb), (c + 11.0, yb), color=GRAY, lw=0.9)
-    label(ax, c + 11.6, yb, name, fs=8.4, ha="left", bold=True)
-    line(ax, (c + 12.9, yb - 0.6), (c + 12.9, yb - 4.4), color=GRAY, lw=0.9)
-    line(ax, (c + 12.9, yb - 4.4), (c + 14.2, yb - 4.4), color=GRAY, lw=0.9)
-label(ax, c + 14.8, 26.0, "train.bin", fs=8.0, ha="left", color=GRAY)
-label(ax, c + 14.8, 17.2, "fig.py", fs=8.0, ha="left", color=GRAY)
-
-# 对象存储
-c = 68.0
-box(ax, c + 2, 31.0, 27, 7.0, "客户端", fc=WHITE, ec=INK, fs=8.8)
-arrow(ax, (c + 15.5, 31.0), (c + 15.5, 28.0))
-label(ax, c + 17.0, 29.2, "HTTP", fs=7.8, color=GRAY, ha="left")
-box(ax, c + 2, 16.0, 27, 11.6, fc=WHITE, ec=ACCENT, lw=1.0)
-for i, t in enumerate(["datasets/train.bin", "models/ckpt.pt", "logs/run.json"]):
-    label(ax, c + 4.0, 24.6 - i * 3.5, t, fs=7.4, ha="left", color=GRAY)
-
-traits = [
-    "按固定大小的块读写\n像一块本地硬盘",
-    "目录树与文件句柄\n多台机器可同时挂载",
-    "扁平键值 + HTTP 接口\n整个对象读、整个对象写",
+steps = [
+    (51.0, 12, 37, "① 启动 ssh 子进程", INK, False),
+    (46.0, 37, 63, "② TCP 连接、协商算法、认证", INK, False),
+    (41.0, 63, 37, "③ 认证通过", GRAY, True),
+    (36.0, 37, 63, "④ 请求启动 server", INK, False),
+    (31.0, 63, 88, "⑤ 没有就下载安装", INK, False),
+    (26.0, 88, 63, "⑥ 报告端口与 token", GRAY, True),
+    (21.0, 63, 37, "⑦ server 已就绪", GRAY, True),
+    (16.0, 12, 37, "⑧ 界面连本地端口", INK, False),
 ]
-for (c, _, _), t in zip(cols, traits):
-    label(ax, c + 15.5, 11.6, t, fs=8.2)
+for y, x1, x2, t, c, d in steps:
+    msg(ax, x1, x2, y, t, color=c, dash=d, fs=8.5)
 
-label(ax, 50, 3.4, "三种形态对应三种用法：系统盘、共享协作目录、海量非结构化数据",
-      fs=8.2, color=GRAY)
+note(ax, 50, 5.2, "箭头方向就是发起方；排错时先确定卡在第几步", fs=8.2, color=GRAY, ha="center")
 
 save(fig, "12/fig12_2.png")
 
-# ---------------------------------------------------------------- 图 11-3
-fig, ax = canvas(6.8, 4.4, 100)
+# ---------------------------------------------------------------- 图 10-3
+fig, ax = canvas(7.4, 3.5, 100)
 
-lifeline(ax, 16, 60, 8.5, "客户端", sub="你的程序或 CLI")
-lifeline(ax, 78, 60, 8.5, "对象存储", color=ACCENT, sub="按 HTTP 接口应答")
+label(ax, 17.0, 43.4, "① 你写的配置", fs=9.6, bold=True)
+label(ax, 54.0, 43.4, "② ssh 展开成真实参数", fs=9.6, bold=True)
+label(ax, 86.5, 43.4, "③ 实际走两跳", fs=9.6, bold=True)
 
-steps = [
-    (52.0, 16, 78, "① InitiateMultipartUpload", INK, False),
-    (46.5, 78, 16, "返回 UploadId", GRAY, True),
-    (40.5, 16, 78, "② UploadPart #1", INK, False),
-    (36.0, 16, 78, "② UploadPart #2", INK, False),
-    (31.5, 16, 78, "② UploadPart #N", INK, False),
-    (22.0, 16, 78, "③ CompleteMultipartUpload（交 part 号与 ETag）", INK, False),
-    (16.5, 78, 16, "返回最终 ETag", GRAY, True),
-    (11.0, 16, 78, "中途放弃：AbortMultipartUpload", GRAY, True),
+box(ax, 1.0, 5.0, 32, 30.0, fc="#fbfcfd", ec=GRAY, lw=0.9)
+label(ax, 3.0, 32.4, "C:/Users/alice/.ssh/config", fs=7.4, ha="left", color=GRAY)
+cfg = [
+    "Host l40-server",
+    "    HostName 203.0.113.24",
+    "    Port 58222",
+    "    User alice@ubuntu@10.0.0.5",
+    "    IdentityFile ~/.ssh/ssh.jumpserver.pem",
 ]
-for y, x1, x2, t, c, d in steps:
-    msg(ax, x1, x2, y, t, color=c, dash=d, fs=8.4)
+for i, t in enumerate(cfg):
+    label(ax, 3.0, 29.0 - i * 4.7, t, fs=7.6, ha="left",
+          color=ACCENT if i == 0 else GRAY, bold=(i == 0))
 
-note(ax, 47, 26.8, "单片 5 MiB–5 GiB，最多 10000 片；各片可并发、可单独重传", fs=8.0,
-     color=WARM, ha="center")
+arrow(ax, (33.2, 24.7), (35.9, 24.7), color=GRAY)
+arrow(ax, (72.4, 24.7), (75.7, 24.7), color=GRAY)
+
+for y, t in [(29.0, "地址 203.0.113.24"),
+             (21.5, "端口 58222"),
+             (14.0, "用户 alice@ubuntu@10.0.0.5"),
+             (6.5, "私钥 ~/.ssh/ssh.jumpserver.pem")]:
+    vbox(ax, 36.5, y, 35, 6.4, t, fc=ACCENT_L, ec=ACCENT, fs=8.2)
+
+vbox(ax, 76, 31.5, 22, 6.4, "本机", fc=WHITE, ec=GRAY, fs=8.6)
+vbox(ax, 76, 20.0, 22, 8.6, "堡垒机", "203.0.113.24:58222", fc=WARM_L, ec=WARM, fs=8.8)
+vbox(ax, 76, 7.5, 22, 8.6, "目标机", "10.0.0.5:22", fc=GREEN_L, ec=GREEN, fs=8.8)
+
+arrow(ax, (87, 31.5), (87, 28.7))
+label(ax, 88.2, 30.1, "第一跳", fs=7.6, color=GRAY, ha="left")
+arrow(ax, (87, 20.0), (87, 16.2))
+label(ax, 88.2, 18.1, "第二跳", fs=7.6, color=GRAY, ha="left")
+
+note(ax, 50, 1.6, "把目标写进 User 字段是堡垒机的约定；用 ProxyJump 则拆成两行，一跳一段",
+     fs=8.0, color=GRAY, ha="center")
+
+save(fig, "12/fig12_4.png")
+
+# ---------------------------------------------------------------- 图 10-4
+fig, ax = canvas(7.4, 3.7, 100)
+
+region(ax, 1.0, 4.0, 39, 43.0, "本机", "客户端侧")
+region(ax, 60.0, 4.0, 39, 43.0, "远程主机", "服务端侧")
+
+vbox(ax, 3.5, 30.0, 34, 8.0, "VS Code 界面进程", fc=ACCENT_L, ec=ACCENT, fs=8.8)
+vbox(ax, 3.5, 19.0, 34, 8.6, "127.0.0.1:5xxxx", "本地监听端口（随机）", fc=WHITE, ec=ACCENT, fs=8.6)
+vbox(ax, 3.5, 8.0, 34, 8.0, "ssh 客户端（-L）", fc=WHITE, ec=INK, fs=8.8)
+
+arrow(ax, (13.5, 30.0), (13.5, 27.6))
+label(ax, 14.8, 28.8, "http / ws", fs=7.8, color=GRAY, ha="left")
+arrow(ax, (13.5, 19.0), (13.5, 16.0))
+label(ax, 14.8, 17.4, "明文请求", fs=7.8, color=GRAY, ha="left")
+
+vbox(ax, 62.5, 30.0, 34, 8.0, "vscode-server", fc=WARM_L, ec=WARM, fs=8.8)
+vbox(ax, 62.5, 19.0, 34, 8.6, "/tmp/vscode-ipc-xxxx.sock", "远程 socket 监听", fc=WHITE, ec=WARM, fs=7.8)
+vbox(ax, 62.5, 8.0, 34, 8.0, "sshd", fc=WHITE, ec=GREEN, fs=8.8)
+
+arrow(ax, (79.5, 16.0), (79.5, 19.0))
+label(ax, 80.8, 17.4, "connect", fs=7.8, color=GRAY, ha="left")
+arrow(ax, (79.5, 27.6), (79.5, 30.0))
+label(ax, 80.8, 28.8, "stdio", fs=7.8, color=GRAY, ha="left")
+
+arrow(ax, (37.5, 12.0), (62.5, 12.0), style="<|-|>", color=ACCENT, lw=1.3)
+label(ax, 50, 13.8, "SSH 隧道", fs=8.8, color=ACCENT, bold=True)
+label(ax, 50, 10.2, "字节原样搬运", fs=7.8, color=GRAY)
+
+note(ax, 50, 1.6, "远程也可能不用 socket，而是监听 127.0.0.1 的随机端口", fs=8.0, color=GRAY,
+     ha="center")
 
 save(fig, "12/fig12_3.png")
