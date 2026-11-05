@@ -381,7 +381,8 @@ def list_block(elem, styles, level=0, ordered=False, start=1):
         n += 1
         paras, nested, cur = [], [], []
         if li.text and li.text.strip():
-            cur.append(esc(li.text.strip()))
+            # 只去掉换行，保留行内标记两侧的空格，否则“换成 `ls`”会粘成“换成ls”
+            cur.append(esc(li.text.lstrip().rstrip(chr(10))))
         for ch in li:
             if ch.tag in ("ul", "ol"):
                 if cur:
