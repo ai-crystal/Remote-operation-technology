@@ -159,7 +159,9 @@ def esc(text):
 
 CJK_RE = re.compile(r"[　-〿㐀-鿿＀-￯]")
 
-CAPTION_RE = re.compile(r"^(图|表)\s*\d+(\.\d+)*")
+# 真正的图题/表题是“表 3-1　标题”：编号后面跟的是全角空格。
+# 正文里的引导句“表 3-1 列出……”用的是半角空格，不能被当成题注。
+CAPTION_RE = re.compile(r"^(图|表)\s*\d+(?:-\d+)?　")
 
 
 def is_caption(text):
