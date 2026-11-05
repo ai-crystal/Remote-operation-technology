@@ -6,6 +6,7 @@
 | --- | --- |
 | `ssh host` | 用配置文件里的别名连接 |
 | `ssh -p 2222 user@host` | 指定端口连接 |
+| `ssh -l user@asset@jump jump` | 指定用户名，用户名里含 at 符号时用它 |
 | `ssh -i key.pem user@host` | 指定私钥 |
 | `ssh -v host` | 打印调试信息，`-vv` `-vvv` 更详细 |
 | `ssh -N -L 8080:10.0.0.9:80 jump` | 只做转发，不登录 shell |

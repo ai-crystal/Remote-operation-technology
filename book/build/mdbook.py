@@ -333,8 +333,15 @@ class Converter:
 
     def emit_children(self, node, path):
         out = []
-        for ch in node:
-            out.extend(self.emit(ch, path))
+        kids = list(node)
+        for i, ch in enumerate(kids):
+            flows = self.emit(ch, path)
+            # 引导句不要和它引出的代码块分到两页
+            nxt = kids[i + 1] if i + 1 < len(kids) else None
+            if (nxt is not None and nxt.tag == "pre" and len(flows) == 1
+                    and isinstance(flows[0], Paragraph)):
+                flows[0].keepWithNext = 1
+            out.extend(flows)
         return out
 
     def emit(self, elem, path):
