@@ -24,6 +24,11 @@
   - [第 14 章　签名、密钥与 403](book/chapters/ch14.md)
   - [第 15 章　从登录到数据存取](book/chapters/ch15.md)
 
+- **第五篇　从程序到服务**
+  - [第 16 章　端口、监听与 HTTP：程序怎么变成服务](book/chapters/ch16.md)
+  - [第 17 章　上传、下载与长任务](book/chapters/ch17.md)
+  - [第 18 章　会员、登录与权限](book/chapters/ch18.md)
+
 - **附录与后记**
   - [附录 A　命令速查](book/appendix/a-cheatsheet.md)
   - [附录 B　术语表](book/appendix/b-glossary.md)

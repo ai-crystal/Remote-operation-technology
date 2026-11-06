@@ -28,6 +28,7 @@ VPN 隧道 封装 虚拟网卡 路由表 全隧道 拆分隧道 IPsec SSL VPN Op
 Electron 扩展宿主 vscode-server
 对象存储 桶 元数据 ETag 分片上传 生命周期 一致性 持久性 纠删码 挂载 NFS SMB NAS
 SigV4 规范化请求 预签名 临时密钥 STS 桶策略 ACL
+监听 反向代理 状态码 幂等 任务队列 worker 轮询 SSE WebSocket Session Cookie JWT OAuth2 RBAC 配额 限流
 """.split()
 
 SIGNS = ("指", "叫", "即", "是一种", "也就是", "全称", "简称", "（", "(",

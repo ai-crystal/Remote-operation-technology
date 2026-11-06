@@ -22,6 +22,10 @@
   { "kind": "chapter", "file": "chapters/ch13.md", "kicker": "第 13 章", "toc_prefix": "第 13 章" },
   { "kind": "chapter", "file": "chapters/ch14.md", "kicker": "第 14 章", "toc_prefix": "第 14 章" },
   { "kind": "chapter", "file": "chapters/ch15.md", "kicker": "第 15 章", "toc_prefix": "第 15 章" },
+  { "kind": "part", "file": "front/70-part5.md", "kicker": "第 五 篇" },
+  { "kind": "chapter", "file": "chapters/ch16.md", "kicker": "第 16 章", "toc_prefix": "第 16 章" },
+  { "kind": "chapter", "file": "chapters/ch17.md", "kicker": "第 17 章", "toc_prefix": "第 17 章" },
+  { "kind": "chapter", "file": "chapters/ch18.md", "kicker": "第 18 章", "toc_prefix": "第 18 章" },
   { "kind": "appendix", "file": "appendix/a-cheatsheet.md", "kicker": "", "toc_prefix": "" },
   { "kind": "appendix", "file": "appendix/b-glossary.md", "kicker": "", "toc_prefix": "" },
   { "kind": "epilogue", "file": "front/90-epilogue.md", "kicker": "", "toc_prefix": "" }
