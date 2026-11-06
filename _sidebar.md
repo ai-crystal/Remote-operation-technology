@@ -31,3 +31,7 @@
 
 - **下载**
   - [整本 PDF](output/remote-access-book.pdf ':ignore')
+
+- **GitHub**
+  - [源码仓库](https://github.com/ai-crystal/Remote-operation-technology ':target=_blank')
+  - [提 issue](https://github.com/ai-crystal/Remote-operation-technology/issues ':target=_blank')

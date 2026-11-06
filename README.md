@@ -4,6 +4,34 @@
 
 从一条 `ssh` 登录到几百 TB 的对象存储，讲清远程操作这件事的四层机制。
 
+## 在线阅读
+
+站点：<https://ai-crystal.github.io/Remote-operation-technology/>
+
+用 docsify 搭建，纯静态，手机和电脑都能读：左侧目录按篇分组，顶部可以搜索全书，每章末尾有上一章 / 下一章。
+
+几个直接入口：
+
+- [站点首页](https://ai-crystal.github.io/Remote-operation-technology/)
+- [前言](https://ai-crystal.github.io/Remote-operation-technology/#/book/front/20-preface)
+- [第 1 章　计算机之间怎么通信](https://ai-crystal.github.io/Remote-operation-technology/#/book/chapters/ch01)
+- [第 9 章　VPN：把一整张内网搬到身边](https://ai-crystal.github.io/Remote-operation-technology/#/book/chapters/ch09)
+
+每一章都有独立地址，可以直接分享，格式是：
+
+```text
+https://ai-crystal.github.io/Remote-operation-technology/#/book/chapters/ch06
+```
+
+源码在 GitHub：<https://github.com/ai-crystal/Remote-operation-technology>。发现错字或想补一句，欢迎提 issue 或直接改。
+
+## 下载 PDF
+
+- [整本 PDF（含封面、两级目录、PDF 书签）](output/remote-access-book.pdf)
+- [前言](book/front/20-preface.md)
+
+目前 131 页，插图已压缩，字体做了子集化，体积约 5.8 MB。PDF 用 `build.bat` 生成：先渲染插图，再体检稿件，最后排版。
+
 ## 这本书讲什么
 
 远程操作看起来只是敲几条命令，底下其实叠着四层东西。这本书按这四层展开，每一层都从“它要解决什么问题”讲起。
@@ -80,23 +108,6 @@
 - [附录 A　命令速查](book/appendix/a-cheatsheet.md)
 - [附录 B　术语表](book/appendix/b-glossary.md)
 - [后记](book/front/90-epilogue.md)
-
-## 在线阅读
-
-本站用 docsify 搭建，每一章都有独立链接，可以直接分享：
-
-```text
-https://<你的用户名>.github.io/<仓库名>/#/book/chapters/ch06
-```
-
-左侧目录按篇分组，顶部可以搜索全书内容。
-
-## 下载 PDF
-
-- [整本 PDF（含封面、两级目录、PDF 书签）](output/remote-access-book.pdf ':ignore')
-- [前言](book/front/20-preface.md)
-
-PDF 用 `build.bat` 生成，插图已压缩，字体做了子集化，体积控制在 20 MB 以内。
 
 ## 关于插图
 
