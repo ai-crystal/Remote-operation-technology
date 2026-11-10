@@ -15,7 +15,11 @@ import re
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-BOOK = os.path.dirname(HERE)
+ROOT = os.path.dirname(os.path.dirname(HERE))
+BOOK = os.path.join(ROOT, "books", "intermediate")
+if "--book" in sys.argv:
+    val = sys.argv[sys.argv.index("--book") + 1]
+    BOOK = val if os.path.isabs(val) else os.path.join(ROOT, val)
 
 CJK = re.compile(r"[\u3000-\u303f\u4e00-\u9fff\uff00-\uffef]")
 BAD_HEAD = re.compile(r"[<>&]")

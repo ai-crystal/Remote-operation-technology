@@ -20,8 +20,8 @@ from reportlab.platypus import (BaseDocTemplate, Flowable, Frame, Image,
 from reportlab.platypus.flowables import HRFlowable
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-BOOK = os.path.dirname(HERE)
-ROOT = os.path.dirname(BOOK)
+ROOT = os.path.dirname(os.path.dirname(HERE))          # 仓库根目录
+BOOK = os.path.join(ROOT, "books", "intermediate")     # 由 --book 覆盖
 OUTPUT = os.path.join(ROOT, "output")
 IMAGES = os.path.join(BOOK, "images")
 BUILD_TMP = os.path.join(HERE, "_tmp")
@@ -37,6 +37,7 @@ BOOK_TITLE = "远程之门"
 BOOK_SUBTITLE = "远程操作的技术细节"
 BOOK_AUTHOR = "Dr. Dezeming"
 BOOK_YEAR = "2026"
+TOC_SECTIONS = True      # 目录是否列出小节，可由 book.json 覆盖
 OFFSET = 1          # 封面占 1 页，正文页码与阅读器页码对齐
 
 
@@ -132,7 +133,8 @@ class BookDoc(BaseDocTemplate):
             lvl = flowable.head_level
             text = getattr(flowable, "toc_text", flowable.head_text)
             show = self.toc_mode in ("h1", "h1h2")
-            if show and lvl <= 1:
+            max_lvl = 1 if self.toc_mode == "h1h2" else 0
+            if show and lvl <= max_lvl:
                 self.notify("TOCEntry", (min(lvl, 1), text, self.page + OFFSET))
             if show:
                 self._bm += 1
@@ -227,7 +229,7 @@ def content_section(story, st, doc, entry, conv, kind, kicker, toc_prefix):
         head = None
     story.append(PageBreak())
     story.append(PageKind(kind))
-    story.append(RegionMark(doc, "h1h2" if kind in ("chapter", "appendix") else "h1",
+    story.append(RegionMark(doc, "h1h2" if (TOC_SECTIONS and kind in ("chapter", "appendix")) else "h1",
                             head.head_text if head else ""))
     if kicker:
         story.append(Paragraph(kicker, st["ch_num"]))
@@ -312,7 +314,31 @@ def patch_kinsoku():
     textsplit.ALL_CANNOT_END = textsplit.ALL_CANNOT_END + "“‘（【《「『〈［｛"
 
 
+def load_book_config(argv):
+    """--book 指定 books/ 下的某一册，读取它的 book.json 并切换所有路径。"""
+    global BOOK, IMAGES, BUILD_TMP, BOOK_TITLE, BOOK_SUBTITLE, BOOK_AUTHOR, BOOK_YEAR, TOC_SECTIONS
+    book_dir = os.path.join(ROOT, "books", "intermediate")
+    if "--book" in argv:
+        val = argv[argv.index("--book") + 1]
+        book_dir = val if os.path.isabs(val) else os.path.join(ROOT, val)
+    cfg = {}
+    cfg_path = os.path.join(book_dir, "book.json")
+    if os.path.exists(cfg_path):
+        with open(cfg_path, encoding="utf-8") as f:
+            cfg = json.load(f)
+    BOOK = book_dir
+    IMAGES = os.path.join(BOOK, "images")
+    BUILD_TMP = os.path.join(HERE, "_tmp", os.path.basename(book_dir.rstrip("/\\")))
+    BOOK_TITLE = cfg.get("title", BOOK_TITLE)
+    BOOK_SUBTITLE = cfg.get("subtitle", BOOK_SUBTITLE)
+    BOOK_AUTHOR = cfg.get("author", BOOK_AUTHOR)
+    BOOK_YEAR = str(cfg.get("year", BOOK_YEAR))
+    TOC_SECTIONS = bool(cfg.get("toc_sections", True))
+    return cfg
+
+
 def main():
+    cfg = load_book_config(sys.argv)
     opt = "--no-opt" not in sys.argv
     t0 = time.time()
     patch_reportlab()
@@ -327,7 +353,7 @@ def main():
     os.makedirs(OUTPUT, exist_ok=True)
     os.makedirs(BUILD_TMP, exist_ok=True)
 
-    with open(os.path.join(HERE, "structure.json"), encoding="utf-8") as f:
+    with open(os.path.join(BOOK, "structure.json"), encoding="utf-8") as f:
         struct = json.load(f)
 
     from reportlab.platypus.tableofcontents import TableOfContents
@@ -369,7 +395,7 @@ def main():
     doc.multiBuild(story)
     body_pages = doc.page
 
-    final = os.path.join(OUTPUT, "remote-access-book.pdf")
+    final = os.path.join(OUTPUT, cfg.get("pdf", "book.pdf"))
     staged = os.path.join(BUILD_TMP, "final.pdf")
     assemble(staged, body_pdf, body_pages)
     final = install_pdf(staged, final)

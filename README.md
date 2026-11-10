@@ -2,128 +2,51 @@
 
 > 远程操作的技术细节
 
-从一条 `ssh` 登录到几百 TB 的对象存储，再到把程序做成别人能用的服务，讲清远程操作这件事的五层机制。
+从一条 `ssh` 登录到几百 TB 的对象存储，再到把程序做成别人能用的服务。
+
+这个仓库是一套**三分册**的技术书：同一件事，三种深度。
+
+## 三分册
+
+### [入门册 · 远程操作入门](books/beginner/README.md)
+
+十章，不讲公式，不要求会写代码。每章一个概念，结尾三句话。目标是让你在半天之内把整条链路想通：数据怎么走、地址和端口是什么、连不上怎么查、登录后发生了什么、钥匙怎么用。
+
+**适合**：第一次接触服务器与 SSH、想把概念理顺的人。
+
+### [进阶册 · 远程操作的技术细节](books/intermediate/README.md)
+
+五篇十八章，系列的主干。完整讲链路、信任、控制、数据，以及把程序做成服务：协议细节、密码学工具、堡垒机与 JumpServer、VS Code 远程开发、对象存储与签名、上传与长任务、会员与权限。
+
+**适合**：要在工作里真正用起来的人，或读完入门册想继续深入的人。
+
+### [深入册 · 协议、密码学与实现细节](books/deep/README.md)
+
+两篇六章。拆开 SSH 的线格式、密钥交换的数学、签名与证书链、SigV4 的完整推导，再谈性能、并发与安全边界。
+
+**适合**：要写协议实现、做安全评估、排查疑难问题的工程师。
 
 ## 在线阅读
 
 站点：<https://ai-crystal.github.io/Remote-operation-technology/>
 
-用 docsify 搭建，纯静态，手机和电脑都能读：左侧目录按篇分组，顶部可以搜索全书，每章末尾有上一章 / 下一章。
+- [入门册](https://ai-crystal.github.io/Remote-operation-technology/#/books/beginner/README)
+- [进阶册](https://ai-crystal.github.io/Remote-operation-technology/#/books/intermediate/README)
+- [深入册](https://ai-crystal.github.io/Remote-operation-technology/#/books/deep/README)
 
-几个直接入口：
-
-- [站点首页](https://ai-crystal.github.io/Remote-operation-technology/)
-- [前言](https://ai-crystal.github.io/Remote-operation-technology/#/book/front/20-preface)
-- [第 1 章　计算机之间怎么通信](https://ai-crystal.github.io/Remote-operation-technology/#/book/chapters/ch01)
-- [第 9 章　VPN：把一整张内网搬到身边](https://ai-crystal.github.io/Remote-operation-technology/#/book/chapters/ch09)
-
-每一章都有独立地址，可以直接分享，格式是：
-
-```text
-https://ai-crystal.github.io/Remote-operation-technology/#/book/chapters/ch06
-```
-
-源码在 GitHub：<https://github.com/ai-crystal/Remote-operation-technology>。发现错字或想补一句，欢迎提 issue 或直接改。
+每一章都有独立地址，可以直接分享。
 
 ## 下载 PDF
 
-- [整本 PDF（含封面、两级目录、PDF 书签）](output/remote-access-book.pdf)
-- [前言](book/front/20-preface.md)
+- [入门册 PDF](output/remote-gate-beginner.pdf)（39 页）
+- [进阶册 PDF](output/remote-access-book.pdf)（151 页）
+- [深入册 PDF](output/remote-gate-deep.pdf)（31 页）
 
-目前 131 页，插图已压缩，字体做了子集化，体积约 5.8 MB。PDF 用 `build.bat` 生成：先渲染插图，再体检稿件，最后排版。
-
-## 这本书讲什么
-
-远程操作看起来只是敲几条命令，底下其实叠着五层东西。这本书按这五层展开，每一层都从“它要解决什么问题”讲起。
-
-第一层是链路。网卡、交换机、路由器、网关、地址、端口、域名、TCP，以及数据包怎么被一层层装进帧里。这一层回答“为什么连不上”。
-
-第二层是信任。对称加密、非对称加密、哈希、密钥交换、证书，然后是 SSH 协议本身的三个子协议、密钥与指纹、端口转发，最后是 VPN——把一整张内网搬到身边的那套办法。这一层回答“凭什么相信对面”，也回答“不在那张网里的时候怎么进去”。
-
-第三层是控制。当连接从一个人扩展到一群人，凭据怎么收拢、操作怎么审计、开发环境怎么搬到远端。这一层讲堡垒机、JumpServer 与 VS Code 的远程开发。
-
-第四层是数据。对象存储的模型、分片上传、签名算法、权限体系，以及为什么一个字节的差异就得到 403。
-
-第五层是服务。前面四层是零件，这一层把它们装成产品：端口怎么监听、请求怎么被处理、大文件怎么传、长任务怎么跑、进度怎么回传、会员怎么登录、权限怎么判。这一层回答“怎么让别人用”。
-
-## 全书地图
-
-| 章 | 标题 | 讲什么 | 关键概念 |
-| --- | --- | --- | --- |
-| 1 | 计算机之间怎么通信 | 网卡、交换机、路由器、网关、网段 | 包、帧、网关 |
-| 2 | SSH 是什么 | 它保证的四件事，以及它不是什么 | 认证、机密性、完整性、复用 |
-| 3 | 地址、端口与那条看不见的路 | 地址、端口、NAT、DNS、TCP 与 UDP、封装 | 套接字、三次握手、MTU |
-| 4 | 服务器上发生了什么 | 登录那一刻的链，以及 Linux 常用常识 | 进程、终端、文件描述符、权限 |
-| 5 | 加密、哈希与密钥交换 | 密码学的三件工具，以及它们的组合 | 对称、非对称、哈希、签名 |
-| 6 | SSH 协议的三层结构 | 传输层、认证层、连接层如何分工 | 版本交换、KEX、通道 |
-| 7 | 密钥、指纹与信任 | 密钥文件、指纹、known_hosts、证书 | TOFU、主机密钥、CA |
-| 8 | 端口转发，把远方的服务搬到本地 | 本地、远程、动态转发与跳板 | `-L`、`-R`、`-D`、ProxyJump |
-| 9 | VPN：把一整张内网搬到身边 | 隧道、封装、全隧道与拆分隧道、校园网客户端 | 虚拟网卡、路由表、802.1X |
-| 10 | 为什么需要堡垒机 | 从网状连接到星形连接，以及 4A | 授权、审计、单点 |
-| 11 | JumpServer 的内部构造 | 组件、资产模型、三合一用户名 | Koko、系统用户、会话录像 |
-| 12 | VS Code 远程开发的工作原理 | 进程分工、连接流程、隧道两端 | `vscode-server`、Remote-SSH |
-| 13 | 对象存储的模型 | 桶、键、元数据、分片上传、生命周期 | 一致性、持久性 |
-| 14 | 签名、密钥与 403 | SigV4 的四步推导与权限判定 | 规范化请求、预签名、STS |
-| 15 | 从登录到数据存取 | 把前四篇串成一条完整链路 | 端到端排错 |
-| 16 | 端口、监听与 HTTP | 程序怎么变成别人能访问的服务 | 监听、反向代理、HTTPS |
-| 17 | 上传、下载与长任务 | 大文件怎么传、长任务怎么跑、进度怎么回 | 分片、队列、SSE |
-| 18 | 会员、登录与权限 | 谁能上传、谁能下载、能用多少 | Session、JWT、RBAC |
-
-## 怎么读
-
-书按依赖顺序排，从头读最省力。如果只想先解决眼前的问题，可以按三条路线挑着读：
-
-- **连不上、卡住、报各种错**：第 2、3、4 章，再跳到第 6、8 章看协议与隧道
-- **要在企业环境里干活**：2.4 节，加上第 10、11、12 章
-- **要处理训练数据与模型**：第 13、14、15 章，需要时回看第 7 章
-- **自己要把程序放出去给别人用**：第 16、17、18 章，配合第 3、8 章
-
-第 4 章看着离题最远（进程、终端、权限、路径、环境变量、日志），其实是最不该跳过的一章：不懂进程与终端，就看不懂 sshd 怎么把 shell 启动起来；不懂权限，就解释不了私钥为什么必须是 600。
-
-## 目录
-
-### 第一篇　从一台机器到一条链路
-
-1. [计算机之间怎么通信](book/chapters/ch01.md)
-2. [SSH 是什么](book/chapters/ch02.md)
-3. [地址、端口与那条看不见的路](book/chapters/ch03.md)
-4. [服务器上发生了什么](book/chapters/ch04.md)
-
-### 第二篇　信任是怎么建立的
-
-5. [加密、哈希与密钥交换](book/chapters/ch05.md)
-6. [SSH 协议的三层结构](book/chapters/ch06.md)
-7. [密钥、指纹与信任](book/chapters/ch07.md)
-8. [端口转发，把远方的服务搬到本地](book/chapters/ch08.md)
-9. [VPN：把一整张内网搬到身边](book/chapters/ch09.md)
-
-### 第三篇　从一个人到一群人
-
-10. [为什么需要堡垒机](book/chapters/ch10.md)
-11. [JumpServer 的内部构造](book/chapters/ch11.md)
-12. [VS Code 远程开发的工作原理](book/chapters/ch12.md)
-
-### 第四篇　数据的另一端
-
-13. [对象存储的模型](book/chapters/ch13.md)
-14. [签名、密钥与 403](book/chapters/ch14.md)
-15. [从登录到数据存取](book/chapters/ch15.md)
-
-### 第五篇　从程序到服务
-
-16. [端口、监听与 HTTP：程序怎么变成服务](book/chapters/ch16.md)
-17. [上传、下载与长任务](book/chapters/ch17.md)
-18. [会员、登录与权限](book/chapters/ch18.md)
-
-### 附录
-
-- [附录 A　命令速查](book/appendix/a-cheatsheet.md)
-- [附录 B　术语表](book/appendix/b-glossary.md)
-- [后记](book/front/90-epilogue.md)
+PDF 用 `build.bat` 生成：渲染插图、体检稿件、排版，三册依次产出。
 
 ## 关于插图
 
-书里的每一张图都是代码画出来的，脚本在 `book/code/` 下，按章分目录。插图本身在 `book/images/`。想改某张图，改对应的 `figs.py` 再跑一遍即可。
+书里的图都由代码生成，脚本在 `book/code/` 下，共用 `book/code/common/figstyle.py`。改某张图，改对应的 `figs.py` 再跑一遍。
 
 ## 作者
 

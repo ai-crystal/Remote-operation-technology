@@ -16,7 +16,7 @@ if errorlevel 1 (
 
 echo.
 echo ==================================================
-echo   Building the book
+echo   Building the three books
 echo ==================================================
 
 echo [1/4] rendering figures
@@ -26,23 +26,22 @@ for /d %%D in (book\code\ch*) do (
         if errorlevel 1 echo       [!] %%~nxD figures failed
     )
 )
-if exist "book\code\common\make_cover.py" (
-    "%PY%" "book\code\common\make_cover.py" >nul 2>&1
+
+for %%B in (beginner intermediate deep) do (
+    echo [2/4] checking %%B
+    "%PY%" book\build\lint.py --book books\%%B
+    if errorlevel 1 goto :fail
+    echo [3/4] typesetting %%B
+    "%PY%" book\build\build.py --book books\%%B
+    if errorlevel 1 goto :fail
 )
-
-echo [2/4] checking manuscript
-"%PY%" book\build\lint.py
-if errorlevel 1 goto :fail
-"%PY%" book\build\terms.py
-
-echo [3/4] typesetting PDF
-"%PY%" book\build\build.py
-if errorlevel 1 goto :fail
 
 echo [4/4] done
 echo.
-echo   PDF    : output\remote-access-book.pdf
-echo   Web    : open index.html, or push and use GitHub Pages
+echo   PDF : output\remote-gate-beginner.pdf
+echo         output\remote-access-book.pdf
+echo         output\remote-gate-deep.pdf
+echo   Web : open index.html, or push and use GitHub Pages
 echo.
 pause
 exit /b 0
