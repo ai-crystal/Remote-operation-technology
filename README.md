@@ -42,7 +42,17 @@
 - [进阶册 PDF](output/remote-access-book.pdf)（151 页）
 - [深入册 PDF](output/remote-gate-deep.pdf)（31 页）
 
-PDF 用 `build.bat` 生成：渲染插图、体检稿件、排版，三册依次产出。
+PDF 用脚本生成。每册一个入口，改哪本编哪本：
+
+```text
+build-beginner.bat      只构建入门册
+build-intermediate.bat  只构建进阶册
+build-deep.bat          只构建深入册
+build.bat figures       只重画插图（进阶册的图，入门/深入用的是副本）
+build.bat               三册全构建
+```
+
+每个入口都会先体检（`lint.py`）再排版；插图不重画，所以单册通常在 3 秒内完成。
 
 ## 关于插图
 

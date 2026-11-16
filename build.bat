@@ -14,34 +14,72 @@ if errorlevel 1 (
     "%PY%" -m pip install --quiet reportlab
 )
 
+rem usage:
+rem   build.bat              build all three books
+rem   build.bat beginner     build beginner volume only
+rem   build.bat intermediate build intermediate volume only
+rem   build.bat deep         build deep volume only
+rem   build.bat figures      re-render figures (affects intermediate only)
+
+set "TARGET=%~1"
+if "%TARGET%"=="" set "TARGET=all"
+
+if /i "%TARGET%"=="all" goto :all
+if /i "%TARGET%"=="figures" goto :figures
+if /i "%TARGET%"=="beginner" goto :one_arg
+if /i "%TARGET%"=="intermediate" goto :one_arg
+if /i "%TARGET%"=="deep" goto :one_arg
+
+echo Unknown volume: %TARGET%
+echo Choose one of: beginner / intermediate / deep / figures / all
+goto :fail
+
+:all
+call :one beginner
+if errorlevel 1 goto :fail
+call :one intermediate
+if errorlevel 1 goto :fail
+call :one deep
+if errorlevel 1 goto :fail
+goto :done
+
+:one_arg
+call :one %TARGET%
+if errorlevel 1 goto :fail
+goto :done
+
+:one
+set "NAME=%~1"
+if "%NAME%"=="" set "NAME=%TARGET%"
 echo.
 echo ==================================================
-echo   Building the three books
+echo   Building %NAME%
 echo ==================================================
+"%PY%" book\build\lint.py --book book\%NAME%
+if errorlevel 1 exit /b 1
+"%PY%" book\build\build.py --book book\%NAME%
+if errorlevel 1 exit /b 1
+exit /b 0
 
-echo [1/4] rendering figures
+:figures
+echo [figures] rendering all diagrams
 for /d %%D in (book\code\ch*) do (
     if exist "%%D\figs.py" (
         "%PY%" "%%D\figs.py" >nul 2>&1
         if errorlevel 1 echo       [!] %%~nxD figures failed
     )
 )
+echo [figures] done. beginner/deep use copied images; sync them by hand if needed.
+exit /b 0
 
-for %%B in (beginner intermediate deep) do (
-    echo [2/4] checking %%B
-    "%PY%" book\build\lint.py --book book\%%B
-    if errorlevel 1 goto :fail
-    echo [3/4] typesetting %%B
-    "%PY%" book\build\build.py --book book\%%B
-    if errorlevel 1 goto :fail
-)
-
-echo [4/4] done
+:done
 echo.
+echo ==================================================
+echo   Done
+echo ==================================================
 echo   PDF : output\remote-gate-beginner.pdf
 echo         output\remote-access-book.pdf
 echo         output\remote-gate-deep.pdf
-echo   Web : open index.html, or push and use GitHub Pages
 echo.
 pause
 exit /b 0
