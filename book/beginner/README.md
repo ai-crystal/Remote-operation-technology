@@ -1,46 +1,69 @@
-# 远程之门 · 入门
+# 远程之门 · 入门（网络这座城）
 
-> 不背命令，先弄懂它在干什么
+> 写给 Vibe Coding 时代的服务器基础指南
 
-从一条 `ssh` 登录讲起，用十章把远程操作的整条链路想通：数据怎么走、地址和端口是什么、连不上怎么查、登录后发生了什么、钥匙怎么用、内网服务怎么搬到手边、堡垒机与对象存储是什么、怎么把程序做成别人能用的服务。
+AI 会写代码，但网络不会因此变简单。你可以让 AI 半小时写出一个网站，然后卡在部署上三天，反复看到 `Connection refused`、`502 Bad Gateway`、`Permission denied (publickey)`——每个词都认识，连起来不知道在说什么。
 
-**没有公式，不要求会写代码，每章结尾三句话收尾。**
+这本书给的不是答案，是一张地图：六篇二十三章，从“你家到服务器隔了几道门”讲到“怎么和 AI 一起干活”。**不推公式，不背参数，每一章都从一次具体的卡壳讲起。**
 
 ## 这一册适合谁
 
-- 第一次接触服务器、SSH、Linux 的人
-- 会用几条命令，但说不清背后在发生什么的人
-- 想在做项目之前，先把概念理顺的人
+- 靠 AI 写代码，但一部署就卡住的人
+- 会用几条命令，却说不清背后在发生什么的人
+- 想在做项目之前，先把网络与服务器的常识理顺的人
 
 ## 目录
 
-### 第一篇　先弄明白它在干什么
+### 第一篇　先认清这座城
 
-1. [一台远处的机器，你怎么用它](book/beginner/chapters/ch01.md)
-2. [数据是怎么走过去的](book/beginner/chapters/ch02.md)
+1. [你家到服务器，中间隔了几道门](book/beginner/chapters/ch01.md)
+2. [门牌号和房间号](book/beginner/chapters/ch02.md)
+3. [127.0.0.1 和 0.0.0.0](book/beginner/chapters/ch03.md)
+4. [城市的黄页](book/beginner/chapters/ch04.md)
+5. [挂号信和传单](book/beginner/chapters/ch05.md)
+6. [门禁和海关](book/beginner/chapters/ch06.md)
 
-### 第二篇　把连接建立起来
+### 第二篇　拿到钥匙进屋
 
-3. [地址、端口和名字](book/beginner/chapters/ch03.md)
-4. [连不上的时候，按这个顺序看](book/beginner/chapters/ch04.md)
-5. [登录成功之后，服务器上发生了什么](book/beginner/chapters/ch05.md)
-6. [钥匙：为什么不用密码也能登录](book/beginner/chapters/ch06.md)
+7. [服务器就是一台不关机的电脑](book/beginner/chapters/ch07.md)
+8. [第一次敲下 ssh](book/beginner/chapters/ch08.md)
+9. [锁和钥匙](book/beginner/chapters/ch09.md)
+10. [屋里的规矩](book/beginner/chapters/ch10.md)
 
-### 第三篇　把东西搬过来，把服务给出去
+### 第三篇　把程序变成服务
 
-7. [把远端的服务搬到手边：端口转发](book/beginner/chapters/ch07.md)
-8. [人多了怎么办：堡垒机](book/beginner/chapters/ch08.md)
-9. [数据放在别人的磁盘上：对象存储](book/beginner/chapters/ch09.md)
-10. [把你的程序变成别人能用的服务](book/beginner/chapters/ch10.md)
+11. [进程会死，服务要活](book/beginner/chapters/ch11.md)
+12. [前台、接待和门牌](book/beginner/chapters/ch12.md)
+13. [一次请求的完整旅程](book/beginner/chapters/ch13.md)
+14. [密码不能住在代码里](book/beginner/chapters/ch14.md)
+
+### 第四篇　文件放在哪
+
+15. [把文件送到远方](book/beginner/chapters/ch15.md)
+16. [云上的仓库](book/beginner/chapters/ch16.md)
+17. [403 的一百种死法](book/beginner/chapters/ch17.md)
+
+### 第五篇　进不去的房间
+
+18. [挖一条地道](book/beginner/chapters/ch18.md)
+19. [班车和前台](book/beginner/chapters/ch19.md)
+20. [在远端写代码](book/beginner/chapters/ch20.md)
+
+### 第六篇　和 AI 一起干活
+
+21. [怎么向 AI 描述你的环境](book/beginner/chapters/ch21.md)
+22. [报错翻译器](book/beginner/chapters/ch22.md)
+23. [安全和花钱的底线](book/beginner/chapters/ch23.md)
 
 ### 附录
 
-- [附录 A　入门速查](book/beginner/appendix/a-cheatsheet.md)
-- [附录 B　入门术语表](book/beginner/appendix/b-glossary.md)
+- [附录 A　一页纸地图与命令速查](book/beginner/appendix/a-map.md)
+- [附录 B　人话术语表](book/beginner/appendix/b-glossary.md)
+- [后记](book/beginner/front/90-epilogue.md)
 
 ## 读完接着读什么
 
-- 想真正上手：读[进阶册](book/intermediate/README.md)，那里有完整机制与操作步骤
+- 想真正上手：读[进阶册](book/intermediate/README.md)，完整的机制与操作步骤
 - 想弄懂实现：读[深入册](book/deep/README.md)
 
 ## 下载

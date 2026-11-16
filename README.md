@@ -8,11 +8,11 @@
 
 ## 三分册
 
-### [入门册 · 远程操作入门](book/beginner/README.md)
+### [入门册 · 网络这座城](book/beginner/README.md)
 
-十章，不讲公式，不要求会写代码。每章一个概念，结尾三句话。目标是让你在半天之内把整条链路想通：数据怎么走、地址和端口是什么、连不上怎么查、登录后发生了什么、钥匙怎么用。
+六篇二十三章，不讲公式，不要求会写代码。从“你家到服务器隔了几道门”讲到“怎么和 AI 一起干活”：地址与端口、域名、门禁与海关、ssh 与钥匙、进程与服务、上传与对象存储、隧道与远程开发、报错的读法与安全底线。
 
-**适合**：第一次接触服务器与 SSH、想把概念理顺的人。
+**适合**：靠 AI 写代码但一部署就卡住的人；第一次接触服务器、想把概念理顺的人。
 
 ### [进阶册 · 远程操作的技术细节](book/intermediate/README.md)
 
@@ -38,7 +38,7 @@
 
 ## 下载 PDF
 
-- [入门册 PDF](output/remote-gate-beginner.pdf)（39 页）
+- [入门册 PDF](output/remote-gate-beginner.pdf)（103 页）
 - [进阶册 PDF](output/remote-access-book.pdf)（151 页）
 - [深入册 PDF](output/remote-gate-deep.pdf)（31 页）
 
