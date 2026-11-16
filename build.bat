@@ -29,10 +29,10 @@ for /d %%D in (book\code\ch*) do (
 
 for %%B in (beginner intermediate deep) do (
     echo [2/4] checking %%B
-    "%PY%" book\build\lint.py --book books\%%B
+    "%PY%" book\build\lint.py --book book\%%B
     if errorlevel 1 goto :fail
     echo [3/4] typesetting %%B
-    "%PY%" book\build\build.py --book books\%%B
+    "%PY%" book\build\build.py --book book\%%B
     if errorlevel 1 goto :fail
 )
 

@@ -21,7 +21,7 @@ from reportlab.platypus.flowables import HRFlowable
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))          # 仓库根目录
-BOOK = os.path.join(ROOT, "books", "intermediate")     # 由 --book 覆盖
+BOOK = os.path.join(ROOT, "book", "intermediate")     # 由 --book 覆盖
 OUTPUT = os.path.join(ROOT, "output")
 IMAGES = os.path.join(BOOK, "images")
 BUILD_TMP = os.path.join(HERE, "_tmp")
@@ -315,9 +315,9 @@ def patch_kinsoku():
 
 
 def load_book_config(argv):
-    """--book 指定 books/ 下的某一册，读取它的 book.json 并切换所有路径。"""
+    """--book 指定 book/ 下的某一册，读取它的 book.json 并切换所有路径。"""
     global BOOK, IMAGES, BUILD_TMP, BOOK_TITLE, BOOK_SUBTITLE, BOOK_AUTHOR, BOOK_YEAR, TOC_SECTIONS
-    book_dir = os.path.join(ROOT, "books", "intermediate")
+    book_dir = os.path.join(ROOT, "book", "intermediate")
     if "--book" in argv:
         val = argv[argv.index("--book") + 1]
         book_dir = val if os.path.isabs(val) else os.path.join(ROOT, val)

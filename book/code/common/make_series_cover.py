@@ -2,7 +2,7 @@
 """生成系列封面的简洁版：深蓝渐变 + 书名 + 分册名。
 
 用法：
-    python make_series_cover.py 入门册 "远程操作入门" books/beginner/images/cover.jpg
+    python make_series_cover.py 入门册 "远程操作入门" book/beginner/images/cover.jpg
 """
 
 import os
