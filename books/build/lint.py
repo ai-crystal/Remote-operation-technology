@@ -16,7 +16,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
-BOOK = os.path.join(ROOT, "book", "intermediate")
+BOOK = os.path.join(ROOT, "books", "intermediate")
 if "--book" in sys.argv:
     val = sys.argv[sys.argv.index("--book") + 1]
     BOOK = val if os.path.isabs(val) else os.path.join(ROOT, val)

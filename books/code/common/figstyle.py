@@ -37,7 +37,8 @@ FONT_CANDIDATES = ["Microsoft YaHei", "SimHei", "Noto Sans CJK SC",
                    "Source Han Sans SC", "WenQuanYi Zen Hei"]
 
 OUT_ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                         "..", "..", "intermediate", "images"))
+                                         "..", "..", "..", "books",
+                                         "intermediate", "images"))
 
 
 def setup():

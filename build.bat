@@ -55,15 +55,15 @@ echo.
 echo ==================================================
 echo   Building %NAME%
 echo ==================================================
-"%PY%" book\build\lint.py --book book\%NAME%
+"%PY%" books\build\lint.py --book books\%NAME%
 if errorlevel 1 exit /b 1
-"%PY%" book\build\build.py --book book\%NAME%
+"%PY%" books\build\build.py --book books\%NAME%
 if errorlevel 1 exit /b 1
 exit /b 0
 
 :figures
 echo [figures] rendering all diagrams
-for /d %%D in (book\code\ch*) do (
+for /d %%D in (books\code\ch*) do (
     if exist "%%D\figs.py" (
         "%PY%" "%%D\figs.py" >nul 2>&1
         if errorlevel 1 echo       [!] %%~nxD figures failed

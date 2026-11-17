@@ -1,9 +1,9 @@
 - [首页](README.md)
 
 - **三分册**
-  - [入门册 · 远程操作入门](book/beginner/README.md)
-  - [进阶册 · 远程操作的技术细节](book/intermediate/README.md)
-  - [深入册 · 协议、密码学与实现](book/deep/README.md)
+  - [入门册 · 远程操作入门](books/beginner/README.md)
+  - [进阶册 · 远程操作的技术细节](books/intermediate/README.md)
+  - [深入册 · 协议、密码学与实现](books/deep/README.md)
 
 - **下载**
   - [入门册 PDF](output/remote-gate-beginner.pdf ':ignore')

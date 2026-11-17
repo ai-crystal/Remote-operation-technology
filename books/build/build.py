@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-"""把 book/ 下的 Markdown 编译成一本书的 PDF。
+"""把 books/ 下某一册的 Markdown 编译成 PDF。
 
 用法（一般通过根目录 build.bat 调用）：
-    python book/build/build.py            # 完整构建
-    python book/build/build.py --no-opt   # 跳过图片压缩（调试用）
+    python books/build/build.py --book books/beginner
+    python books/build/build.py --book books/intermediate --no-opt
 """
 
 import io
@@ -21,7 +21,7 @@ from reportlab.platypus.flowables import HRFlowable
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))          # 仓库根目录
-BOOK = os.path.join(ROOT, "book", "intermediate")     # 由 --book 覆盖
+BOOK = os.path.join(ROOT, "books", "intermediate")     # 由 --book 覆盖
 OUTPUT = os.path.join(ROOT, "output")
 IMAGES = os.path.join(BOOK, "images")
 BUILD_TMP = os.path.join(HERE, "_tmp")
@@ -89,7 +89,7 @@ class BookDoc(BaseDocTemplate):
             title=BOOK_TITLE + "：" + BOOK_SUBTITLE,
             author=BOOK_AUTHOR,
             subject="远程操作、SSH 协议、堡垒机、远程开发与对象存储",
-            creator="book/build/build.py",
+            creator="books/build/build.py",
             **kw
         )
         frame = Frame(MARGIN_L, MARGIN_B, CONTENT_W, PAGE_H - MARGIN_T - MARGIN_B,
@@ -315,9 +315,9 @@ def patch_kinsoku():
 
 
 def load_book_config(argv):
-    """--book 指定 book/ 下的某一册，读取它的 book.json 并切换所有路径。"""
+    """--book 指定 books/ 下的某一册，读取它的 book.json 并切换所有路径。"""
     global BOOK, IMAGES, BUILD_TMP, BOOK_TITLE, BOOK_SUBTITLE, BOOK_AUTHOR, BOOK_YEAR, TOC_SECTIONS
-    book_dir = os.path.join(ROOT, "book", "intermediate")
+    book_dir = os.path.join(ROOT, "books", "intermediate")
     if "--book" in argv:
         val = argv[argv.index("--book") + 1]
         book_dir = val if os.path.isabs(val) else os.path.join(ROOT, val)
@@ -453,7 +453,7 @@ def assemble(final, body_pdf, body_pages):
         "author": BOOK_AUTHOR,
         "subject": "SSH、堡垒机、VS Code 远程开发、对象存储",
         "keywords": "SSH, JumpServer, 堡垒机, COS, S3, Remote-SSH, 对象存储",
-        "creator": "book/build/build.py",
+        "creator": "books/build/build.py",
     })
     out.save(final, garbage=4, deflate=True, clean=True)
     out.close()
