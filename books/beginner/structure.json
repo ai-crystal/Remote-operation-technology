@@ -34,5 +34,6 @@
   { "kind": "chapter", "file": "chapters/ch23.md", "kicker": "第 23 章", "toc_prefix": "第 23 章" },
   { "kind": "appendix", "file": "appendix/a-map.md", "kicker": "", "toc_prefix": "" },
   { "kind": "appendix", "file": "appendix/b-glossary.md", "kicker": "", "toc_prefix": "" },
+  { "kind": "appendix", "file": "appendix/c-confusions.md", "kicker": "", "toc_prefix": "" },
   { "kind": "epilogue", "file": "front/90-epilogue.md", "kicker": "", "toc_prefix": "" }
 ]

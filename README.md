@@ -38,7 +38,7 @@
 
 ## 下载 PDF
 
-- [入门册 PDF](output/remote-gate-beginner.pdf)（103 页）
+- [入门册 PDF](output/remote-gate-beginner.pdf)（119 页）
 - [进阶册 PDF](output/remote-access-book.pdf)（151 页）
 - [深入册 PDF](output/remote-gate-deep.pdf)（31 页）
 
