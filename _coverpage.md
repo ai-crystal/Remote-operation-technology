@@ -2,10 +2,11 @@
 
 > 远程操作的技术细节
 
-从一次 ssh 登录讲起，把远程访问这件事拆到每一层。三分册，三种深度。
+从一条 ssh 登录到几百 TB 的对象存储，再到把程序做成别人能用的服务。这个仓库是一套三分册的技术书：同一件事，三种深度。
 
-[入门册](books/beginner/README.md)
-[进阶册](books/intermediate/README.md)
-[深入册](books/deep/README.md)
+**Dr. Dezeming**　·　2026
 
-![color](#0a1622)
+<p class="cover-links">
+<a href="#/books/beginner/README">开始阅读</a>
+<a href="#/README">书目与下载</a>
+</p>

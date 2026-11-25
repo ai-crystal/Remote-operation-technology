@@ -1,46 +1,33 @@
-- [入门册首页](books/beginner/README.md)
-- [前言　AI 会写代码，网络不会因此变简单](books/beginner/front/20-preface.md)
+- [系列首页](/README.md)
+- [本册首页](/books/beginner/README.md)
 
-- **第一篇　先认清这座城**
-  - [第 1 章　你家到服务器，中间隔了几道门](books/beginner/chapters/ch01.md)
-  - [第 2 章　门牌号和房间号](books/beginner/chapters/ch02.md)
-  - [第 3 章　127.0.0.1 和 0.0.0.0](books/beginner/chapters/ch03.md)
-  - [第 4 章　城市的黄页](books/beginner/chapters/ch04.md)
-  - [第 5 章　挂号信和传单](books/beginner/chapters/ch05.md)
-  - [第 6 章　门禁和海关](books/beginner/chapters/ch06.md)
-
-- **第二篇　拿到钥匙进屋**
-  - [第 7 章　服务器就是一台不关机的电脑](books/beginner/chapters/ch07.md)
-  - [第 8 章　第一次敲下 ssh](books/beginner/chapters/ch08.md)
-  - [第 9 章　锁和钥匙](books/beginner/chapters/ch09.md)
-  - [第 10 章　屋里的规矩](books/beginner/chapters/ch10.md)
-
-- **第三篇　把程序变成服务**
-  - [第 11 章　进程会死，服务要活](books/beginner/chapters/ch11.md)
-  - [第 12 章　前台、接待和门牌](books/beginner/chapters/ch12.md)
-  - [第 13 章　一次请求的完整旅程](books/beginner/chapters/ch13.md)
-  - [第 14 章　密码不能住在代码里](books/beginner/chapters/ch14.md)
-
-- **第四篇　文件放在哪**
-  - [第 15 章　把文件送到远方](books/beginner/chapters/ch15.md)
-  - [第 16 章　云上的仓库](books/beginner/chapters/ch16.md)
-  - [第 17 章　403 的一百种死法](books/beginner/chapters/ch17.md)
-
-- **第五篇　进不去的房间**
-  - [第 18 章　挖一条地道](books/beginner/chapters/ch18.md)
-  - [第 19 章　班车和前台](books/beginner/chapters/ch19.md)
-  - [第 20 章　在远端写代码](books/beginner/chapters/ch20.md)
-
-- **第六篇　和 AI 一起干活**
-  - [第 21 章　怎么向 AI 描述你的环境](books/beginner/chapters/ch21.md)
-  - [第 22 章　报错翻译器](books/beginner/chapters/ch22.md)
-  - [第 23 章　安全和花钱的底线](books/beginner/chapters/ch23.md)
+- [第 1 章　你家到服务器，中间隔了几道门](/books/beginner/chapters/ch01.md)
+- [第 2 章　门牌号和房间号](/books/beginner/chapters/ch02.md)
+- [第 3 章　127.0.0.1 和 0.0.0.0](/books/beginner/chapters/ch03.md)
+- [第 4 章　城市的黄页](/books/beginner/chapters/ch04.md)
+- [第 5 章　挂号信和传单](/books/beginner/chapters/ch05.md)
+- [第 6 章　门禁和海关](/books/beginner/chapters/ch06.md)
+- [第 7 章　服务器就是一台不关机的电脑](/books/beginner/chapters/ch07.md)
+- [第 8 章　第一次敲下 ssh](/books/beginner/chapters/ch08.md)
+- [第 9 章　锁和钥匙](/books/beginner/chapters/ch09.md)
+- [第 10 章　屋里的规矩](/books/beginner/chapters/ch10.md)
+- [第 11 章　进程会死，服务要活](/books/beginner/chapters/ch11.md)
+- [第 12 章　前台、接待和门牌](/books/beginner/chapters/ch12.md)
+- [第 13 章　一次请求的完整旅程](/books/beginner/chapters/ch13.md)
+- [第 14 章　密码不能住在代码里](/books/beginner/chapters/ch14.md)
+- [第 15 章　把文件送到远方](/books/beginner/chapters/ch15.md)
+- [第 16 章　云上的仓库](/books/beginner/chapters/ch16.md)
+- [第 17 章　403 的一百种死法](/books/beginner/chapters/ch17.md)
+- [第 18 章　挖一条地道](/books/beginner/chapters/ch18.md)
+- [第 19 章　班车和前台](/books/beginner/chapters/ch19.md)
+- [第 20 章　在远端写代码](/books/beginner/chapters/ch20.md)
+- [第 21 章　怎么向 AI 描述你的环境](/books/beginner/chapters/ch21.md)
+- [第 22 章　报错翻译器](/books/beginner/chapters/ch22.md)
+- [第 23 章　安全和花钱的底线](/books/beginner/chapters/ch23.md)
 
 - **附录**
-  - [附录 A　一页纸地图与命令速查](books/beginner/appendix/a-map.md)
-  - [附录 B　人话术语表](books/beginner/appendix/b-glossary.md)
-  - [后记](books/beginner/front/90-epilogue.md)
+  - [附录 A　一页纸地图与命令速查](/books/beginner/appendix/a-map.md)
+  - [附录 B　人话术语表](/books/beginner/appendix/b-glossary.md)
+  - [附录 C　长得像，但不是一回事](/books/beginner/appendix/c-confusions.md)
 
-- **其他分册**
-  - [进阶册](books/intermediate/README.md)
-  - [深入册](books/deep/README.md)
+- <a href="/output/remote-gate-beginner.pdf" target="_blank" rel="noopener" data-router-ignore>下载 PDF</a>

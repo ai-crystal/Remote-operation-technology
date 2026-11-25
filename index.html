@@ -2,112 +2,119 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>远程之门 · 远程操作的技术细节</title>
-  <meta name="description" content="一本讲清远程操作、SSH 协议、堡垒机与对象存储的中文技术书，作者 Dr. Dezeming。">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%231f5e8c%27/%3E%3Ctext x=%2716%27 y=%2722%27 font-size=%2716%27 font-family=%27sans-serif%27 fill=%27%23fff%27 text-anchor=%27middle%27%3E%E8%BF%9C%3C/text%3E%3C/svg%3E">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="远程之门 · 远程操作的技术细节">
-  <meta property="og:description" content="从一次 ssh 登录到几百 TB 的对象存储：链路、信任、控制、数据四层，十五章。">
-  <meta property="og:url" content="https://ai-crystal.github.io/Remote-operation-technology/">
-  <meta name="twitter:card" content="summary">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>远程之门 · Dr. Dezeming</title>
+  <meta name="description" content="远程操作的技术细节">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4.13.1/themes/vue.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
   <style>
-    :root {
-      --theme-color: #1f5e8c;
-      --base-font-size: 16px;
-    }
-    body { font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", system-ui, sans-serif; }
-    .sidebar { font-size: 14px; }
-    .sidebar ul li a { line-height: 1.7; }
-    .markdown-section { max-width: 860px; padding: 2rem 2rem 6rem; line-height: 1.9; }
-    .markdown-section h1 { font-size: 1.9rem; }
-    .markdown-section h2 { font-size: 1.4rem; margin-top: 2.2rem; }
-    .markdown-section p { text-align: justify; }
-    .markdown-section img { display: block; margin: 1.2rem auto; max-width: 100%; }
-    .markdown-section code { border-radius: 3px; }
-    .markdown-section pre > code { line-height: 1.6; }
-    .markdown-section table { display: table; width: 100%; }
-    .markdown-section blockquote { border-left: 4px solid var(--theme-color); }
-    .cover { background: linear-gradient(160deg, #0a1622 0%, #14324a 55%, #1f5e8c 100%); }
-    .cover .cover-main { color: #eaf2f8; }
-    .cover h1 { font-size: 3rem; letter-spacing: 0.14em; }
-    .cover p { color: #c9dbe8; }
-    .cover .anchor span { color: #eaf2f8; }
-    .cover .cover-main > p:last-child a {
-      color: #e8f1f8 !important;
-      border: 1px solid rgba(232,241,248,0.55) !important;
-      background: rgba(255,255,255,0.05) !important;
-      transition: all .18s ease;
-    }
-    .cover .cover-main > p:last-child a:hover {
-      border-color: #ffffff !important;
-      background: rgba(255,255,255,0.14) !important;
-    }
-    .cover .cover-main > p:last-child a:first-child {
-      background: #1f6ea0 !important;
-      border-color: #1f6ea0 !important;
-      color: #ffffff !important;
-    }
-    .cover .cover-main > p:last-child a:first-child:hover {
-      background: #247cb5 !important;
+    :root { --theme-color: #1f5e8c; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif; }
+    .sidebar { border-right: 1px solid #eee; }
+    .sidebar ul li a { font-size: 14px; }
+    .markdown-section { max-width: 860px; padding: 28px 36px 80px; line-height: 1.82; }
+    .markdown-section img { max-width: 100%; height: auto; display: block; margin: 1.2em auto; }
+    .markdown-section figcaption { text-align: center; color: #777; font-size: 13px; margin-top: -.4em; }
+    .markdown-section table { display: table; width: 100%; font-size: .95rem; }
+    .markdown-section blockquote { color: #4a5568; border-left: 3px solid var(--theme-color); background: #f7fafc; padding: .4em 1em; }
+    .app-nav { display: none; }
+    section.cover { background: radial-gradient(circle at 20% 18%, #23384c 0, #0b1119 48%, #05080d 100%) !important; }
+    section.cover .mask { background: rgba(0, 0, 0, .18) !important; }
+    section.cover .cover-main { max-width: 860px; }
+    section.cover .cover-main h1,
+    section.cover .cover-main h1 a,
+    section.cover .cover-main h1 a span { font-size: clamp(2.2rem, 7vw, 4.2rem); letter-spacing: .08em; color: #fff !important; text-decoration: none; }
+    section.cover .cover-main blockquote { border-left: none; background: none; }
+    section.cover .cover-main blockquote p { color: #d7e0ea !important; font-size: 1.05rem; }
+    section.cover .cover-main p { color: #b9c6d4 !important; }
+    section.cover .cover-main p strong { color: #eef4fa !important; }
+    section.cover .cover-main > p:last-child a { color: #fff !important; border: 1px solid rgba(255,255,255,.7) !important; background: transparent !important; }
+    section.cover .cover-main > p:last-child a:first-child { background: var(--theme-color) !important; border-color: var(--theme-color) !important; }
+    section.cover .cover-main > p:last-child a:hover { background: rgba(255,255,255,.14) !important; }
+    @media (max-width: 768px) {
+      .markdown-section { padding: 20px 18px 60px; }
     }
   </style>
 </head>
 <body>
-  <div id="app">正在加载……</div>
-
+  <div id="app">加载中……</div>
   <script>
     window.$docsify = {
       name: '远程之门',
-      nameLink: '#/',
+      repo: 'https://github.com/ai-crystal/Remote-operation-technology',
+      homepage: 'README.md',
       loadSidebar: true,
       coverpage: true,
+      relativePath: true,
       subMaxLevel: 2,
       maxLevel: 3,
       auto2top: true,
-      autoHeader: false,
-      homepage: 'README.md',
-      notFoundPage: true,
-      relativePath: false,
-      repo: 'https://github.com/ai-crystal/Remote-operation-technology',
-      cornerExternalLinkTarget: '_blank',
+      noCompileLinks: ['output/', '\\.pdf$'],
       search: {
         placeholder: '搜索全书',
-        noData: '没有找到相关内容',
-        depth: 3,
-        paths: 'auto'
+        noData: '没有找到内容。',
+        paths: 'auto',
+        depth: 3
       },
       pagination: {
         previousText: '上一章',
         nextText: '下一章',
         crossChapter: true,
-        crossChapterText: true
+        firstText: '回到开头',
+        lastText: '去往结尾'
       },
       copyCode: {
         buttonText: '复制',
         errorText: '复制失败',
         successText: '已复制'
       },
-      mermaid: {
-        theme: 'default',
-        startOnLoad: false
-      },
-      katex: {
-        delimiters: [
-          { left: '$$', right: '$$', display: true },
-          { left: '$', right: '$', display: false }
-        ],
-        throwOnError: false
-      }
+      mermaid: { theme: 'default' },
+      plugins: [
+        function (hook) {
+          hook.doneEach(function () {
+            var route = decodeURI(location.hash.replace(/^#\/?/, '').split('?')[0]);
+            if (!route || /\/$/.test(route)) { route += 'README.md'; }
+            var dir = route.replace(/[^\/]*$/, '');
+            function normalize(p) {
+              var stack = dir.split('/').filter(Boolean);
+              p.split('/').forEach(function (seg) {
+                if (seg === '..') { stack.pop(); }
+                else if (seg !== '.' && seg !== '') { stack.push(seg); }
+              });
+              return '/' + stack.join('/');
+            }
+            document.querySelectorAll('.markdown-section img').forEach(function (img) {
+              var src = img.getAttribute('src') || '';
+              if (src && !/^(https?:|\/|data:)/.test(src)) {
+                img.setAttribute('src', normalize(src));
+              }
+            });
+            if (window.renderMathInElement) {
+              window.renderMathInElement(document.querySelector('.markdown-section'), {
+                delimiters: [
+                  { left: '$$', right: '$$', display: true },
+                  { left: '\\[', right: '\\]', display: true },
+                  { left: '\\(', right: '\\)', display: false },
+                  { left: '$', right: '$', display: false }
+                ],
+                throwOnError: false,
+                ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+              });
+            }
+          });
+        }
+      ]
     };
   </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify-pagination@2/dist/docsify-pagination.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code@2"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify-mermaid@2/dist/docsify-mermaid.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify-katex@1/dist/docsify-katex.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.5/dist/mermaid.min.js"></script>
+  <script>if (window.mermaid) { mermaid.initialize({ startOnLoad: false, theme: 'neutral' }); }</script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4.13.1/lib/docsify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4.13.1/lib/plugins/search.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-pagination@2.10.1/dist/docsify-pagination.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code@3.0.2/dist/docsify-copy-code.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-mermaid@2.0.1/dist/docsify-mermaid.js"></script>
 </body>
 </html>

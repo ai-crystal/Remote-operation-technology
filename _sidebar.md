@@ -1,15 +1,13 @@
-- [首页](README.md)
+- [系列首页](/README.md)
 
-- **三分册**
-  - [入门册 · 远程操作入门](books/beginner/README.md)
-  - [进阶册 · 远程操作的技术细节](books/intermediate/README.md)
-  - [深入册 · 协议、密码学与实现](books/deep/README.md)
+- **01　入门册**
+  - [本册首页](/books/beginner/README.md)
+  - <a href="/output/remote-gate-beginner.pdf" target="_blank" rel="noopener" data-router-ignore>下载 PDF</a>
 
-- **下载**
-  - [入门册 PDF](output/remote-gate-beginner.pdf ':ignore')
-  - [进阶册 PDF](output/remote-access-book.pdf ':ignore')
-  - [深入册 PDF](output/remote-gate-deep.pdf ':ignore')
+- **02　进阶册**
+  - [本册首页](/books/intermediate/README.md)
+  - <a href="/output/remote-access-book.pdf" target="_blank" rel="noopener" data-router-ignore>下载 PDF</a>
 
-- **GitHub**
-  - [源码仓库](https://github.com/ai-crystal/Remote-operation-technology ':target=_blank')
-  - [提 issue](https://github.com/ai-crystal/Remote-operation-technology/issues ':target=_blank')
+- **03　深入册**
+  - [本册首页](/books/deep/README.md)
+  - <a href="/output/remote-gate-deep.pdf" target="_blank" rel="noopener" data-router-ignore>下载 PDF</a>
