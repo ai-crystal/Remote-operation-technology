@@ -24,4 +24,4 @@
   - [附录 A　命令速查](/books/intermediate/appendix/a-cheatsheet.md)
   - [附录 B　术语表](/books/intermediate/appendix/b-glossary.md)
 
-- <a href="/output/remote-access-book.pdf" target="_blank" rel="noopener" data-router-ignore>下载 PDF</a>
+- <a href="output/v2-intermediate.pdf" target="_blank" rel="noopener" data-router-ignore>下载 PDF</a>

@@ -8,7 +8,7 @@ AI 会写代码，但网络不会因此变简单。你可以让 AI 半小时写�
 
 共 23 章 · 119 页
 
-[从第 1 章开始](chapters/ch01.md)　·　<a href="../../output/remote-gate-beginner.pdf" target="_blank" rel="noopener" data-router-ignore>下载本册 PDF</a>
+[从第 1 章开始](chapters/ch01.md)　·　<a href="output/v1-beginner.pdf" target="_blank" rel="noopener" data-router-ignore>下载本册 PDF</a>
 
 ## 目录
 

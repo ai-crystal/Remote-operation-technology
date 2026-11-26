@@ -30,4 +30,4 @@
   - [附录 B　人话术语表](/books/beginner/appendix/b-glossary.md)
   - [附录 C　长得像，但不是一回事](/books/beginner/appendix/c-confusions.md)
 
-- <a href="/output/remote-gate-beginner.pdf" target="_blank" rel="noopener" data-router-ignore>下载 PDF</a>
+- <a href="output/v1-beginner.pdf" target="_blank" rel="noopener" data-router-ignore>下载 PDF</a>

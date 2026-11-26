@@ -8,4 +8,4 @@
 - [第 5 章　性能与并发：加密开销、连接复用与背压](/books/deep/chapters/ch05.md)
 - [第 6 章　安全边界：中间人、越权与最小权限](/books/deep/chapters/ch06.md)
 
-- <a href="/output/remote-gate-deep.pdf" target="_blank" rel="noopener" data-router-ignore>下载 PDF</a>
+- <a href="output/v3-deep.pdf" target="_blank" rel="noopener" data-router-ignore>下载 PDF</a>

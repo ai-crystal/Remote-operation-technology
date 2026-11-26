@@ -14,9 +14,9 @@
 
 | 册 | 书名 | 一句话 | 页数 | 在线阅读 | PDF |
 | --- | --- | --- | ---: | --- | --- |
-| 01 | [入门册](books/beginner/README.md) | 远程操作入门 | 119 | [阅读](books/beginner/README.md) | <a href="output/remote-gate-beginner.pdf" target="_blank" rel="noopener" data-router-ignore>下载</a> |
-| 02 | [进阶册](books/intermediate/README.md) | 远程操作的技术细节 | 151 | [阅读](books/intermediate/README.md) | <a href="output/remote-access-book.pdf" target="_blank" rel="noopener" data-router-ignore>下载</a> |
-| 03 | [深入册](books/deep/README.md) | 协议、密码学与实现细节 | 31 | [阅读](books/deep/README.md) | <a href="output/remote-gate-deep.pdf" target="_blank" rel="noopener" data-router-ignore>下载</a> |
+| 01 | [入门册](books/beginner/README.md) | 远程操作入门 | 119 | [阅读](books/beginner/README.md) | <a href="output/v1-beginner.pdf" target="_blank" rel="noopener" data-router-ignore>下载</a> |
+| 02 | [进阶册](books/intermediate/README.md) | 远程操作的技术细节 | 151 | [阅读](books/intermediate/README.md) | <a href="output/v2-intermediate.pdf" target="_blank" rel="noopener" data-router-ignore>下载</a> |
+| 03 | [深入册](books/deep/README.md) | 协议、密码学与实现细节 | 31 | [阅读](books/deep/README.md) | <a href="output/v3-deep.pdf" target="_blank" rel="noopener" data-router-ignore>下载</a> |
 
 ## 怎么读
 

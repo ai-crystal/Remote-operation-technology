@@ -77,9 +77,9 @@ echo.
 echo ==================================================
 echo   Done
 echo ==================================================
-echo   PDF : output\remote-gate-beginner.pdf
-echo         output\remote-access-book.pdf
-echo         output\remote-gate-deep.pdf
+echo   PDF : output\v1-beginner.pdf
+echo         output\v2-intermediate.pdf
+echo         output\v3-deep.pdf
 echo.
 pause
 exit /b 0
