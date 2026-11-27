@@ -8,9 +8,14 @@
 
 import glob
 import os
+import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-BOOK = os.path.dirname(HERE)
+ROOT = os.path.dirname(os.path.dirname(HERE))
+BOOK = os.path.join(ROOT, "books", "intermediate")
+if "--book" in sys.argv:
+    val = sys.argv[sys.argv.index("--book") + 1]
+    BOOK = val if os.path.isabs(val) else os.path.join(ROOT, val)
 
 TERMS = """
 SSH sshd OpenSSH 终端 shell 伪终端 主机密钥 公钥 私钥 证书 CA 凭据

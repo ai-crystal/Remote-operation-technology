@@ -4,7 +4,7 @@
 
 这一册从链路、信任、控制、数据，讲到把程序做成服务，五篇十八章，保留完整的协议细节、配置步骤与排错方法。可单独阅读，不需要先读其他分册。
 
-共 18 章 · 151 页
+共 18 章 · 200 页
 
 [从第 1 章开始](chapters/ch01.md)　·　<a href="output/v2-intermediate.pdf" target="_blank" rel="noopener" data-router-ignore>下载本册 PDF</a>
 
